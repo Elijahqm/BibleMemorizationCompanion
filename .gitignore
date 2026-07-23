@@ -1,6 +1,6 @@
-# Reglas transversales del monorepo.
-# El backend (.NET) tiene su propio backend/.gitignore.
-# La app móvil (Flutter) tendrá el suyo cuando se cree.
+# Cross-cutting rules for the monorepo.
+# The backend (.NET) has its own backend/.gitignore.
+# The mobile app (Flutter) will have its own once created.
 
 # Claude Code
 .claude/
@@ -8,10 +8,10 @@
 # macOS
 .DS_Store
 
-# Editores / IDEs
+# Editors / IDEs
 .idea/
 .vs/
 .vscode/
 
-# Secrets / entorno
+# Secrets / environment
 *.env
