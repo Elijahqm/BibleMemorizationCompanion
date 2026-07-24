@@ -1,0 +1,29 @@
+{
+  "packageId": "cb-hechos-1-9",
+  "abbreviation": "Hch",
+  "attribution": "REINA-VALERA 1960",
+  "chapterOrder": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "chapterVerseCounts": {
+    "1": 26,
+    "2": 47,
+    "3": 26,
+    "4": 37,
+    "5": 42,
+    "6": 15,
+    "7": 60,
+    "8": 40,
+    "9": 43
+  },
+  "availableSections": true,
+  "availableAudio": false
+}

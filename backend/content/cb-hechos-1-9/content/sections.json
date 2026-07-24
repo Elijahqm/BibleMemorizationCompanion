@@ -1,0 +1,549 @@
+{
+  "packageId": "cb-hechos-1-9",
+  "sections": [
+    {
+      "sectionId": "la-promesa-del-espiritu-santo",
+      "title": "La promesa del Espíritu Santo",
+      "startVerseRef": "Hch 1:1",
+      "endVerseRef": "Hch 1:5",
+      "verseRefs": [
+        "Hch 1:1",
+        "Hch 1:2",
+        "Hch 1:3",
+        "Hch 1:4",
+        "Hch 1:5"
+      ]
+    },
+    {
+      "sectionId": "la-ascension",
+      "title": "La ascensión",
+      "startVerseRef": "Hch 1:6",
+      "endVerseRef": "Hch 1:11",
+      "verseRefs": [
+        "Hch 1:6",
+        "Hch 1:7",
+        "Hch 1:8",
+        "Hch 1:9",
+        "Hch 1:10",
+        "Hch 1:11"
+      ]
+    },
+    {
+      "sectionId": "eleccion-del-sucesor-de-judas",
+      "title": "Elección del sucesor de Judas",
+      "startVerseRef": "Hch 1:12",
+      "endVerseRef": "Hch 1:26",
+      "verseRefs": [
+        "Hch 1:12",
+        "Hch 1:13",
+        "Hch 1:14",
+        "Hch 1:15",
+        "Hch 1:16",
+        "Hch 1:17",
+        "Hch 1:18",
+        "Hch 1:19",
+        "Hch 1:20",
+        "Hch 1:21",
+        "Hch 1:22",
+        "Hch 1:23",
+        "Hch 1:24",
+        "Hch 1:25",
+        "Hch 1:26"
+      ]
+    },
+    {
+      "sectionId": "la-venida-del-espiritu-santo",
+      "title": "La venida del Espíritu Santo",
+      "startVerseRef": "Hch 2:1",
+      "endVerseRef": "Hch 2:13",
+      "verseRefs": [
+        "Hch 2:1",
+        "Hch 2:2",
+        "Hch 2:3",
+        "Hch 2:4",
+        "Hch 2:5",
+        "Hch 2:6",
+        "Hch 2:7",
+        "Hch 2:8",
+        "Hch 2:9",
+        "Hch 2:10",
+        "Hch 2:11",
+        "Hch 2:12",
+        "Hch 2:13"
+      ]
+    },
+    {
+      "sectionId": "primer-discurso-de-pedro",
+      "title": "Primer discurso de Pedro",
+      "startVerseRef": "Hch 2:14",
+      "endVerseRef": "Hch 2:42",
+      "verseRefs": [
+        "Hch 2:14",
+        "Hch 2:15",
+        "Hch 2:16",
+        "Hch 2:17",
+        "Hch 2:18",
+        "Hch 2:19",
+        "Hch 2:20",
+        "Hch 2:21",
+        "Hch 2:22",
+        "Hch 2:23",
+        "Hch 2:24",
+        "Hch 2:25",
+        "Hch 2:26",
+        "Hch 2:27",
+        "Hch 2:28",
+        "Hch 2:29",
+        "Hch 2:30",
+        "Hch 2:31",
+        "Hch 2:32",
+        "Hch 2:33",
+        "Hch 2:34",
+        "Hch 2:35",
+        "Hch 2:36",
+        "Hch 2:37",
+        "Hch 2:38",
+        "Hch 2:39",
+        "Hch 2:40",
+        "Hch 2:41",
+        "Hch 2:42"
+      ]
+    },
+    {
+      "sectionId": "la-vida-de-los-primeros-cristianos",
+      "title": "La vida de los primeros cristianos",
+      "startVerseRef": "Hch 2:43",
+      "endVerseRef": "Hch 2:47",
+      "verseRefs": [
+        "Hch 2:43",
+        "Hch 2:44",
+        "Hch 2:45",
+        "Hch 2:46",
+        "Hch 2:47"
+      ]
+    },
+    {
+      "sectionId": "curacion-de-un-cojo",
+      "title": "Curación de un cojo",
+      "startVerseRef": "Hch 3:1",
+      "endVerseRef": "Hch 3:10",
+      "verseRefs": [
+        "Hch 3:1",
+        "Hch 3:2",
+        "Hch 3:3",
+        "Hch 3:4",
+        "Hch 3:5",
+        "Hch 3:6",
+        "Hch 3:7",
+        "Hch 3:8",
+        "Hch 3:9",
+        "Hch 3:10"
+      ]
+    },
+    {
+      "sectionId": "discurso-de-pedro-en-el-portico-de-salomon",
+      "title": "Discurso de Pedro en el pórtico de Salomón",
+      "startVerseRef": "Hch 3:11",
+      "endVerseRef": "Hch 3:26",
+      "verseRefs": [
+        "Hch 3:11",
+        "Hch 3:12",
+        "Hch 3:13",
+        "Hch 3:14",
+        "Hch 3:15",
+        "Hch 3:16",
+        "Hch 3:17",
+        "Hch 3:18",
+        "Hch 3:19",
+        "Hch 3:20",
+        "Hch 3:21",
+        "Hch 3:22",
+        "Hch 3:23",
+        "Hch 3:24",
+        "Hch 3:25",
+        "Hch 3:26"
+      ]
+    },
+    {
+      "sectionId": "pedro-y-juan-ante-el-concilio",
+      "title": "Pedro y Juan ante el concilio",
+      "startVerseRef": "Hch 4:1",
+      "endVerseRef": "Hch 4:22",
+      "verseRefs": [
+        "Hch 4:1",
+        "Hch 4:2",
+        "Hch 4:3",
+        "Hch 4:4",
+        "Hch 4:5",
+        "Hch 4:6",
+        "Hch 4:7",
+        "Hch 4:8",
+        "Hch 4:9",
+        "Hch 4:10",
+        "Hch 4:11",
+        "Hch 4:12",
+        "Hch 4:13",
+        "Hch 4:14",
+        "Hch 4:15",
+        "Hch 4:16",
+        "Hch 4:17",
+        "Hch 4:18",
+        "Hch 4:19",
+        "Hch 4:20",
+        "Hch 4:21",
+        "Hch 4:22"
+      ]
+    },
+    {
+      "sectionId": "los-creyentes-piden-confianza-y-valor",
+      "title": "Los creyentes piden confianza y valor",
+      "startVerseRef": "Hch 4:23",
+      "endVerseRef": "Hch 4:31",
+      "verseRefs": [
+        "Hch 4:23",
+        "Hch 4:24",
+        "Hch 4:25",
+        "Hch 4:26",
+        "Hch 4:27",
+        "Hch 4:28",
+        "Hch 4:29",
+        "Hch 4:30",
+        "Hch 4:31"
+      ]
+    },
+    {
+      "sectionId": "todas-las-cosas-en-comun",
+      "title": "Todas las cosas en común",
+      "startVerseRef": "Hch 4:32",
+      "endVerseRef": "Hch 4:37",
+      "verseRefs": [
+        "Hch 4:32",
+        "Hch 4:33",
+        "Hch 4:34",
+        "Hch 4:35",
+        "Hch 4:36",
+        "Hch 4:37"
+      ]
+    },
+    {
+      "sectionId": "ananias-y-safira",
+      "title": "Ananías y Safira",
+      "startVerseRef": "Hch 5:1",
+      "endVerseRef": "Hch 5:11",
+      "verseRefs": [
+        "Hch 5:1",
+        "Hch 5:2",
+        "Hch 5:3",
+        "Hch 5:4",
+        "Hch 5:5",
+        "Hch 5:6",
+        "Hch 5:7",
+        "Hch 5:8",
+        "Hch 5:9",
+        "Hch 5:10",
+        "Hch 5:11"
+      ]
+    },
+    {
+      "sectionId": "muchas-senales-y-maravillas",
+      "title": "Muchas señales y maravillas",
+      "startVerseRef": "Hch 5:12",
+      "endVerseRef": "Hch 5:16",
+      "verseRefs": [
+        "Hch 5:12",
+        "Hch 5:13",
+        "Hch 5:14",
+        "Hch 5:15",
+        "Hch 5:16"
+      ]
+    },
+    {
+      "sectionId": "pedro-y-juan-son-perseguidos",
+      "title": "Pedro y Juan son perseguidos",
+      "startVerseRef": "Hch 5:17",
+      "endVerseRef": "Hch 5:42",
+      "verseRefs": [
+        "Hch 5:17",
+        "Hch 5:18",
+        "Hch 5:19",
+        "Hch 5:20",
+        "Hch 5:21",
+        "Hch 5:22",
+        "Hch 5:23",
+        "Hch 5:24",
+        "Hch 5:25",
+        "Hch 5:26",
+        "Hch 5:27",
+        "Hch 5:28",
+        "Hch 5:29",
+        "Hch 5:30",
+        "Hch 5:31",
+        "Hch 5:32",
+        "Hch 5:33",
+        "Hch 5:34",
+        "Hch 5:35",
+        "Hch 5:36",
+        "Hch 5:37",
+        "Hch 5:38",
+        "Hch 5:39",
+        "Hch 5:40",
+        "Hch 5:41",
+        "Hch 5:42"
+      ]
+    },
+    {
+      "sectionId": "eleccion-de-siete-diaconos",
+      "title": "Elección de siete diáconos",
+      "startVerseRef": "Hch 6:1",
+      "endVerseRef": "Hch 6:7",
+      "verseRefs": [
+        "Hch 6:1",
+        "Hch 6:2",
+        "Hch 6:3",
+        "Hch 6:4",
+        "Hch 6:5",
+        "Hch 6:6",
+        "Hch 6:7"
+      ]
+    },
+    {
+      "sectionId": "arresto-de-esteban",
+      "title": "Arresto de Esteban",
+      "startVerseRef": "Hch 6:8",
+      "endVerseRef": "Hch 6:15",
+      "verseRefs": [
+        "Hch 6:8",
+        "Hch 6:9",
+        "Hch 6:10",
+        "Hch 6:11",
+        "Hch 6:12",
+        "Hch 6:13",
+        "Hch 6:14",
+        "Hch 6:15"
+      ]
+    },
+    {
+      "sectionId": "defensa-y-muerte-de-esteban",
+      "title": "Defensa y muerte de Esteban",
+      "startVerseRef": "Hch 7:1",
+      "endVerseRef": "Hch 7:60",
+      "verseRefs": [
+        "Hch 7:1",
+        "Hch 7:2",
+        "Hch 7:3",
+        "Hch 7:4",
+        "Hch 7:5",
+        "Hch 7:6",
+        "Hch 7:7",
+        "Hch 7:8",
+        "Hch 7:9",
+        "Hch 7:10",
+        "Hch 7:11",
+        "Hch 7:12",
+        "Hch 7:13",
+        "Hch 7:14",
+        "Hch 7:15",
+        "Hch 7:16",
+        "Hch 7:17",
+        "Hch 7:18",
+        "Hch 7:19",
+        "Hch 7:20",
+        "Hch 7:21",
+        "Hch 7:22",
+        "Hch 7:23",
+        "Hch 7:24",
+        "Hch 7:25",
+        "Hch 7:26",
+        "Hch 7:27",
+        "Hch 7:28",
+        "Hch 7:29",
+        "Hch 7:30",
+        "Hch 7:31",
+        "Hch 7:32",
+        "Hch 7:33",
+        "Hch 7:34",
+        "Hch 7:35",
+        "Hch 7:36",
+        "Hch 7:37",
+        "Hch 7:38",
+        "Hch 7:39",
+        "Hch 7:40",
+        "Hch 7:41",
+        "Hch 7:42",
+        "Hch 7:43",
+        "Hch 7:44",
+        "Hch 7:45",
+        "Hch 7:46",
+        "Hch 7:47",
+        "Hch 7:48",
+        "Hch 7:49",
+        "Hch 7:50",
+        "Hch 7:51",
+        "Hch 7:52",
+        "Hch 7:53",
+        "Hch 7:54",
+        "Hch 7:55",
+        "Hch 7:56",
+        "Hch 7:57",
+        "Hch 7:58",
+        "Hch 7:59",
+        "Hch 7:60"
+      ]
+    },
+    {
+      "sectionId": "saulo-persigue-a-la-iglesia",
+      "title": "Saulo persigue a la iglesia",
+      "startVerseRef": "Hch 8:1",
+      "endVerseRef": "Hch 8:3",
+      "verseRefs": [
+        "Hch 8:1",
+        "Hch 8:2",
+        "Hch 8:3"
+      ]
+    },
+    {
+      "sectionId": "predicacion-del-evangelio-en-samaria",
+      "title": "Predicación del evangelio en Samaria",
+      "startVerseRef": "Hch 8:4",
+      "endVerseRef": "Hch 8:25",
+      "verseRefs": [
+        "Hch 8:4",
+        "Hch 8:5",
+        "Hch 8:6",
+        "Hch 8:7",
+        "Hch 8:8",
+        "Hch 8:9",
+        "Hch 8:10",
+        "Hch 8:11",
+        "Hch 8:12",
+        "Hch 8:13",
+        "Hch 8:14",
+        "Hch 8:15",
+        "Hch 8:16",
+        "Hch 8:17",
+        "Hch 8:18",
+        "Hch 8:19",
+        "Hch 8:20",
+        "Hch 8:21",
+        "Hch 8:22",
+        "Hch 8:23",
+        "Hch 8:24",
+        "Hch 8:25"
+      ]
+    },
+    {
+      "sectionId": "felipe-y-el-etiope",
+      "title": "Felipe y el etíope",
+      "startVerseRef": "Hch 8:26",
+      "endVerseRef": "Hch 8:40",
+      "verseRefs": [
+        "Hch 8:26",
+        "Hch 8:27",
+        "Hch 8:28",
+        "Hch 8:29",
+        "Hch 8:30",
+        "Hch 8:31",
+        "Hch 8:32",
+        "Hch 8:33",
+        "Hch 8:34",
+        "Hch 8:35",
+        "Hch 8:36",
+        "Hch 8:37",
+        "Hch 8:38",
+        "Hch 8:39",
+        "Hch 8:40"
+      ]
+    },
+    {
+      "sectionId": "conversion-de-saulo",
+      "title": "Conversión de Saulo",
+      "startVerseRef": "Hch 9:1",
+      "endVerseRef": "Hch 9:19",
+      "verseRefs": [
+        "Hch 9:1",
+        "Hch 9:2",
+        "Hch 9:3",
+        "Hch 9:4",
+        "Hch 9:5",
+        "Hch 9:6",
+        "Hch 9:7",
+        "Hch 9:8",
+        "Hch 9:9",
+        "Hch 9:10",
+        "Hch 9:11",
+        "Hch 9:12",
+        "Hch 9:13",
+        "Hch 9:14",
+        "Hch 9:15",
+        "Hch 9:16",
+        "Hch 9:17",
+        "Hch 9:18",
+        "Hch 9:19"
+      ]
+    },
+    {
+      "sectionId": "saulo-predica-en-damasco",
+      "title": "Saulo predica en Damasco",
+      "startVerseRef": "Hch 9:20",
+      "endVerseRef": "Hch 9:22",
+      "verseRefs": [
+        "Hch 9:20",
+        "Hch 9:21",
+        "Hch 9:22"
+      ]
+    },
+    {
+      "sectionId": "saulo-escapa-de-los-judios",
+      "title": "Saulo escapa de los judíos",
+      "startVerseRef": "Hch 9:23",
+      "endVerseRef": "Hch 9:25",
+      "verseRefs": [
+        "Hch 9:23",
+        "Hch 9:24",
+        "Hch 9:25"
+      ]
+    },
+    {
+      "sectionId": "saulo-en-jerusalen",
+      "title": "Saulo en Jerusalén",
+      "startVerseRef": "Hch 9:26",
+      "endVerseRef": "Hch 9:31",
+      "verseRefs": [
+        "Hch 9:26",
+        "Hch 9:27",
+        "Hch 9:28",
+        "Hch 9:29",
+        "Hch 9:30",
+        "Hch 9:31"
+      ]
+    },
+    {
+      "sectionId": "curacion-de-eneas",
+      "title": "Curación de Eneas",
+      "startVerseRef": "Hch 9:32",
+      "endVerseRef": "Hch 9:35",
+      "verseRefs": [
+        "Hch 9:32",
+        "Hch 9:33",
+        "Hch 9:34",
+        "Hch 9:35"
+      ]
+    },
+    {
+      "sectionId": "dorcas-es-resucitada",
+      "title": "Dorcas es resucitada",
+      "startVerseRef": "Hch 9:36",
+      "endVerseRef": "Hch 9:43",
+      "verseRefs": [
+        "Hch 9:36",
+        "Hch 9:37",
+        "Hch 9:38",
+        "Hch 9:39",
+        "Hch 9:40",
+        "Hch 9:41",
+        "Hch 9:42",
+        "Hch 9:43"
+      ]
+    }
+  ]
+}

@@ -61,10 +61,22 @@ Fields:
 
 1. packageId
 2. abbreviation
-3. chapterOrder array
-4. chapterVerseCounts map
-5. availableSections boolean
-6. availableAudio boolean
+3. attribution (optional)
+4. chapterOrder array
+5. chapterVerseCounts map
+6. availableSections boolean
+7. availableAudio boolean
+
+### attribution
+
+Optional single string with the required source/text credit (for example, the Bible
+translation used). When present, the app must display it wherever the package text is
+shown, so the credit stays visible with the content:
+
+1. On the package detail / info view in the library.
+2. As a small credit line in the verse study view.
+
+Example: `"REINA-VALERA 1960"`
 
 ## content/chapters/{nnn}.json
 

@@ -1,0 +1,23 @@
+{
+  "packageId": "cb-daniel-1-6",
+  "abbreviation": "Dan",
+  "attribution": "REINA-VALERA 1960",
+  "chapterOrder": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "chapterVerseCounts": {
+    "1": 21,
+    "2": 49,
+    "3": 30,
+    "4": 37,
+    "5": 31,
+    "6": 28
+  },
+  "availableSections": true,
+  "availableAudio": false
+}

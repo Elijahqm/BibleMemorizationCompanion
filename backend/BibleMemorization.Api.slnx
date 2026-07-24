@@ -1,3 +1,6 @@
 <Solution>
+  <Folder Name="/tools/">
+    <Project Path="tools/ContentTool/ContentTool.csproj" />
+  </Folder>
   <Project Path="BibleMemorization.Api/BibleMemorization.Api.csproj" />
 </Solution>
