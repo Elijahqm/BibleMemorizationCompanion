@@ -160,4 +160,36 @@ file has its own `sizeBytes` and `checksumSha256` (per-file integrity after extr
 and `manifest.createdAt` is fixed, so rebuilding the same content yields the same bytes and
 therefore the same checksum.
 
-## Step 5 — Wire the artifact into the catalog · _to be defined_
+## Step 5 — Wire the artifact into the catalog · **Defined**
+
+The API only shows packages listed in its catalog
+([`../BibleMemorization.Api/Data/catalog.v1.json`](../BibleMemorization.Api/Data/catalog.v1.json)).
+After building a package, add or update its entry with the **real** values reported by the tool:
+
+- `sizeBytes` — byte size of `package.zip`.
+- `checksumSha256` — the zip hash (the value in `package.sha256`). This is what the app
+  verifies right after download.
+- `artifactUrl` / `manifestUrl` — point to `/packages/{id}/{version}/package.zip` and `manifest.json`.
+- the rest of the metadata (`title`, `language`, `packageType`, `isFree`, `minAppVersion`, …).
+
+Keep the catalog limited to packages that actually have published artifacts.
+
+---
+
+## Adding a new book
+
+End-to-end checklist to add a brand-new package:
+
+1. **Source** — create `backend/content/{packageId}/source.txt` in the Step 1 format.
+   Choose `{packageId}` with the `cb-`/`bq-` prefix (program + language), e.g. `cb-marcos`.
+2. **Register** — add an entry to the `Packages` list in
+   [`../tools/ContentTool`](../tools/ContentTool) (Program.cs): `packageId`, `title`,
+   abbreviation, attribution, book-title line (or `null`), version, type, language.
+3. **Generate & review** — run and inspect the output folder; confirm it reports `problems none`:
+   ```bash
+   dotnet run --project tools/ContentTool -- build {packageId}
+   ```
+4. **Wire the catalog** — add the package to `catalog.v1.json` with the `sizeBytes` and
+   `checksumSha256` the tool printed (Step 5).
+5. **Verify** — run the API, hit `GET /api/v1/catalog`, download the `.zip`, and confirm its
+   SHA-256 matches the catalog value.

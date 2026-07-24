@@ -1,17 +1,61 @@
-# BibleMemorization.Api
+# Backend — Bible Memorization Companion
 
-Catalog and content-delivery backend for the **Bible Memorization Companion** mobile app.
+Backend for the **Bible Memorization Companion** mobile app. It contains three parts:
 
-This service is intentionally small. In Phase 1 it does two things:
+| Folder | What it is |
+| --- | --- |
+| [`BibleMemorization.Api/`](BibleMemorization.Api) | The ASP.NET Core Web API (catalog + artifact serving) |
+| [`content/`](content) | Authoring sources and the content pipeline ([its own README](content/README.md)) |
+| [`tools/ContentTool/`](tools/ContentTool) | C# tool that turns content sources into package artifacts |
+
+The API is intentionally small. In Phase 1 it does two things:
 
 1. Exposes a **read-only catalog API** that tells the app which packages exist and where to download them.
 2. **Serves the package artifacts** (`.zip`, `manifest.json`, `.sha256`) as static files over HTTPS.
 
 Everything else — downloads, install, verse study, progress — lives on the mobile client (offline-first). The backend keeps no user data and requires no sign-in in this phase (guest-first).
 
+The SDK version is pinned in [`global.json`](global.json) to `10.0.x`; the solution is `BibleMemorization.Api.slnx`.
+
 ---
 
-## Tech stack
+## Backend layout
+
+```text
+backend/
+├─ global.json                     # Pins the .NET SDK to 10.0.x
+├─ BibleMemorization.Api.slnx       # Solution (API + ContentTool)
+│
+├─ BibleMemorization.Api/           # The Web API (see "The API" below)
+│
+├─ content/                         # Content authoring — see content/README.md
+│  └─ {packageId}/
+│     ├─ source.txt                 # Plain-text source for a package
+│     └─ content/                   # Generated files (index, chapters, sections)
+│
+└─ tools/
+   └─ ContentTool/                  # C# generator: source.txt -> content -> zip artifact
+```
+
+## Content & tooling
+
+New books and package artifacts are **not hand-written** — they are produced by a tool from a
+plain-text source. The full process (source format, parsing, packaging, checksums) and a
+step-by-step **"Adding a new book"** recipe live in **[`content/README.md`](content/README.md)**.
+
+In short:
+
+```bash
+# from backend/  — regenerate a package's content + artifact
+dotnet run --project tools/ContentTool -- build cb-daniel-7-12
+dotnet run --project tools/ContentTool -- build all
+```
+
+---
+
+## The API
+
+### Tech stack
 
 | Concern | Choice |
 | --- | --- |
@@ -22,11 +66,7 @@ Everything else — downloads, install, verse study, progress — lives on the m
 | Catalog source | Static JSON file (`Data/catalog.v1.json`), cached in memory |
 | Database | None yet — staged behind `ICatalogService` for a future EF Core + MySQL phase |
 
-The SDK version is pinned in [`../global.json`](../global.json) to `10.0.x`.
-
----
-
-## Project structure
+### Project structure
 
 ```text
 BibleMemorization.Api/
@@ -55,7 +95,7 @@ BibleMemorization.Api/
 │  └─ CatalogOptions.cs           # Bound to the "Catalog" config section (file path)
 │
 ├─ Data/
-│  └─ catalog.v1.json             # Seed catalog (the 5 launch packages)
+│  └─ catalog.v1.json             # Catalog served by the API (the published packages)
 │
 └─ wwwroot/
    └─ packages/                   # Static package artifacts, served by direct link
@@ -65,28 +105,24 @@ BibleMemorization.Api/
          └─ package.sha256
 ```
 
----
+### What each part does
 
-## What each part does
+#### Controllers — the HTTP layer
+[`CatalogController`](BibleMemorization.Api/Controllers/CatalogController.cs) is the only entry point for API calls. It is thin on purpose: it receives the request, calls `ICatalogService`, and shapes the HTTP response (200 with the DTO, or 404 when a package id is unknown). It also sets a short `Cache-Control` header so clients cache the catalog for a few minutes.
 
-### Controllers — the HTTP layer
-[`CatalogController`](Controllers/CatalogController.cs) is the only entry point for API calls. It is thin on purpose: it receives the request, calls `ICatalogService`, and shapes the HTTP response (200 with the DTO, or 404 when a package id is unknown). It also sets a short `Cache-Control` header so clients cache the catalog for a few minutes.
+#### Services — the domain/data layer
+[`ICatalogService`](BibleMemorization.Api/Services/ICatalogService.cs) defines *what* the catalog can do (get all packages, get one by id) without saying *how*. [`JsonCatalogService`](BibleMemorization.Api/Services/JsonCatalogService.cs) is the Phase 1 implementation: it reads `Data/catalog.v1.json` a single time, caches the result in memory (guarded by a `SemaphoreSlim`), and serves every request from that cache. Because the interface hides the source, a future `EfCatalogService` backed by MySQL can replace it **without touching the controller**.
 
-### Services — the domain/data layer
-[`ICatalogService`](Services/ICatalogService.cs) defines *what* the catalog can do (get all packages, get one by id) without saying *how*. [`JsonCatalogService`](Services/JsonCatalogService.cs) is the Phase 1 implementation: it reads `Data/catalog.v1.json` a single time, caches the result in memory (guarded by a `SemaphoreSlim`), and serves every request from that cache. Because the interface hides the source, a future `EfCatalogService` backed by MySQL can replace it **without touching the controller**.
-
-### Models — the contracts
+#### Models — the contracts
 The `Dtos` are immutable `record` types that define the exact JSON shape the mobile app consumes (serialized in camelCase). `PackageType` is an enum that serializes to explicit strings (`"book"`, `"season"`, `"audio_addon"`).
 
-### Configuration
-[`CatalogOptions`](Configuration/CatalogOptions.cs) makes the catalog file path configurable via the `"Catalog"` section, defaulting to `Data/catalog.v1.json`.
+#### Configuration
+[`CatalogOptions`](BibleMemorization.Api/Configuration/CatalogOptions.cs) makes the catalog file path configurable via the `"Catalog"` section, defaulting to `Data/catalog.v1.json`.
 
-### Static artifacts (wwwroot)
+#### Static artifacts (wwwroot)
 The actual downloadable files live under `wwwroot/packages/{id}/{version}/`. They are served as static files by direct link — the URLs in the catalog point straight at them. Paths are **immutable per version**, so artifacts are returned with an aggressive, immutable `Cache-Control` header.
 
----
-
-## Endpoints
+### Endpoints
 
 | Method | Route | Description |
 | --- | --- | --- |
@@ -98,20 +134,16 @@ The actual downloadable files live under `wwwroot/packages/{id}/{version}/`. The
 | `GET` | `/openapi/v1.json` | OpenAPI document (Development) |
 | `GET` | `/scalar` | Scalar API explorer (Development) |
 
----
+### Operational features
 
-## Operational features
-
-Configured in [`Program.cs`](Program.cs), all with the built-in framework (no extra packages):
+Configured in [`Program.cs`](BibleMemorization.Api/Program.cs), all with the built-in framework (no extra packages):
 
 - **HTTPS**: `UseHttpsRedirection` everywhere; `UseHsts` outside Development.
 - **HTTP caching**: catalog responses `public, max-age=300`; artifacts `public, max-age=31536000, immutable`.
 - **Rate limiting**: fixed window of **100 requests/minute per client IP** (429 when exceeded).
 - **Structured logging**: request logging (method, path, status, duration) plus JSON console logs outside Development, each carrying the request `TraceId`.
 
----
-
-## Running locally
+### Running locally
 
 From the `backend/` folder:
 
@@ -124,11 +156,9 @@ Then open the Scalar explorer to try the API:
 - Scalar UI: `https://localhost:7131/scalar`
 - Catalog: `https://localhost:7131/api/v1/catalog`
 
-> Note: this project targets .NET 10. If `dotnet --version` shows an older SDK, make sure the .NET 10 SDK is on your `PATH` (see `../global.json`).
+> Note: this project targets .NET 10. If `dotnet --version` shows an older SDK, make sure the .NET 10 SDK is on your `PATH` (see [`global.json`](global.json)).
 
----
-
-## Configuration reference
+### Configuration reference
 
 `appsettings.json` (and environment-specific overrides) may set:
 
@@ -142,9 +172,7 @@ Then open the Scalar explorer to try the API:
 
 If the `Catalog` section is omitted, `CatalogOptions` falls back to `Data/catalog.v1.json`.
 
----
-
-## Roadmap (not in Phase 1)
+### Roadmap (not in Phase 1)
 
 - **Entitlements & accounts** (`GET /api/v1/entitlements`, `GET /api/v1/users/me`) for paid audio.
 - **EF Core + MySQL** implementation of `ICatalogService` when a database is needed.
