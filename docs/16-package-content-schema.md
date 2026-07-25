@@ -91,13 +91,49 @@ Verse object:
 
 1. verseRef (example: Dan 1:1)
 2. verseNumber
-3. text
+3. text (may contain an inline section-title marker — see below)
 4. normalizedText (optional for search/matching)
-5. sectionId (optional)
+
+A verse does **not** carry a `sectionId`. Section membership lives entirely in
+`content/sections.json` (see below); the verse only carries an inline marker in `text`
+when a section *starts* at (or inside) that verse.
+
+### Inline section-title marker
+
+When a section begins at a verse, the section title is embedded **inside** the verse
+`text` as a marker, so the client can render it with different formatting (a heading)
+right where it belongs:
+
+```text
+[[section:{sectionId}|{title}]]
+```
+
+- At the **start** of a verse, the marker is the first thing in `text`.
+- **Mid-verse** (a title that splits a single verse), the marker sits at the split point
+  inside `text`; the text before it is the tail of the previous section and the text after
+  it begins the new section — all shown on the same verse card.
+
+Client rendering rules:
+
+1. Split `text` on the marker(s).
+2. Render the captured `{title}` as a section heading (distinct style), and use
+   `{sectionId}` to link it to the matching entry in `sections.json`.
+3. Render the surrounding text as normal verse text.
+
+Example (`Acts 9:19`, whose second half opens a new section):
+
+```json
+{
+  "verseRef": "Acts 9:19",
+  "verseNumber": 19,
+  "text": "And when he had received meat, he was strengthened. [[section:saul-preaches-at-damascus|Saul Preaches at Damascus]] Then was Saul certain days with the disciples which were at Damascus."
+}
+```
 
 ## content/sections.json (optional)
 
-Section-based study creation source.
+Section-based study creation source, and the **single source of truth for section
+membership**. Each section lists exactly which whole verses it contains.
 
 section object fields:
 
@@ -106,6 +142,12 @@ section object fields:
 3. startVerseRef
 4. endVerseRef
 5. verseRefs array
+
+**Overlap is allowed.** When a section starts mid-verse, that whole verse belongs to
+**both** the ending and the starting section, so the same `verseRef` appears in both
+`verseRefs` arrays (e.g. `Acts 9:19` is the last verse of "The Conversion of Saul" and the
+first verse of "Saul Preaches at Damascus"). Selecting either section studies the complete
+verse.
 
 ## audio/index.json (audio add-on only)
 

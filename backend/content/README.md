@@ -74,11 +74,17 @@ Example: `backend/content/cb-daniel-7-12/source.txt`
 The source file is written with these conventions so it can be parsed deterministically:
 
 1. **Chapter marker** — a line that contains *only* a number (e.g. `7`) starts a new chapter.
-2. **Section marker** — a standalone line of text with no verse numbers is a section title.
-3. **Verse marker** — inside the running text, a number glued to the following word marks
-   the start of a verse (e.g. `1En el primer año...`, `2Daniel dijo:...`). Multiple verses
-   may share a paragraph/line.
-4. **Ignored lines** — blank lines and the final source-attribution line are ignored by
+   English sources may instead use `CHAPTER 7`.
+2. **Section title (start of a verse)** — a standalone line of text with no verse numbers,
+   after a blank line, is a section title. The section starts at the **next** verse.
+3. **Section title (mid-verse)** — a title written **inline** as `{{Title}}` inside a
+   verse's text starts a section at that exact point *inside* the verse. That whole verse
+   then belongs to **both** the previous and the new section (see Step 2). Use this only
+   when the printed text splits a single verse between two sections.
+4. **Verse marker** — inside the running text, a number glued to the following word marks
+   the start of a verse (e.g. `1En el primer año...`, `2Daniel dijo:...`). English sources
+   use a spaced number (`1 And Saul...`). Multiple verses may share a paragraph/line.
+5. **Ignored lines** — blank lines and the final source-attribution line are ignored by
    the parser (see Attribution below).
 
 ### Attribution (required)
@@ -117,10 +123,10 @@ later is a straight copy + compress:
 backend/content/{packageId}/content/
 ├─ index.json              # chapterOrder, chapterVerseCounts, availableSections, ...
 ├─ chapters/
-│  ├─ 007.json             # verses for chapter 7 (verseRef, verseNumber, text, sectionId)
+│  ├─ 007.json             # verses for chapter 7 (verseRef, verseNumber, text)
 │  ├─ 008.json
 │  └─ ...
-└─ sections.json           # section ranges, including cross-chapter ones
+└─ sections.json           # section membership (verseRefs), including cross-chapter and overlaps
 ```
 
 Rules:
@@ -128,6 +134,18 @@ Rules:
 1. Output is **human-readable** (pretty-printed JSON) so it can be reviewed by eye.
 2. **No `.zip`, no manifest, no checksums yet** — those belong to Step 4.
 3. We generate and review **incrementally** (e.g. one chapter first) before doing the rest.
+
+### Section titles and membership
+
+- `sections.json` is the **single source of truth** for which verses belong to a section
+  (`verseRefs`). Verses in `chapters/*.json` do **not** carry a `sectionId`.
+- Where a section **starts**, the tool embeds the title inside that verse's `text` as a
+  marker `[[section:{id}|{title}]]`, so the client can render it as a heading in place
+  (at the start of the verse, or mid-verse). See
+  [`../../docs/16-package-content-schema.md`](../../docs/16-package-content-schema.md).
+- **Overlap:** a title that starts mid-verse puts that whole verse in **two** sections, so
+  its `verseRef` appears in both `verseRefs` arrays. Selecting either section studies the
+  full verse. (Authored with the inline `{{Title}}` convention from Step 1.)
 
 ## Step 3 — Human review & approval · **Defined**
 

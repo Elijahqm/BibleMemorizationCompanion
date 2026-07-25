@@ -492,9 +492,10 @@
     {
       "sectionId": "saul-preaches-at-damascus",
       "title": "Saul Preaches at Damascus",
-      "startVerseRef": "Acts 9:20",
+      "startVerseRef": "Acts 9:19",
       "endVerseRef": "Acts 9:22",
       "verseRefs": [
+        "Acts 9:19",
         "Acts 9:20",
         "Acts 9:21",
         "Acts 9:22"

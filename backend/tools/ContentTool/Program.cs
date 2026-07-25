@@ -20,6 +20,17 @@ using System.Text.RegularExpressions;
 // Text fidelity: verse text is taken verbatim from the source; the only change is
 // collapsing runs of whitespace to a single space (flattening poetry) and removing
 // footnote markers ("*") and standalone cross-reference lines. No words are modified.
+//
+// Section titles: where a section begins, the title travels *inside* the verse text as a
+// marker "[[section:{id}|{Title}]]" so the client can format it differently (at the start
+// of the verse, or mid-verse for a title that splits a verse). sections.json is the single
+// source of truth for membership; a verse may belong to two sections at once (when a new
+// section starts mid-verse, the whole verse is included in both).
+//
+// Source conventions for section titles:
+//   * a title on its own line (after a blank line) starts a section at the *next* verse;
+//   * a title written inline as "{{Title}}" inside a verse's text starts a section
+//     *mid-verse* at that position, and that whole verse belongs to both sections.
 
 var command = args.Length > 0 ? args[0] : "build";
 var target = args.Length > 1 ? args[1] : "all";
@@ -86,8 +97,9 @@ namespace ContentTool
     {
         public int Chapter;
         public int Number;
-        public string Text = "";
-        public string? Title;
+        public string Text = "";                            // may embed [[section:...]] markers
+        public string? StartTitle;                          // section that begins at the start of this verse
+        public List<string> MidTitles = new();              // sections that begin mid-verse, left-to-right
     }
 
     static class JsonFile
@@ -112,6 +124,7 @@ namespace ContentTool
         static readonly Regex HasDigit = new(@"\d");
         static readonly Regex SplitDigits = new(@"(\d+)");
         static readonly Regex Whitespace = new(@"\s+");
+        static readonly Regex InlineTitle = new(@"\{\{(.+?)\}\}");   // "{{Title}}" -> mid-verse section start
 
         public static void Run(PackageCfg cfg)
         {
@@ -136,41 +149,67 @@ namespace ContentTool
                     {
                         ["verseRef"] = $"{cfg.Abbrev} {ch}:{v.Number}",
                         ["verseNumber"] = v.Number,
-                        ["text"] = v.Text,
-                        ["sectionId"] = Slug(v.Title),
+                        ["text"] = v.Text,   // section titles, when present, are embedded here as markers
                     });
                 JsonFile.Write(Path.Combine(chaptersDir, $"{ch:D3}.json"),
                     new JsonObject { ["chapterNumber"] = ch, ["verses"] = arr });
             }
 
-            // sections.json — group consecutive verses by section. Packages without inline
-            // section titles (e.g. English sources) produce an empty list here.
-            var sections = new JsonArray();
-            JsonObject? current = null;
-            string? currentSid = null;
+            // sections.json — the single source of truth for section membership. A verse belongs
+            // to whichever section is "active" over it; when a section starts mid-verse, that whole
+            // verse belongs to BOTH the outgoing and the incoming section (overlap is intentional).
+            // Packages without any section titles produce an empty list.
+            var order = new List<string>();                        // section ids, first-seen order
+            var titleOf = new Dictionary<string, string>();
+            var refsOf = new Dictionary<string, List<string>>();
+            string? active = null;
+
+            void Register(string sid, string title)
+            {
+                if (refsOf.ContainsKey(sid)) return;
+                order.Add(sid);
+                titleOf[sid] = title;
+                refsOf[sid] = new List<string>();
+            }
+            void AddRef(string sid, string reference)
+            {
+                var list = refsOf[sid];
+                if (list.Count == 0 || list[^1] != reference) list.Add(reference);
+            }
+
             foreach (var v in verses)
             {
-                var sid = Slug(v.Title);
-                if (sid is null) continue;
                 var reference = $"{cfg.Abbrev} {v.Chapter}:{v.Number}";
-                if (current is null || sid != currentSid)
+                if (v.StartTitle is not null)
                 {
-                    current = new JsonObject
-                    {
-                        ["sectionId"] = sid,
-                        ["title"] = v.Title,
-                        ["startVerseRef"] = reference,
-                        ["endVerseRef"] = reference,
-                        ["verseRefs"] = new JsonArray(reference),
-                    };
-                    sections.Add(current);
-                    currentSid = sid;
+                    var sid = Slug(v.StartTitle)!;
+                    Register(sid, v.StartTitle);
+                    active = sid;                                  // clean switch at the verse start
                 }
-                else
+                if (active is not null) AddRef(active, reference); // the whole verse belongs to the active section
+                foreach (var mid in v.MidTitles)
                 {
-                    current["endVerseRef"] = reference;
-                    ((JsonArray)current["verseRefs"]!).Add(reference);
+                    var sid = Slug(mid)!;
+                    Register(sid, mid);
+                    AddRef(sid, reference);                        // overlap: the whole verse also belongs here
+                    active = sid;                                  // subsequent verses belong to the mid section
                 }
+            }
+
+            var sections = new JsonArray();
+            foreach (var sid in order)
+            {
+                var refs = refsOf[sid];
+                var refsArr = new JsonArray();
+                foreach (var r in refs) refsArr.Add(r);
+                sections.Add(new JsonObject
+                {
+                    ["sectionId"] = sid,
+                    ["title"] = titleOf[sid],
+                    ["startVerseRef"] = refs[0],
+                    ["endVerseRef"] = refs[^1],
+                    ["verseRefs"] = refsArr,
+                });
             }
             JsonFile.Write(Path.Combine(cfg.ContentDir, "sections.json"),
                 new JsonObject { ["packageId"] = cfg.PackageId, ["sections"] = sections });
@@ -201,7 +240,7 @@ namespace ContentTool
             var verses = new List<Verse>();
             chapterOrder = new List<int>();
             int? currentChapter = null;
-            string? currentTitle = null;
+            string? pendingTitle = null;   // standalone title waiting to attach to the next verse
             var prevBlank = true;
 
             foreach (var rawLine in File.ReadAllText(cfg.SourcePath).Split('\n'))
@@ -226,8 +265,12 @@ namespace ContentTool
 
                 if (!HasDigit.IsMatch(line))
                 {
-                    if (prevBlank) currentTitle = line;
-                    else if (verses.Count > 0) verses[^1].Text += " " + line;
+                    // No verse number: a standalone section title (after a blank), or a poetry
+                    // continuation of the previous verse (which may itself carry a mid-verse title).
+                    if (prevBlank && !InlineTitle.IsMatch(line))
+                        pendingTitle = line;
+                    else if (verses.Count > 0)
+                        verses[^1].Text += " " + AbsorbInlineTitles(line, verses[^1]);
                     prevBlank = false;
                     continue;
                 }
@@ -235,12 +278,25 @@ namespace ContentTool
                 // verse-content line
                 var parts = SplitDigits.Split(line);
                 var lead = parts[0].Trim();
-                if (lead.Length > 0 && verses.Count > 0) verses[^1].Text += " " + lead;
+                if (lead.Length > 0 && verses.Count > 0)
+                    verses[^1].Text += " " + AbsorbInlineTitles(lead, verses[^1]);
                 for (var i = 1; i < parts.Length; i += 2)
                 {
                     var num = int.Parse(parts[i]);
-                    var vtext = i + 1 < parts.Length ? parts[i + 1] : "";
-                    verses.Add(new Verse { Chapter = currentChapter!.Value, Number = num, Text = vtext, Title = currentTitle });
+                    var raw = i + 1 < parts.Length ? parts[i + 1] : "";
+                    var v = new Verse { Chapter = currentChapter!.Value, Number = num };
+                    var body = AbsorbInlineTitles(raw, v);   // mid-verse titles (if any) attach to this verse
+                    if (pendingTitle is not null)
+                    {
+                        v.StartTitle = pendingTitle;
+                        v.Text = Marker(Slug(pendingTitle)!, pendingTitle) + " " + body;
+                        pendingTitle = null;
+                    }
+                    else
+                    {
+                        v.Text = body;
+                    }
+                    verses.Add(v);
                 }
                 prevBlank = false;
             }
@@ -248,6 +304,18 @@ namespace ContentTool
             foreach (var v in verses) v.Text = Whitespace.Replace(v.Text, " ").Trim();
             return verses;
         }
+
+        // Replaces each "{{Title}}" in the fragment with a "[[section:id|Title]]" marker and
+        // records the title as a mid-verse section start on the target verse (left-to-right).
+        static string AbsorbInlineTitles(string fragment, Verse target) =>
+            InlineTitle.Replace(fragment, m =>
+            {
+                var title = m.Groups[1].Value.Trim();
+                target.MidTitles.Add(title);
+                return Marker(Slug(title)!, title);
+            });
+
+        static string Marker(string sectionId, string title) => $"[[section:{sectionId}|{title}]]";
 
         static string? Slug(string? title)
         {
