@@ -1,0 +1,81 @@
+{
+  "packageId": "bq-acts-1-9",
+  "title": "BQ Acts 1-9",
+  "packageType": "book",
+  "language": "en",
+  "version": "1.0.0",
+  "schemaVersion": 1,
+  "minAppVersion": "1.0.0",
+  "attribution": "KING JAMES VERSION",
+  "createdAt": "2026-07-22T00:00:00Z",
+  "verseCount": 336,
+  "chapterCount": 9,
+  "files": [
+    {
+      "path": "content/chapters/001.json",
+      "sizeBytes": 6980,
+      "checksumSha256": "b706c6aefe61cd50bb47ffb88e7b935da1753b6ffe3fa52de676eb7d1c42e3d9",
+      "required": true
+    },
+    {
+      "path": "content/chapters/002.json",
+      "sizeBytes": 11868,
+      "checksumSha256": "3921327e9affb90b22e3c460826452e8993602eb838eca97330eac4b63f780f7",
+      "required": true
+    },
+    {
+      "path": "content/chapters/003.json",
+      "sizeBytes": 7131,
+      "checksumSha256": "79c01da1dd827331e605703b028f5ec449251e76bc7a158171e56602a59a06ad",
+      "required": true
+    },
+    {
+      "path": "content/chapters/004.json",
+      "sizeBytes": 9768,
+      "checksumSha256": "68c6153e6ae6cd3aa9d1465d8ffdad026e8c8cec50f32d8a2c2c88d4e80ab461",
+      "required": true
+    },
+    {
+      "path": "content/chapters/005.json",
+      "sizeBytes": 10952,
+      "checksumSha256": "13c0f47c34b2523d9421910067b67ece2bc9253b79b52e249d5357f15865d5ca",
+      "required": true
+    },
+    {
+      "path": "content/chapters/006.json",
+      "sizeBytes": 4005,
+      "checksumSha256": "a5aff98c810ec9bf5a9299a590a4e20ee7d647e4f0d9395c0ee64bcaad922c07",
+      "required": true
+    },
+    {
+      "path": "content/chapters/007.json",
+      "sizeBytes": 14993,
+      "checksumSha256": "130277dfee99ff1bef6074153554da322834fe9cfdc59e88f842042dd37eac82",
+      "required": true
+    },
+    {
+      "path": "content/chapters/008.json",
+      "sizeBytes": 10349,
+      "checksumSha256": "8fe730d6f0e64b557fabba8345504fb0276de155f97948b6b40619fc34dccf73",
+      "required": true
+    },
+    {
+      "path": "content/chapters/009.json",
+      "sizeBytes": 11068,
+      "checksumSha256": "a2dfc1dbb5469158ec046388663bf84113c773db43fa5955043ca01b1d12ce69",
+      "required": true
+    },
+    {
+      "path": "content/index.json",
+      "sizeBytes": 388,
+      "checksumSha256": "ac9dcb2a76299c02e9b6e7cb01cd12e83b756aa5c90cdc667f43a19b017add9b",
+      "required": true
+    },
+    {
+      "path": "content/sections.json",
+      "sizeBytes": 12511,
+      "checksumSha256": "1f829ba74a9bd875ee2e81c33ec2c2f8073712714ec0261e59c66e93feb9c754",
+      "required": false
+    }
+  ]
+}

@@ -78,6 +78,7 @@ namespace ContentTool
             new("cb-daniel-1-6",  "CB Daniel 1-6",  "Dan", "REINA-VALERA 1960", "DANIEL", "1.0.0", "book", "es") { BackendRoot = backendRoot },
             new("cb-daniel-7-12", "CB Daniel 7-12", "Dan", "REINA-VALERA 1960", null,     "1.0.0", "book", "es") { BackendRoot = backendRoot },
             new("cb-hechos-1-9",  "CB Hechos 1-9",  "Hch", "REINA-VALERA 1960", "HECHOS", "1.0.0", "book", "es") { BackendRoot = backendRoot },
+            new("bq-acts-1-9",    "BQ Acts 1-9",    "Acts", "KING JAMES VERSION", null,   "1.0.0", "book", "en") { BackendRoot = backendRoot },
         ];
     }
 
@@ -106,6 +107,7 @@ namespace ContentTool
     static class Parser
     {
         static readonly Regex OnlyNumber = new(@"^\d+$");
+        static readonly Regex ChapterWord = new(@"^CHAPTER\s+(\d+)$", RegexOptions.IgnoreCase);
         static readonly Regex ParenRef = new(@"^\(.*\)$");
         static readonly Regex HasDigit = new(@"\d");
         static readonly Regex SplitDigits = new(@"(\d+)");
@@ -141,16 +143,17 @@ namespace ContentTool
                     new JsonObject { ["chapterNumber"] = ch, ["verses"] = arr });
             }
 
-            // sections.json — group consecutive verses by section.
+            // sections.json — group consecutive verses by section. Packages without inline
+            // section titles (e.g. English sources) produce an empty list here.
             var sections = new JsonArray();
             JsonObject? current = null;
             string? currentSid = null;
-            var started = false;
             foreach (var v in verses)
             {
-                var reference = $"{cfg.Abbrev} {v.Chapter}:{v.Number}";
                 var sid = Slug(v.Title);
-                if (!started || sid != currentSid)
+                if (sid is null) continue;
+                var reference = $"{cfg.Abbrev} {v.Chapter}:{v.Number}";
+                if (current is null || sid != currentSid)
                 {
                     current = new JsonObject
                     {
@@ -162,11 +165,10 @@ namespace ContentTool
                     };
                     sections.Add(current);
                     currentSid = sid;
-                    started = true;
                 }
                 else
                 {
-                    current!["endVerseRef"] = reference;
+                    current["endVerseRef"] = reference;
                     ((JsonArray)current["verseRefs"]!).Add(reference);
                 }
             }
@@ -185,7 +187,7 @@ namespace ContentTool
                 ["attribution"] = cfg.Attribution,
                 ["chapterOrder"] = chapterOrderArr,
                 ["chapterVerseCounts"] = countsObj,
-                ["availableSections"] = true,
+                ["availableSections"] = sections.Count > 0,
                 ["availableAudio"] = false,
             });
 
@@ -204,14 +206,19 @@ namespace ContentTool
 
             foreach (var rawLine in File.ReadAllText(cfg.SourcePath).Split('\n'))
             {
-                var line = rawLine.Replace("*", "").Trim();
+                // Drop footnote markers and zero-width characters (BOM / zero-width space
+                // that leak in from OCR/image extraction).
+                var line = rawLine.Replace("*", "").Replace("﻿", "").Replace("​", "").Trim();
                 if (line.Length == 0) { prevBlank = true; continue; }
                 if (cfg.BookTitle is not null && line == cfg.BookTitle) { prevBlank = false; continue; }
-                if (line.StartsWith("reina valera", StringComparison.OrdinalIgnoreCase)) { prevBlank = false; continue; }
+                // Skip the source-attribution line (Spanish RV1960 or English KJV citation).
+                if (line.StartsWith("reina valera", StringComparison.OrdinalIgnoreCase) ||
+                    line.StartsWith("the holy bible", StringComparison.OrdinalIgnoreCase)) { prevBlank = false; continue; }
                 if (ParenRef.IsMatch(line)) { prevBlank = false; continue; }
-                if (OnlyNumber.IsMatch(line))
+                var chapterMatch = ChapterWord.Match(line);
+                if (OnlyNumber.IsMatch(line) || chapterMatch.Success)   // "7" (es) or "CHAPTER 7" (en)
                 {
-                    currentChapter = int.Parse(line);
+                    currentChapter = chapterMatch.Success ? int.Parse(chapterMatch.Groups[1].Value) : int.Parse(line);
                     if (!chapterOrder.Contains(currentChapter.Value)) chapterOrder.Add(currentChapter.Value);
                     prevBlank = false;
                     continue;

@@ -43,6 +43,20 @@
       "manifestUrl": "https://localhost:7131/packages/cb-hechos-1-9/1.0.0/manifest.json",
       "checksumSha256": "15d42abbfba77676c8dc358cd24be071233899c2c8bc0f850441822aaffc9032",
       "minAppVersion": "1.0.0"
+    },
+    {
+      "id": "bq-acts-1-9",
+      "title": "BQ Acts 1-9",
+      "packageType": "book",
+      "language": "en",
+      "version": "1.0.0",
+      "sizeBytes": 27153,
+      "isFree": true,
+      "owned": false,
+      "artifactUrl": "https://localhost:7131/packages/bq-acts-1-9/1.0.0/package.zip",
+      "manifestUrl": "https://localhost:7131/packages/bq-acts-1-9/1.0.0/manifest.json",
+      "checksumSha256": "8b93c3bb777cfa0ab8487bc4ae4898199f144e0c313e6c60c4469a3f5b890bdd",
+      "minAppVersion": "1.0.0"
     }
   ]
 }
