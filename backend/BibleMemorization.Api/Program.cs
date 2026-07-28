@@ -2,6 +2,7 @@ using System.Threading.RateLimiting;
 using BibleMemorization.Api.Configuration;
 using BibleMemorization.Api.Services;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Net.Http.Headers;
 using Scalar.AspNetCore;
@@ -72,6 +73,17 @@ else
 app.UseHttpsRedirection();
 
 app.UseHttpLogging();
+
+// nginx terminates the connection in production, so without this every request would look
+// like it came from 127.0.0.1 and all clients would share a single rate-limit bucket.
+// Must run before UseRateLimiter, which partitions on the resulting RemoteIpAddress.
+// The defaults trust loopback proxies only — exactly the same-host nginx case. Trusting the
+// header from anywhere would let clients forge it and bypass the limiter outright; if nginx
+// ever moves to a separate host, add its address to KnownProxies instead of loosening this.
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor
+});
 
 app.UseRateLimiter();
 

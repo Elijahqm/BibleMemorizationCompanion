@@ -142,7 +142,29 @@ Configured in [`Program.cs`](BibleMemorization.Api/Program.cs), all with the bui
 - **HTTPS**: `UseHttpsRedirection` everywhere; `UseHsts` outside Development.
 - **HTTP caching**: catalog responses `public, max-age=300`; artifacts `public, max-age=31536000, immutable`.
 - **Rate limiting**: fixed window of **100 requests/minute per client IP** (429 when exceeded).
+- **Forwarded headers**: `UseForwardedHeaders` reads `X-Forwarded-For` so the rate limiter partitions on the real client — see "Deploying behind nginx" below.
 - **Structured logging**: request logging (method, path, status, duration) plus JSON console logs outside Development, each carrying the request `TraceId`.
+
+### Deploying behind nginx
+
+The API runs behind nginx, which terminates the client connection. **nginx must forward the
+client address, or rate limiting breaks:** the API would see `127.0.0.1` on every request and
+apply the 100 req/min window to *all users combined* instead of to each one, so a handful of
+active users could throttle everybody.
+
+```nginx
+location / {
+    proxy_pass         https://127.0.0.1:7131;
+    proxy_set_header   Host              $host;
+    proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Forwarded-Proto $scheme;
+}
+```
+
+`UseForwardedHeaders` runs before `UseRateLimiter` — that order is what makes the fix work.
+It trusts loopback proxies only, which covers same-host nginx. Trusting the header from any
+source would let clients forge it and bypass the limiter, so if nginx ever moves to a
+separate host, add its address to `KnownProxies` rather than loosening the check.
 
 ### Running locally
 
