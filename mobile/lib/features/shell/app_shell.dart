@@ -120,13 +120,7 @@ class _AppShellState extends State<AppShell> {
         builder: (routeContext) => PackageDetailScreen(
           package: package,
           onPrimaryAction: () => _handlePackageAction(routeContext, package),
-          onOpenStudy: () {
-            final study = _studies.firstWhere(
-              (item) => item.packageId == package.id,
-              orElse: () => _studies.first,
-            );
-            _openStudy(routeContext, study);
-          },
+          onOpenStudy: () => _openStudyForPackage(routeContext, package),
         ),
       ),
     );
@@ -138,14 +132,27 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
+  void _openStudyForPackage(BuildContext context, ContentPackage package) {
+    StudySession? study;
+    for (final candidate in _studies) {
+      if (candidate.packageId == package.id) {
+        study = candidate;
+        break;
+      }
+    }
+    if (study == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No study available yet for ${package.title}.')),
+      );
+      return;
+    }
+    _openStudy(context, study);
+  }
+
   void _handlePackageAction(BuildContext context, ContentPackage package) {
     switch (package.status) {
       case PackageStatus.downloaded:
-        final study = _studies.firstWhere(
-          (item) => item.packageId == package.id,
-          orElse: () => _studies.first,
-        );
-        _openStudy(context, study);
+        _openStudyForPackage(context, package);
         return;
       case PackageStatus.available:
         ScaffoldMessenger.of(context).showSnackBar(
@@ -212,6 +219,16 @@ class StudiesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (studies.isEmpty) {
+      return Center(
+        child: Text(
+          'No studies yet. Download a package from the Library to get started.',
+          style: Theme.of(context).textTheme.bodyLarge,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
     final nextStudy = studies.first;
 
     return ListView(
@@ -461,6 +478,13 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.study.verses.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: Text(widget.study.title)),
+        body: const Center(child: Text('This study has no verses yet.')),
+      );
+    }
+
     final verse = widget.study.verses[_verseIndex];
     final progress = (_verseIndex + 1) / widget.study.verses.length;
 
@@ -989,7 +1013,10 @@ class StudySession {
   final List<VerseItem> verses;
   final String attribution;
 
-  double get progress => completedVerses / totalVerses;
+  double get progress {
+    if (totalVerses <= 0) return 0;
+    return (completedVerses / totalVerses).clamp(0, 1);
+  }
 }
 
 class VerseItem {
