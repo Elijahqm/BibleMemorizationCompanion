@@ -24,9 +24,10 @@ The SDK version is pinned in [`global.json`](global.json) to `10.0.x`; the solut
 ```text
 backend/
 ├─ global.json                     # Pins the .NET SDK to 10.0.x
-├─ BibleMemorization.Api.slnx       # Solution (API + ContentTool)
+├─ BibleMemorization.Api.slnx       # Solution (API + tests + ContentTool)
 │
 ├─ BibleMemorization.Api/           # The Web API (see "The API" below)
+├─ BibleMemorization.Api.Tests/     # Contract tests for the catalog payloads
 │
 ├─ content/                         # Content authoring — see content/README.md
 │  └─ {packageId}/
@@ -158,6 +159,26 @@ Then open the Scalar explorer to try the API:
 
 > Note: this project targets .NET 10. If `dotnet --version` shows an older SDK, make sure the .NET 10 SDK is on your `PATH` (see [`global.json`](global.json)).
 
+### Tests
+
+```bash
+dotnet test BibleMemorization.Api.slnx
+```
+
+[`BibleMemorization.Api.Tests`](BibleMemorization.Api.Tests) boots the real API in memory
+with `WebApplicationFactory` — no ports, no dev certificate — and pins the payloads the
+mobile app consumes:
+
+- `GET /api/v1/catalog` returns the expected top-level shape and a non-empty `packages` list.
+- Every package carries the fields the app requires.
+- `GET /api/v1/catalog/packages/{id}` returns 200 for a known id and 404 for an unknown one.
+- `packageType` serializes as `book` / `season` / `audio_addon`, never as a number.
+- Artifact URLs resolve to absolute `https` URLs when `Catalog:ArtifactBaseUrl` is set, and
+  stay relative when it is not.
+
+Treat these as the contract with the Flutter client: changing a payload should mean changing
+a test on purpose, not discovering the break during mobile integration.
+
 ### Configuration reference
 
 `appsettings.json` (and environment-specific overrides) may set:
@@ -165,12 +186,27 @@ Then open the Scalar explorer to try the API:
 ```json
 {
   "Catalog": {
-    "FilePath": "Data/catalog.v1.json"
+    "FilePath": "Data/catalog.v1.json",
+    "ArtifactBaseUrl": "https://localhost:7131"
   }
 }
 ```
 
-If the `Catalog` section is omitted, `CatalogOptions` falls back to `Data/catalog.v1.json`.
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `Catalog:FilePath` | `Data/catalog.v1.json` | Catalog JSON file, relative to the content root. |
+| `Catalog:ArtifactBaseUrl` | *(empty)* | Absolute base URL prepended to the catalog's relative artifact paths. |
+
+**Why `ArtifactBaseUrl` exists.** `Data/catalog.v1.json` stores host-agnostic paths
+(`/packages/{id}/{version}/package.zip`), so the same committed file can be published from
+any environment. `JsonCatalogService` resolves them into absolute URLs once, when the
+catalog is loaded. Entries that are already absolute `http`/`https` URLs are left untouched,
+so an individual package can be hosted on a separate CDN without opting the whole catalog
+out. When the setting is empty the paths are served as-is, for the client to resolve against
+the API origin.
+
+`appsettings.Development.json` sets it to `https://localhost:7131` so local runs and the
+Scalar explorer return directly usable URLs.
 
 ### Roadmap (not in Phase 1)
 

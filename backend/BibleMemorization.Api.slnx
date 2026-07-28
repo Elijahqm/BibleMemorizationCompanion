@@ -3,4 +3,5 @@
     <Project Path="tools/ContentTool/ContentTool.csproj" />
   </Folder>
   <Project Path="BibleMemorization.Api/BibleMemorization.Api.csproj" />
+  <Project Path="BibleMemorization.Api.Tests/BibleMemorization.Api.Tests.csproj" />
 </Solution>

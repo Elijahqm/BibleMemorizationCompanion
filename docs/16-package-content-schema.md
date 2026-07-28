@@ -39,12 +39,11 @@ Fields:
 5. version
 6. schemaVersion
 7. minAppVersion
-8. checksumSha256
-9. createdAt
-10. verseCount
-11. chapterCount
-12. basePackageId (required for audio_addon)
-13. files array
+8. createdAt
+9. verseCount
+10. chapterCount
+11. basePackageId (required for audio_addon)
+12. files array
 
 files array entry:
 
@@ -52,6 +51,22 @@ files array entry:
 2. sizeBytes
 3. checksumSha256
 4. required (true or false)
+
+### Integrity model
+
+Integrity is verified at two levels, and the manifest owns only the second one:
+
+1. **Package level** — the SHA-256 of `package.zip` lives in the catalog entry
+   (`checksumSha256` in `GET /api/v1/catalog`), and is also published next to the
+   artifact as `package.sha256`. The app validates it *before* extracting.
+2. **File level** — `manifest.files[].checksumSha256` covers each extracted file. The
+   app validates these *after* extracting.
+
+The manifest deliberately has **no** top-level `checksumSha256`. `manifest.json` ships
+inside `package.zip`, so it cannot carry the hash of the archive that contains it —
+writing the hash in would change the archive, and therefore the hash. The catalog is
+the canonical source for package-level integrity precisely because it is served
+independently of the artifact it describes.
 
 ## content/index.json
 
@@ -170,10 +185,13 @@ Track object:
 
 ## App Parsing Rules
 
-1. Reject package if manifest.schemaVersion is unsupported.
-2. Reject package if required files are missing.
-3. Reject package if checksum validation fails.
-4. Mark package installed only after all required files parse successfully.
+1. Reject the download if the SHA-256 of `package.zip` does not match the catalog's
+   `checksumSha256`. Verify this before extracting anything.
+2. Reject package if manifest.schemaVersion is unsupported.
+3. Reject package if required files are missing.
+4. Reject package if any extracted file does not match its
+   `manifest.files[].checksumSha256`.
+5. Mark package installed only after all required files parse successfully.
 
 ## Schema Versioning
 
@@ -192,7 +210,6 @@ Track object:
   "version": "1.0.0",
   "schemaVersion": 1,
   "minAppVersion": "1.0.0",
-  "checksumSha256": "<package-zip-sha256>",
   "createdAt": "2026-07-20T00:00:00Z",
   "verseCount": 120,
   "chapterCount": 6,

@@ -187,7 +187,10 @@ After building a package, add or update its entry with the **real** values repor
 - `sizeBytes` — byte size of `package.zip`.
 - `checksumSha256` — the zip hash (the value in `package.sha256`). This is what the app
   verifies right after download.
-- `artifactUrl` / `manifestUrl` — point to `/packages/{id}/{version}/package.zip` and `manifest.json`.
+- `artifactUrl` / `manifestUrl` — **host-agnostic paths**: `/packages/{id}/{version}/package.zip`
+  and `.../manifest.json`. Never write a hostname here; the API turns these into absolute URLs
+  at load time using the `Catalog:ArtifactBaseUrl` setting, so the same catalog file works in
+  every environment.
 - the rest of the metadata (`title`, `language`, `packageType`, `isFree`, `minAppVersion`, …).
 
 Keep the catalog limited to packages that actually have published artifacts.
