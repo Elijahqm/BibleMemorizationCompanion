@@ -1,0 +1,17 @@
+# Cross-cutting rules for the monorepo.
+# The backend (.NET) has its own backend/.gitignore.
+# The mobile app (Flutter) will have its own once created.
+
+# Claude Code
+.claude/
+
+# macOS
+.DS_Store
+
+# Editors / IDEs
+.idea/
+.vs/
+.vscode/
+
+# Secrets / environment
+*.env

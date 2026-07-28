@@ -39,12 +39,11 @@ Fields:
 5. version
 6. schemaVersion
 7. minAppVersion
-8. checksumSha256
-9. createdAt
-10. verseCount
-11. chapterCount
-12. basePackageId (required for audio_addon)
-13. files array
+8. createdAt
+9. verseCount
+10. chapterCount
+11. basePackageId (required for audio_addon)
+12. files array
 
 files array entry:
 
@@ -52,6 +51,22 @@ files array entry:
 2. sizeBytes
 3. checksumSha256
 4. required (true or false)
+
+### Integrity model
+
+Integrity is verified at two levels, and the manifest owns only the second one:
+
+1. **Package level** — the SHA-256 of `package.zip` lives in the catalog entry
+   (`checksumSha256` in `GET /api/v1/catalog`), and is also published next to the
+   artifact as `package.sha256`. The app validates it *before* extracting.
+2. **File level** — `manifest.files[].checksumSha256` covers each extracted file. The
+   app validates these *after* extracting.
+
+The manifest deliberately has **no** top-level `checksumSha256`. `manifest.json` ships
+inside `package.zip`, so it cannot carry the hash of the archive that contains it —
+writing the hash in would change the archive, and therefore the hash. The catalog is
+the canonical source for package-level integrity precisely because it is served
+independently of the artifact it describes.
 
 ## content/index.json
 
@@ -61,10 +76,22 @@ Fields:
 
 1. packageId
 2. abbreviation
-3. chapterOrder array
-4. chapterVerseCounts map
-5. availableSections boolean
-6. availableAudio boolean
+3. attribution (optional)
+4. chapterOrder array
+5. chapterVerseCounts map
+6. availableSections boolean
+7. availableAudio boolean
+
+### attribution
+
+Optional single string with the required source/text credit (for example, the Bible
+translation used). When present, the app must display it wherever the package text is
+shown, so the credit stays visible with the content:
+
+1. On the package detail / info view in the library.
+2. As a small credit line in the verse study view.
+
+Example: `"REINA-VALERA 1960"`
 
 ## content/chapters/{nnn}.json
 
@@ -79,13 +106,49 @@ Verse object:
 
 1. verseRef (example: Dan 1:1)
 2. verseNumber
-3. text
+3. text (may contain an inline section-title marker — see below)
 4. normalizedText (optional for search/matching)
-5. sectionId (optional)
+
+A verse does **not** carry a `sectionId`. Section membership lives entirely in
+`content/sections.json` (see below); the verse only carries an inline marker in `text`
+when a section *starts* at (or inside) that verse.
+
+### Inline section-title marker
+
+When a section begins at a verse, the section title is embedded **inside** the verse
+`text` as a marker, so the client can render it with different formatting (a heading)
+right where it belongs:
+
+```text
+[[section:{sectionId}|{title}]]
+```
+
+- At the **start** of a verse, the marker is the first thing in `text`.
+- **Mid-verse** (a title that splits a single verse), the marker sits at the split point
+  inside `text`; the text before it is the tail of the previous section and the text after
+  it begins the new section — all shown on the same verse card.
+
+Client rendering rules:
+
+1. Split `text` on the marker(s).
+2. Render the captured `{title}` as a section heading (distinct style), and use
+   `{sectionId}` to link it to the matching entry in `sections.json`.
+3. Render the surrounding text as normal verse text.
+
+Example (`Acts 9:19`, whose second half opens a new section):
+
+```json
+{
+  "verseRef": "Acts 9:19",
+  "verseNumber": 19,
+  "text": "And when he had received meat, he was strengthened. [[section:saul-preaches-at-damascus|Saul Preaches at Damascus]] Then was Saul certain days with the disciples which were at Damascus."
+}
+```
 
 ## content/sections.json (optional)
 
-Section-based study creation source.
+Section-based study creation source, and the **single source of truth for section
+membership**. Each section lists exactly which whole verses it contains.
 
 section object fields:
 
@@ -94,6 +157,12 @@ section object fields:
 3. startVerseRef
 4. endVerseRef
 5. verseRefs array
+
+**Overlap is allowed.** When a section starts mid-verse, that whole verse belongs to
+**both** the ending and the starting section, so the same `verseRef` appears in both
+`verseRefs` arrays (e.g. `Acts 9:19` is the last verse of "The Conversion of Saul" and the
+first verse of "Saul Preaches at Damascus"). Selecting either section studies the complete
+verse.
 
 ## audio/index.json (audio add-on only)
 
@@ -116,10 +185,13 @@ Track object:
 
 ## App Parsing Rules
 
-1. Reject package if manifest.schemaVersion is unsupported.
-2. Reject package if required files are missing.
-3. Reject package if checksum validation fails.
-4. Mark package installed only after all required files parse successfully.
+1. Reject the download if the SHA-256 of `package.zip` does not match the catalog's
+   `checksumSha256`. Verify this before extracting anything.
+2. Reject package if manifest.schemaVersion is unsupported.
+3. Reject package if required files are missing.
+4. Reject package if any extracted file does not match its
+   `manifest.files[].checksumSha256`.
+5. Mark package installed only after all required files parse successfully.
 
 ## Schema Versioning
 
@@ -138,7 +210,6 @@ Track object:
   "version": "1.0.0",
   "schemaVersion": 1,
   "minAppVersion": "1.0.0",
-  "checksumSha256": "<package-zip-sha256>",
   "createdAt": "2026-07-20T00:00:00Z",
   "verseCount": 120,
   "chapterCount": 6,

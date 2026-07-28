@@ -1,0 +1,81 @@
+{
+  "packageId": "bq-acts-1-9",
+  "title": "BQ Acts 1-9",
+  "packageType": "book",
+  "language": "en",
+  "version": "1.0.0",
+  "schemaVersion": 1,
+  "minAppVersion": "1.0.0",
+  "attribution": "KING JAMES VERSION",
+  "createdAt": "2026-07-22T00:00:00Z",
+  "verseCount": 336,
+  "chapterCount": 9,
+  "files": [
+    {
+      "path": "content/chapters/001.json",
+      "sizeBytes": 5997,
+      "checksumSha256": "fae60d9b3f1d14c01e0b2d0e881d2c18da9af4c436ddb297a3fdfaecf86b63f9",
+      "required": true
+    },
+    {
+      "path": "content/chapters/002.json",
+      "sizeBytes": 9682,
+      "checksumSha256": "0bc2765c811a5eab64f8e6c98302fd66c8d48d4ba1e3317165ee08f00b31d195",
+      "required": true
+    },
+    {
+      "path": "content/chapters/003.json",
+      "sizeBytes": 5741,
+      "checksumSha256": "0cff7f2ec9b7be107a058406bdb3b055c5ca38155fb1db5f2fa843a9665add5b",
+      "required": true
+    },
+    {
+      "path": "content/chapters/004.json",
+      "sizeBytes": 8002,
+      "checksumSha256": "8d6bd0762858c01a2db01e35100c6832455176cd47c58503e5e42313b050cbb2",
+      "required": true
+    },
+    {
+      "path": "content/chapters/005.json",
+      "sizeBytes": 9200,
+      "checksumSha256": "fb80a8a560f1bc2240371e02f95a954b0bfb33e55dacabe8f2b7c6d866aa5922",
+      "required": true
+    },
+    {
+      "path": "content/chapters/006.json",
+      "sizeBytes": 3422,
+      "checksumSha256": "1f3ed3066c4a053fe6e4ed2b17ae790d69b54c490939ff573fe9f5002c3b3ea4",
+      "required": true
+    },
+    {
+      "path": "content/chapters/007.json",
+      "sizeBytes": 12664,
+      "checksumSha256": "cdb0c4bbaa9438a74aae9c86c13bf1b018cb4232cb9f4f198e7c966273e76ab7",
+      "required": true
+    },
+    {
+      "path": "content/chapters/008.json",
+      "sizeBytes": 8442,
+      "checksumSha256": "e601af92d484705c99daa875a8d1a226f60b602a83ad73fd835a56764aa3cbb0",
+      "required": true
+    },
+    {
+      "path": "content/chapters/009.json",
+      "sizeBytes": 9506,
+      "checksumSha256": "5a6520a1b0d506d688af26acbde8ac35424affb306942575fbd5af02bc444734",
+      "required": true
+    },
+    {
+      "path": "content/index.json",
+      "sizeBytes": 388,
+      "checksumSha256": "ac9dcb2a76299c02e9b6e7cb01cd12e83b756aa5c90cdc667f43a19b017add9b",
+      "required": true
+    },
+    {
+      "path": "content/sections.json",
+      "sizeBytes": 12532,
+      "checksumSha256": "0e9b5ec5d57e9e3cf5b1fd433c03e6fb57e8442c6608036c4319f704212f5317",
+      "required": false
+    }
+  ]
+}

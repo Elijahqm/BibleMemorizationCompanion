@@ -1,0 +1,63 @@
+{
+  "packageId": "cb-daniel-7-12",
+  "title": "CB Daniel 7-12",
+  "packageType": "book",
+  "language": "es",
+  "version": "1.0.0",
+  "schemaVersion": 1,
+  "minAppVersion": "1.0.0",
+  "attribution": "REINA-VALERA 1960",
+  "createdAt": "2026-07-22T00:00:00Z",
+  "verseCount": 161,
+  "chapterCount": 6,
+  "files": [
+    {
+      "path": "content/chapters/007.json",
+      "sizeBytes": 7260,
+      "checksumSha256": "eb2ed33c6e54cbf1842591808782810f9ce4c21d81fa43bcc149f789c615f9ca",
+      "required": true
+    },
+    {
+      "path": "content/chapters/008.json",
+      "sizeBytes": 6627,
+      "checksumSha256": "fa82e65b4b386fcc9c4425bc3e5bbf9df2739ee35631f9df645dfef78c788e52",
+      "required": true
+    },
+    {
+      "path": "content/chapters/009.json",
+      "sizeBytes": 7541,
+      "checksumSha256": "10c98453c8b4211c27be516a4f6c26e99fe184ea97a217ed661fbe071289cf91",
+      "required": true
+    },
+    {
+      "path": "content/chapters/010.json",
+      "sizeBytes": 4974,
+      "checksumSha256": "3526b4f991c3a8d5512a1c52d8d8d89a203984b41903a609c166778619a78b9c",
+      "required": true
+    },
+    {
+      "path": "content/chapters/011.json",
+      "sizeBytes": 10863,
+      "checksumSha256": "2ec146371791d88233d9522312d883f37455becd8b9f65c720429c8569df6f1c",
+      "required": true
+    },
+    {
+      "path": "content/chapters/012.json",
+      "sizeBytes": 3111,
+      "checksumSha256": "4bf885cd20035b5dc8dad6a5a5662ec16aa91ef82982aaeda6002220da1d8bac",
+      "required": true
+    },
+    {
+      "path": "content/index.json",
+      "sizeBytes": 335,
+      "checksumSha256": "d6e0d54b6d4d3e4ac034a882e84f096c058c4b99f73fcd9092f2b805cee33538",
+      "required": true
+    },
+    {
+      "path": "content/sections.json",
+      "sizeBytes": 4768,
+      "checksumSha256": "a233680cd87d8ca9386ecdc17c04390a24881d48dd67bdfb77b0b589bf5cfaec",
+      "required": false
+    }
+  ]
+}

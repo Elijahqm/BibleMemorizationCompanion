@@ -1,0 +1,62 @@
+{
+  "catalogVersion": "1",
+  "publishedAt": "2026-07-22T00:00:00Z",
+  "packages": [
+    {
+      "id": "cb-daniel-1-6",
+      "title": "CB Daniel 1-6",
+      "packageType": "book",
+      "language": "es",
+      "version": "1.0.0",
+      "sizeBytes": 17787,
+      "isFree": true,
+      "owned": false,
+      "artifactUrl": "/packages/cb-daniel-1-6/1.0.0/package.zip",
+      "manifestUrl": "/packages/cb-daniel-1-6/1.0.0/manifest.json",
+      "checksumSha256": "276b238e3e36bb42da53c8f5b77a008c3a8155407d9873ea35000936c274ad87",
+      "minAppVersion": "1.0.0"
+    },
+    {
+      "id": "cb-daniel-7-12",
+      "title": "CB Daniel 7-12",
+      "packageType": "book",
+      "language": "es",
+      "version": "1.0.0",
+      "sizeBytes": 16025,
+      "isFree": true,
+      "owned": false,
+      "artifactUrl": "/packages/cb-daniel-7-12/1.0.0/package.zip",
+      "manifestUrl": "/packages/cb-daniel-7-12/1.0.0/manifest.json",
+      "checksumSha256": "a97d153a67351a5f243af69697b4dea1b26e4b92b0dc8cfec12b47ee86c3aaf5",
+      "minAppVersion": "1.0.0"
+    },
+    {
+      "id": "cb-hechos-1-9",
+      "title": "CB Hechos 1-9",
+      "packageType": "book",
+      "language": "es",
+      "version": "1.0.0",
+      "sizeBytes": 27679,
+      "isFree": true,
+      "owned": false,
+      "artifactUrl": "/packages/cb-hechos-1-9/1.0.0/package.zip",
+      "manifestUrl": "/packages/cb-hechos-1-9/1.0.0/manifest.json",
+      "checksumSha256": "03a956618b641a48ed5011cd20f474960017b28c9115e67bd462d2668269a5a2",
+      "minAppVersion": "1.0.0"
+    },
+    {
+      "id": "bq-acts-1-9",
+      "title": "BQ Acts 1-9",
+      "packageType": "book",
+      "language": "en",
+      "version": "1.0.0",
+      "sizeBytes": 27258,
+      "isFree": true,
+      "owned": false,
+      "artifactUrl": "/packages/bq-acts-1-9/1.0.0/package.zip",
+      "manifestUrl": "/packages/bq-acts-1-9/1.0.0/manifest.json",
+      "checksumSha256": "998e2b92fabbcf38b413679f9ae683c37569923747fe738c40ff6849e861ef06",
+      "minAppVersion": "1.0.0"
+    }
+  ]
+}

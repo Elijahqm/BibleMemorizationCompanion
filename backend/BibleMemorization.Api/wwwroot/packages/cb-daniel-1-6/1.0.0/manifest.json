@@ -1,0 +1,63 @@
+{
+  "packageId": "cb-daniel-1-6",
+  "title": "CB Daniel 1-6",
+  "packageType": "book",
+  "language": "es",
+  "version": "1.0.0",
+  "schemaVersion": 1,
+  "minAppVersion": "1.0.0",
+  "attribution": "REINA-VALERA 1960",
+  "createdAt": "2026-07-22T00:00:00Z",
+  "verseCount": 196,
+  "chapterCount": 6,
+  "files": [
+    {
+      "path": "content/chapters/001.json",
+      "sizeBytes": 4906,
+      "checksumSha256": "893b65bc694da87d01b672c1633bad75b67e3ea3ebcddea4db3c06021980cbf9",
+      "required": true
+    },
+    {
+      "path": "content/chapters/002.json",
+      "sizeBytes": 11868,
+      "checksumSha256": "5e11723f68a470d2c21aa56cb2e6afbaa173e62f0e4c8dbb6c58aba857bc6677",
+      "required": true
+    },
+    {
+      "path": "content/chapters/003.json",
+      "sizeBytes": 7981,
+      "checksumSha256": "3eb3339384f1829c1fd4c111897192a96b97f382570ea6116a53678ad9a414d6",
+      "required": true
+    },
+    {
+      "path": "content/chapters/004.json",
+      "sizeBytes": 9714,
+      "checksumSha256": "3cf787e23b54305d41978465b9e7cd4470cfe1186021f6535fccd9f1adf94df3",
+      "required": true
+    },
+    {
+      "path": "content/chapters/005.json",
+      "sizeBytes": 7693,
+      "checksumSha256": "4b2746406f6f0f09dee2fa396034d29b36ca523809707395b91a4d0b36e27489",
+      "required": true
+    },
+    {
+      "path": "content/chapters/006.json",
+      "sizeBytes": 7179,
+      "checksumSha256": "b600f521cb5726be752f6b7e26ea33ed7fcd349c9fefc13397e1a806be030b28",
+      "required": true
+    },
+    {
+      "path": "content/index.json",
+      "sizeBytes": 328,
+      "checksumSha256": "fa94028a259a1a29c15d7fbe994c044a9bf7792cdf37565b4abcc0a713aaeb12",
+      "required": true
+    },
+    {
+      "path": "content/sections.json",
+      "sizeBytes": 5201,
+      "checksumSha256": "65a773af7b24e6977ac014b5c1aa5f484c739feb37a84393cf36efa8ca75bb50",
+      "required": false
+    }
+  ]
+}
