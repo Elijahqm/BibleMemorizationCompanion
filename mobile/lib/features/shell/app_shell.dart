@@ -175,6 +175,7 @@ class _AppShellState extends State<AppShell> {
       context: context,
       showDragHandle: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
+      useSafeArea: true,
       builder: (context) => Padding(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 28),
         child: Column(
