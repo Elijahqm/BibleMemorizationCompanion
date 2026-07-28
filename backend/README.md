@@ -142,10 +142,20 @@ Configured in [`Program.cs`](BibleMemorization.Api/Program.cs), all with the bui
 - **HTTPS**: `UseHttpsRedirection` everywhere; `UseHsts` outside Development.
 - **HTTP caching**: catalog responses `public, max-age=300`; artifacts `public, max-age=31536000, immutable`.
 - **Rate limiting**: fixed window of **100 requests/minute per client IP** (429 when exceeded).
-- **Forwarded headers**: `UseForwardedHeaders` reads `X-Forwarded-For` so the rate limiter partitions on the real client — see "Deploying behind nginx" below.
+- **Forwarded headers**: `UseForwardedHeaders` reads `X-Forwarded-For` so the rate limiter partitions on the real client — requires nginx config, see [Deployment](#deployment).
 - **Structured logging**: request logging (method, path, status, duration) plus JSON console logs outside Development, each carrying the request `TraceId`.
 
-### Deploying behind nginx
+### Deployment
+
+Two things must be set up per environment. Skipping either one breaks a feature **silently** —
+the API starts fine and serves valid-looking responses either way:
+
+| Step | If skipped |
+| --- | --- |
+| Forward the client address in nginx — see [below](#forwarding-the-client-address) | The 100 req/min limit applies to *all users combined*, so a few active users throttle everybody. |
+| Point `Catalog:ArtifactBaseUrl` at the public domain — see [Configuration reference](#configuration-reference) | The app receives relative paths instead of the absolute artifact URLs it expects. |
+
+#### Forwarding the client address
 
 The API runs behind nginx, which terminates the client connection. **nginx must forward the
 client address, or rate limiting breaks:** the API would see `127.0.0.1` on every request and
@@ -217,18 +227,23 @@ a test on purpose, not discovering the break during mobile integration.
 | Key | Default | Meaning |
 | --- | --- | --- |
 | `Catalog:FilePath` | `Data/catalog.v1.json` | Catalog JSON file, relative to the content root. |
-| `Catalog:ArtifactBaseUrl` | *(empty)* | Absolute base URL prepended to the catalog's relative artifact paths. |
+| `Catalog:ArtifactBaseUrl` | *(empty)* | Absolute base URL prepended to the catalog's relative artifact paths. **Required in any real deployment** — see [Deployment](#deployment). |
 
 **Why `ArtifactBaseUrl` exists.** `Data/catalog.v1.json` stores host-agnostic paths
 (`/packages/{id}/{version}/package.zip`), so the same committed file can be published from
 any environment. `JsonCatalogService` resolves them into absolute URLs once, when the
 catalog is loaded. Entries that are already absolute `http`/`https` URLs are left untouched,
 so an individual package can be hosted on a separate CDN without opting the whole catalog
-out. When the setting is empty the paths are served as-is, for the client to resolve against
-the API origin.
+out.
+
+When the setting is empty the paths are served as-is. That is a deliberate fallback for tests
+and throwaway local runs, **not a valid production configuration** — the mobile app expects
+absolute URLs, so leaving it unset in a real deployment is a misconfiguration rather than a
+supported mode.
 
 `appsettings.Development.json` sets it to `https://localhost:7131` so local runs and the
-Scalar explorer return directly usable URLs.
+Scalar explorer return directly usable URLs. Set it per environment to the public domain the
+artifacts are served from.
 
 ### Roadmap (not in Phase 1)
 
