@@ -40,11 +40,7 @@ class AppTheme {
           fontWeight: FontWeight.w700,
           color: ink,
         ),
-        bodyLarge: TextStyle(
-          fontSize: 16,
-          height: 1.45,
-          color: ink,
-        ),
+        bodyLarge: TextStyle(fontSize: 16, height: 1.45, color: ink),
         bodyMedium: TextStyle(
           fontSize: 14,
           height: 1.45,
