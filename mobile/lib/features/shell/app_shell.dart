@@ -117,15 +117,15 @@ class _AppShellState extends State<AppShell> {
   void _openPackage(BuildContext context, ContentPackage package) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => PackageDetailScreen(
+        builder: (routeContext) => PackageDetailScreen(
           package: package,
-          onPrimaryAction: () => _handlePackageAction(context, package),
+          onPrimaryAction: () => _handlePackageAction(routeContext, package),
           onOpenStudy: () {
             final study = _studies.firstWhere(
               (item) => item.packageId == package.id,
               orElse: () => _studies.first,
             );
-            _openStudy(context, study);
+            _openStudy(routeContext, study);
           },
         ),
       ),
