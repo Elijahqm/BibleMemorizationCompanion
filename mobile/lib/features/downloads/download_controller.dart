@@ -78,6 +78,12 @@ class DownloadController extends ChangeNotifier {
     return null;
   }
 
+  /// True when the catalog lists a different version than the one on disk.
+  bool hasUpdate(CatalogPackage package) {
+    final installedVersion = installedVersionOf(package.id);
+    return installedVersion != null && installedVersion != package.version;
+  }
+
   /// Reads the install index from disk. Safe to call on startup.
   Future<void> loadInstalled() async {
     try {
@@ -111,8 +117,17 @@ class DownloadController extends ChangeNotifier {
       );
 
       _update(package.id, const PackageDownload(state: DownloadState.installing));
+      final previousMatches = _installed.where(
+        (existing) => existing.id == package.id,
+      );
+      final previous = previousMatches.isEmpty ? null : previousMatches.first;
       final installed = await _installer.install(package, artifact);
       await _rememberInstalled(installed);
+      if (previous != null && previous.version != installed.version) {
+        // A version bump installs under a new `packages/{id}/{version}`
+        // directory; clean up the now-orphaned old one.
+        await _installer.uninstall(previous);
+      }
 
       _downloads.remove(package.id);
       _notify();

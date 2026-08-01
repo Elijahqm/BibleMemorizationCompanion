@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../core/config/app_config.dart';
 import '../../core/network/api_client.dart';
+import '../../core/version_compare.dart';
 import '../../core/widgets/confirmation_dialog.dart';
 import '../../core/widgets/info_panel.dart';
 import '../catalog/catalog_controller.dart';
@@ -10,7 +12,9 @@ import '../catalog/data/models/package_manifest.dart';
 import '../downloads/data/installed_package.dart';
 import '../downloads/data/package_downloader.dart';
 import '../downloads/download_controller.dart';
+import '../study/data/models/package_content.dart';
 import '../study/data/models/study.dart';
+import '../study/data/models/verse_state.dart';
 import '../study/data/package_content_repository.dart';
 import '../study/study_controller.dart';
 import '../study/study_screens.dart';
@@ -164,6 +168,7 @@ class _AppShellState extends State<AppShell> {
         return ProgressScreen(
           installed: _downloads.installedPackages,
           studies: _studies,
+          onOpenPackage: (package) => _openPackageProgress(context, package),
         );
       case 3:
         return const SettingsScreen();
@@ -211,8 +216,24 @@ class _AppShellState extends State<AppShell> {
   }
 
   void _openInstalledPackage(InstalledPackage package) {
+    // Reachable from a pushed route (the Store's package detail screen) as
+    // well as inline from the Downloads list; pop back to the shell first so
+    // switching to the Studies tab is actually visible either way.
+    Navigator.of(context).popUntil((route) => route.isFirst);
     _studies.setActivePackage(package.id);
     setState(() => _currentIndex = 0);
+  }
+
+  void _openPackageProgress(BuildContext context, InstalledPackage package) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => PackageProgressScreen(
+          package: package,
+          contentRepository: _content,
+          studies: _studies,
+        ),
+      ),
+    );
   }
 
   void _openCreateStudy(BuildContext context, InstalledPackage package) {
@@ -257,13 +278,24 @@ class _AppShellState extends State<AppShell> {
   }
 
   void _handlePackageAction(BuildContext context, CatalogPackage package) {
+    if (!package.isSupported) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Update the app to at least version ${package.minAppVersion} '
+            'to get this package.',
+          ),
+        ),
+      );
+      return;
+    }
     if (!package.isDownloadable) {
       _showSignInPrompt(context);
       return;
     }
 
     final status = _downloads.statusFor(package);
-    if (status.state == DownloadState.installed) {
+    if (status.state == DownloadState.installed && !_downloads.hasUpdate(package)) {
       final installed = _downloads.installedPackages.firstWhere(
         (installed) => installed.id == package.id,
       );
@@ -597,10 +629,18 @@ class LibraryScreen extends StatelessWidget {
           ];
         }
         return [
+          if (catalog.isStale || catalog.lastUpdated != null) ...[
+            _CatalogFreshnessBanner(
+              isStale: catalog.isStale,
+              lastUpdated: catalog.lastUpdated,
+            ),
+            const SizedBox(height: 14),
+          ],
           for (final package in catalog.packages) ...[
             _PackageCard(
               package: package,
               download: downloads.statusFor(package),
+              hasUpdate: downloads.hasUpdate(package),
               onTap: () => onOpenPackage(package),
               onPrimaryAction: () => onPrimaryAction(package),
               onCancelDownload: () => onCancelDownload(package),
@@ -609,6 +649,52 @@ class LibraryScreen extends StatelessWidget {
           ],
         ];
     }
+  }
+}
+
+/// Tells the user whether the Store list is fresh or just what was last
+/// cached — shown once a catalog (cached or live) is actually on screen.
+class _CatalogFreshnessBanner extends StatelessWidget {
+  const _CatalogFreshnessBanner({required this.isStale, required this.lastUpdated});
+
+  final bool isStale;
+  final DateTime? lastUpdated;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isStale && lastUpdated == null) return const SizedBox.shrink();
+
+    final theme = Theme.of(context);
+    final label = lastUpdated == null
+        ? 'Showing cached results.'
+        : 'Last updated ${_relativeLabel(lastUpdated!)}.';
+
+    return Row(
+      children: [
+        Icon(
+          isStale ? Icons.cloud_off : Icons.cloud_done_outlined,
+          size: 16,
+          color: isStale ? theme.colorScheme.error : theme.colorScheme.outline,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            isStale ? '$label Could not refresh — showing the last known list.' : label,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: isStale ? theme.colorScheme.error : theme.colorScheme.outline,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _relativeLabel(DateTime time) {
+    final diff = DateTime.now().difference(time);
+    if (diff.inMinutes < 1) return 'just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    return '${diff.inDays}d ago';
   }
 }
 
@@ -624,6 +710,12 @@ extension CatalogPackagePresentation on CatalogPackage {
 
   String get subtitle =>
       '${packageType.label} · ${language.toUpperCase()} · v$version';
+
+  /// Whether this build of the app meets [minAppVersion]. Unsupported
+  /// packages are flagged rather than hidden — the user still sees they
+  /// exist, with an explanation instead of a working Download button.
+  bool get isSupported =>
+      VersionCompare.isAtLeast(AppConfig.appVersion, minAppVersion);
 }
 
 class ProgressScreen extends StatelessWidget {
@@ -631,10 +723,12 @@ class ProgressScreen extends StatelessWidget {
     super.key,
     required this.installed,
     required this.studies,
+    required this.onOpenPackage,
   });
 
   final List<InstalledPackage> installed;
   final StudyController studies;
+  final ValueChanged<InstalledPackage> onOpenPackage;
 
   @override
   Widget build(BuildContext context) {
@@ -681,6 +775,7 @@ class ProgressScreen extends StatelessWidget {
             _ProgressRow(
               package: package,
               progress: studies.packageProgress(package.id, package.verseCount),
+              onTap: () => onOpenPackage(package),
             ),
             const SizedBox(height: 12),
           ],
@@ -786,10 +881,11 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    'Requires app version ${package.minAppVersion} or newer.',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  if (package.isSupported)
+                    Text(
+                      'Requires app version ${package.minAppVersion} or newer.',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   const SizedBox(height: 20),
                   ListenableBuilder(
                     listenable: widget.downloads,
@@ -798,6 +894,7 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                       download: widget.downloads.statusFor(package),
                       onPrimaryAction: widget.onPrimaryAction,
                       onCancelDownload: widget.onCancelDownload,
+                      hasUpdate: widget.downloads.hasUpdate(package),
                     ),
                   ),
                 ],
@@ -876,6 +973,7 @@ class _PackageCard extends StatelessWidget {
     required this.onTap,
     required this.onPrimaryAction,
     required this.onCancelDownload,
+    this.hasUpdate = false,
   });
 
   final CatalogPackage package;
@@ -883,6 +981,7 @@ class _PackageCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onPrimaryAction;
   final VoidCallback onCancelDownload;
+  final bool hasUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -934,6 +1033,7 @@ class _PackageCard extends StatelessWidget {
                 download: download,
                 onPrimaryAction: onPrimaryAction,
                 onCancelDownload: onCancelDownload,
+                hasUpdate: hasUpdate,
               ),
             ],
           ),
@@ -1023,12 +1123,14 @@ class _DownloadAction extends StatelessWidget {
     required this.download,
     required this.onPrimaryAction,
     required this.onCancelDownload,
+    this.hasUpdate = false,
   });
 
   final CatalogPackage package;
   final PackageDownload download;
   final VoidCallback onPrimaryAction;
   final VoidCallback onCancelDownload;
+  final bool hasUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -1071,12 +1173,28 @@ class _DownloadAction extends StatelessWidget {
           ],
         );
       case DownloadState.installed:
-        return Row(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.check_circle, color: theme.colorScheme.primary),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text('Installed', style: theme.textTheme.bodyMedium),
+            Row(
+              children: [
+                Icon(
+                  hasUpdate ? Icons.system_update_alt : Icons.check_circle,
+                  color: hasUpdate ? theme.colorScheme.secondary : theme.colorScheme.primary,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    hasUpdate ? 'Update available (v${package.version})' : 'Installed',
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            FilledButton(
+              onPressed: onPrimaryAction,
+              child: Text(hasUpdate ? 'Update' : 'Open'),
             ),
           ],
         );
@@ -1099,6 +1217,14 @@ class _DownloadAction extends StatelessWidget {
           ],
         );
       case DownloadState.idle:
+        if (!package.isSupported) {
+          return Text(
+            'Requires app version ${package.minAppVersion} or newer.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.error,
+            ),
+          );
+        }
         return FilledButton(
           onPressed: onPrimaryAction,
           child: Text(package.primaryActionLabel),
@@ -1169,27 +1295,210 @@ class _MetricTile extends StatelessWidget {
 }
 
 class _ProgressRow extends StatelessWidget {
-  const _ProgressRow({required this.package, required this.progress});
+  const _ProgressRow({
+    required this.package,
+    required this.progress,
+    required this.onTap,
+  });
 
   final InstalledPackage package;
   final (int, int) progress;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final (learned, total) = progress;
     return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      package.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '$learned of $total verses learned',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Per-chapter learned/to-learn heatmap for one installed package
+/// (wireframe screen `9b`).
+class PackageProgressScreen extends StatefulWidget {
+  const PackageProgressScreen({
+    super.key,
+    required this.package,
+    required this.contentRepository,
+    required this.studies,
+  });
+
+  final InstalledPackage package;
+  final PackageContentRepository contentRepository;
+  final StudyController studies;
+
+  @override
+  State<PackageProgressScreen> createState() => _PackageProgressScreenState();
+}
+
+class _PackageProgressScreenState extends State<PackageProgressScreen> {
+  late Future<PackageContent> _contentFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _contentFuture = widget.contentRepository.load(widget.package);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.package.title)),
+      body: FutureBuilder<PackageContent>(
+        future: _contentFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            final error = snapshot.error;
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+              child: InfoPanel(
+                title: 'Could not load this package',
+                body: error is ContentException
+                    ? error.message
+                    : 'Please try again later.',
+              ),
+            );
+          }
+
+          final content = snapshot.requireData;
+          return ListenableBuilder(
+            listenable: widget.studies,
+            builder: (context, _) => ListView(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+              children: [
+                for (final chapter in content.index.chapterOrder) ...[
+                  _ChapterHeatmapRow(
+                    chapter: chapter,
+                    verses: content.versesByChapter[chapter] ?? const [],
+                    packageId: widget.package.id,
+                    studies: widget.studies,
+                  ),
+                  const SizedBox(height: 14),
+                ],
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ChapterHeatmapRow extends StatelessWidget {
+  const _ChapterHeatmapRow({
+    required this.chapter,
+    required this.verses,
+    required this.packageId,
+    required this.studies,
+  });
+
+  final int chapter;
+  final List<Verse> verses;
+  final String packageId;
+  final StudyController studies;
+
+  @override
+  Widget build(BuildContext context) {
+    final learned = verses
+        .where((v) => studies.stateFor(packageId, v.verseRef).isLearned)
+        .length;
+
+    return Card(
       child: Padding(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(package.title, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 8),
-            Text(
-              '$learned of $total verses learned',
-              style: Theme.of(context).textTheme.bodyMedium,
+            Row(
+              children: [
+                Text(
+                  'Chapter $chapter',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const Spacer(),
+                Text(
+                  '$learned of ${verses.length}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                for (final verse in verses)
+                  _VerseHeatCell(
+                    state: studies.stateFor(packageId, verse.verseRef),
+                  ),
+              ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _VerseHeatCell extends StatelessWidget {
+  const _VerseHeatCell({required this.state});
+
+  final VerseState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final Color color;
+    if (state.isLearned) {
+      color = scheme.primary;
+    } else if (state.isDifficult) {
+      color = scheme.secondary;
+    } else {
+      color = scheme.outlineVariant;
+    }
+
+    return Tooltip(
+      message: state.verseRef,
+      child: Container(
+        width: 18,
+        height: 18,
+        decoration: BoxDecoration(
+          color: state.isLearned || state.isDifficult
+              ? color
+              : Colors.transparent,
+          border: Border.all(color: color, width: 1.5),
+          borderRadius: BorderRadius.circular(4),
         ),
       ),
     );

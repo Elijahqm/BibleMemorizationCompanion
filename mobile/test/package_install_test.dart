@@ -65,20 +65,20 @@ Uint8List buildZip({bool corruptChapter = false, bool unsafePath = false}) {
   return Uint8List.fromList(ZipEncoder().encode(archive));
 }
 
-CatalogPackage packageFor(Uint8List zip) {
+CatalogPackage packageFor(Uint8List zip, {String version = '1.0.0', String minAppVersion = '1.0.0'}) {
   return CatalogPackage(
     id: 'cb-daniel-1-6',
     title: 'CB Daniel 1-6',
     packageType: CatalogPackageType.book,
     language: 'es',
-    version: '1.0.0',
+    version: version,
     sizeBytes: zip.length,
     isFree: true,
     owned: false,
     artifactUrl: 'https://example.test/package.zip',
     manifestUrl: 'https://example.test/manifest.json',
     checksumSha256: sha256.convert(zip).toString(),
-    minAppVersion: '1.0.0',
+    minAppVersion: minAppVersion,
   );
 }
 
@@ -245,6 +245,22 @@ void main() {
 
       expect(controller.statusForId('cb-daniel-1-6').state, DownloadState.failed);
       expect(controller.installedPackages, isEmpty);
+    });
+
+    test('hasUpdate flags a newer catalog version and reinstall cleans up the old one', () async {
+      final controller = controllerServing(zip);
+      await controller.start(package);
+
+      final bumped = packageFor(zip, version: '1.0.1');
+      expect(controller.hasUpdate(bumped), isTrue);
+      expect(controller.hasUpdate(package), isFalse);
+
+      final oldDirectory = Directory(controller.installedPackages.single.directoryPath);
+      await controller.start(bumped);
+
+      expect(controller.installedVersionOf('cb-daniel-1-6'), '1.0.1');
+      expect(controller.hasUpdate(bumped), isFalse);
+      expect(oldDirectory.existsSync(), isFalse);
     });
 
     test('uninstall removes the files and the index entry', () async {

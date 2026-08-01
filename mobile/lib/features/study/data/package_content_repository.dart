@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
+import '../../../core/storage/app_directories.dart';
 import '../../downloads/data/installed_package.dart';
 import 'models/package_content.dart';
 
@@ -19,6 +22,10 @@ class ContentException implements Exception {
 /// Packages are small (tens of KB), so the whole book is loaded and cached in
 /// memory the first time it is opened.
 class PackageContentRepository {
+  PackageContentRepository({DirectoryProvider? rootDirectory})
+    : _rootDirectory = rootDirectory ?? defaultAppDirectory;
+
+  final DirectoryProvider _rootDirectory;
   final Map<String, PackageContent> _cache = {};
 
   Future<PackageContent> load(InstalledPackage package) async {
@@ -26,8 +33,8 @@ class PackageContentRepository {
     final cached = _cache[cacheKey];
     if (cached != null) return cached;
 
-    final root = Directory(package.directoryPath);
-    if (!await root.exists()) {
+    final root = await _resolveRoot(package);
+    if (root == null) {
       throw ContentException('${package.title} is no longer on this device.');
     }
 
@@ -55,6 +62,31 @@ class PackageContentRepository {
 
   void evict(InstalledPackage package) =>
       _cache.remove('${package.id}@${package.version}');
+
+  /// The persisted `directoryPath` can go stale (e.g. the app-support path
+  /// changes between launches on some devices), even though the install
+  /// index and the actual files are otherwise intact. Before giving up, also
+  /// try the canonical `packages/{id}/{version}` layout under the *current*
+  /// app-support root — the same layout `PackageInstaller` writes to.
+  Future<Directory?> _resolveRoot(InstalledPackage package) async {
+    final stored = Directory(package.directoryPath);
+    if (await stored.exists()) return stored;
+
+    final appRoot = await _rootDirectory();
+    final canonical = Directory(
+      '${appRoot.path}/packages/${package.id}/${package.version}',
+    );
+    if (await canonical.exists()) return canonical;
+
+    debugPrint(
+      'PackageContentRepository: "${package.id}" not found.\n'
+      '  stored directoryPath: ${package.directoryPath} '
+      '(exists: ${await stored.exists()})\n'
+      '  canonical path: ${canonical.path} (exists: ${await canonical.exists()})\n'
+      '  app-support root: ${appRoot.path} (exists: ${await appRoot.exists()})',
+    );
+    return null;
+  }
 
   Future<List<ContentSection>> _readSections(String path) async {
     final file = File(path);

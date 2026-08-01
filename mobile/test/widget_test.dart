@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bible_memorization_companion_mobile/core/network/api_client.dart';
 import 'package:bible_memorization_companion_mobile/core/theme/app_theme.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/catalog_controller.dart';
+import 'package:bible_memorization_companion_mobile/features/catalog/data/catalog_cache_store.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/data/catalog_repository.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/data/models/catalog_package.dart';
 import 'package:bible_memorization_companion_mobile/features/downloads/data/installed_package.dart';
@@ -27,11 +28,26 @@ import 'package:http/testing.dart';
 
 import 'catalog_repository_test.dart' show catalogJson;
 
+/// Catalog cache kept in memory — the real store hits path_provider, which
+/// widget tests don't mock.
+class _MemoryCatalogCacheStore implements CatalogCacheStore {
+  CachedCatalog? _cached;
+
+  @override
+  Future<CachedCatalog?> load() async => _cached;
+
+  @override
+  Future<void> save(CatalogResponse response, DateTime cachedAt) async {
+    _cached = CachedCatalog(response: response, cachedAt: cachedAt);
+  }
+}
+
 CatalogController _controllerReturning(http.Response Function() respond) {
   return CatalogController(
     repository: CatalogRepository(
       apiClient: ApiClient(httpClient: MockClient((_) async => respond())),
     ),
+    cacheStore: _MemoryCatalogCacheStore(),
   );
 }
 

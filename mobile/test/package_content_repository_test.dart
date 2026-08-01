@@ -150,8 +150,13 @@ void main() {
     final package = writePackage(root);
     root.deleteSync(recursive: true);
 
+    // A rootDirectory provider is required here so the fallback lookup for
+    // the canonical `packages/{id}/{version}` layout doesn't hit the real
+    // path_provider platform channel (unavailable outside a widget test).
     await expectLater(
-      PackageContentRepository().load(package),
+      PackageContentRepository(
+        rootDirectory: () async => Directory.systemTemp,
+      ).load(package),
       throwsA(isA<ContentException>()),
     );
   });

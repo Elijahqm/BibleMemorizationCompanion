@@ -47,6 +47,8 @@ class CatalogPrice {
   final String currency;
 
   String get label => '${amount.toStringAsFixed(2)} $currency';
+
+  Map<String, dynamic> toJson() => {'amount': amount, 'currency': currency};
 }
 
 /// One entry of `GET /api/v1/catalog`.
@@ -113,6 +115,23 @@ class CatalogPackage {
     }
     return '${(sizeBytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'packageType': packageType.name,
+    'language': language,
+    'version': version,
+    'sizeBytes': sizeBytes,
+    'isFree': isFree,
+    'owned': owned,
+    'artifactUrl': artifactUrl,
+    'manifestUrl': manifestUrl,
+    'checksumSha256': checksumSha256,
+    'minAppVersion': minAppVersion,
+    if (price != null) 'price': price!.toJson(),
+    if (basePackageId != null) 'basePackageId': basePackageId,
+  };
 }
 
 /// Response envelope of `GET /api/v1/catalog`.
@@ -140,4 +159,10 @@ class CatalogResponse {
   final String catalogVersion;
   final DateTime? publishedAt;
   final List<CatalogPackage> packages;
+
+  Map<String, dynamic> toJson() => {
+    'catalogVersion': catalogVersion,
+    'publishedAt': publishedAt?.toIso8601String(),
+    'packages': packages.map((package) => package.toJson()).toList(),
+  };
 }

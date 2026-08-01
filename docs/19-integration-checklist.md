@@ -46,7 +46,7 @@ Background plan: [18 Mobile ↔ Backend integration](18-mobile-backend-integrati
 
 ---
 
-## Step 3 — Real study content ⬅️ implemented, pending review
+## Step 3 — Real study content ✅ (approved)
 
 First pass wrongly auto-listed every content *section* as an
 immediately-tappable "study" the moment a package was installed. Corrected
@@ -84,42 +84,45 @@ shows real RVR1960/KJV text only for studies the user explicitly created.
 
 ---
 
-## Step 4 — Progress detail and updates
+## Step 4 — Progress detail and updates ✅ (approved)
 
-- [ ] Per-chapter verse heatmap (wireframe screen `9b`) — learned/to-learn
-      grid per package
-- [ ] Compare catalog `version` with the installed one → "Update available"
-- [ ] Respect `minAppVersion` (hide or flag unsupported packages)
+- [x] Per-chapter verse heatmap (wireframe screen `9b`): tapping a package's
+      row on the Progress tab opens `PackageProgressScreen` — one card per
+      chapter with a colored cell per verse (learned / difficult / neither),
+      built from the same `PackageContent` + `VerseState` data the study flow
+      already uses
+- [x] `DownloadController.hasUpdate(package)` compares the catalog `version`
+      against the installed one; Store cards and the package detail screen
+      show "Update available (vX)" with an **Update** action instead of
+      "Installed" once the backend publishes a newer version. Reinstalling
+      cleans up the now-orphaned previous-version directory
+- [x] `VersionCompare` (numeric, not lexical, dotted-version compare) +
+      `CatalogPackage.isSupported` flag packages whose `minAppVersion` is
+      above `AppConfig.appVersion`: the Download button is replaced with an
+      explanatory message rather than hiding the package outright
+- [x] Tests: `VersionCompare` unit tests, `hasUpdate` + orphan-cleanup on
+      reinstall
 
 **Acceptance:** the heatmap reflects real per-verse state; a bumped package
 version shows an update.
 
 ---
 
-## Step 5 — Offline catalog cache
+## Step 5 — Offline catalog cache ⬅️ implemented, pending review
 
-- [ ] Persist the last catalog response to disk (`path_provider`)
-- [ ] On launch: show the cached catalog immediately, refresh in background
-- [ ] Show "last updated" / stale indicator when the refresh fails
-- [ ] Test: cold start with no network still lists packages
+- [x] `CatalogCacheStore` persists the last successful catalog response to
+      disk (`catalog-cache.json`, atomic temp-then-rename, same pattern as
+      the other stores)
+- [x] `CatalogController.load()` shows the cached catalog immediately (no
+      spinner) while refreshing from the network in the background
+- [x] If cached packages are already showing and the refresh fails, they
+      stay on screen — a banner shows "Last updated Xm/h/d ago" normally, or
+      "Could not refresh — showing the last known list" when stale. A true
+      cold start with no cache and no network still shows the full error +
+      Retry screen (nothing to show yet)
+- [x] Tests: cold start with no network still lists the previously cached
+      packages (`catalog_controller_test.dart`), successful load persists to
+      disk, no-cache + failed network still errors correctly
 
 **Acceptance:** airplane mode on a second launch still shows the Store list.
 
----
-
-## Step 6 — Localization (en / es, follows the device) — LAST
-
-Deliberately left for the end: it needs its own discussion (which languages we
-commit to, app language vs content language, whether the user can override the
-device locale, how it interacts with the catalog's `language` field). Until then
-the UI stays in English.
-
-- [ ] Decide scope first (see the questions above)
-- [ ] Add `flutter_localizations` + `intl`, enable `generate: true` (gen-l10n)
-- [ ] `lib/l10n/app_en.arb` and `app_es.arb`
-- [ ] Move every hardcoded string into ARB files
-- [ ] `MaterialApp`: `localizationsDelegates`, `supportedLocales`, English fallback
-- [ ] Language setting tile shows the resolved language (Auto)
-- [ ] Test: pump with `locale: Locale('es')` and assert a translated label
-
-**Acceptance:** phone in Spanish → app in Spanish; phone in French → English fallback.
