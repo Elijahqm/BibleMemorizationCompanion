@@ -66,6 +66,13 @@ class PackageDownloader {
   String fileNameFor(CatalogPackage package) =>
       '${package.id}-${package.version}.zip';
 
+  /// Resolves [url] against the configured API base URL when it's a
+  /// backend-relative path (e.g. `/packages/...`), or parses it as-is when
+  /// it's already absolute.
+  Uri _resolveArtifactUri(String url) => url.startsWith('http')
+      ? Uri.parse(url)
+      : Uri.parse('${AppConfig.apiBaseUrl}$url');
+
   /// Downloads [package] and returns the verified artifact file.
   ///
   /// Throws [DownloadCancelledException] when [cancelToken] is cancelled and
@@ -86,7 +93,10 @@ class PackageDownloader {
 
     final http.StreamedResponse response;
     try {
-      final request = http.Request('GET', Uri.parse(package.artifactUrl));
+      final request = http.Request(
+        'GET',
+        _resolveArtifactUri(package.artifactUrl),
+      );
       response = await _httpClient
           .send(request)
           .timeout(AppConfig.requestTimeout);

@@ -539,7 +539,7 @@ class LibraryScreen extends StatelessWidget {
   final LibraryPane pane;
   final CatalogController catalog;
   final ValueChanged<LibraryPane> onPaneChanged;
-  final VoidCallback onRetry;
+  final Future<void> Function() onRetry;
   final DownloadController downloads;
   final ValueChanged<CatalogPackage> onOpenPackage;
   final ValueChanged<CatalogPackage> onPrimaryAction;
@@ -550,7 +550,7 @@ class LibraryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async => onRetry(),
+      onRefresh: onRetry,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
@@ -614,7 +614,7 @@ class LibraryScreen extends StatelessWidget {
             title: 'Could not load the catalog',
             body: catalog.errorMessage ?? 'Please try again.',
             action: FilledButton(
-              onPressed: onRetry,
+              onPressed: () => onRetry(),
               child: const Text('Retry'),
             ),
           ),
@@ -881,7 +881,7 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  if (package.isSupported)
+                  if (!package.isSupported)
                     Text(
                       'Requires app version ${package.minAppVersion} or newer.',
                       style: Theme.of(context).textTheme.bodyLarge,

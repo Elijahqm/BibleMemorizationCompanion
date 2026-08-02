@@ -54,6 +54,7 @@ class CatalogCacheStore {
         'cachedAt': cachedAt.toIso8601String(),
         'response': response.toJson(),
       }),
+      flush: true,
     );
     await staging.rename(file.path);
   }
