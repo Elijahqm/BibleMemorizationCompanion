@@ -7,9 +7,9 @@ namespace BibleMemorization.Api.Services;
 
 /// <summary>
 /// Catalog service backed by a static JSON file. The file is read once and cached
-/// in memory, since the catalog is immutable at runtime in Phase 1.
+/// in memory, and automatically reloaded when the file changes on disk.
 /// </summary>
-public sealed class JsonCatalogService : ICatalogService
+public sealed class JsonCatalogService : ICatalogService, IDisposable
 {
     private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web);
 
@@ -19,6 +19,8 @@ public sealed class JsonCatalogService : ICatalogService
     private readonly SemaphoreSlim _loadGate = new(1, 1);
 
     private CatalogResponse? _cachedCatalog;
+    private FileSystemWatcher? _watcher;
+    private Timer? _reloadTimer;
 
     public JsonCatalogService(
         IHostEnvironment environment,
@@ -28,6 +30,8 @@ public sealed class JsonCatalogService : ICatalogService
         _filePath = Path.Combine(environment.ContentRootPath, options.Value.FilePath);
         _artifactBaseUri = ParseArtifactBaseUri(options.Value.ArtifactBaseUrl);
         _logger = logger;
+
+        StartWatching();
     }
 
     public async Task<CatalogResponse> GetCatalogAsync(CancellationToken cancellationToken = default)
@@ -130,5 +134,76 @@ public sealed class JsonCatalogService : ICatalogService
         }
 
         return new Uri(_artifactBaseUri!, url).ToString();
+    }
+
+    private void StartWatching()
+    {
+        var directory = Path.GetDirectoryName(_filePath);
+        var fileName = Path.GetFileName(_filePath);
+
+        if (directory is null || !Directory.Exists(directory))
+        {
+            _logger.LogWarning(
+                "Catalog directory '{Directory}' does not exist. File watcher not started.", directory);
+            return;
+        }
+
+        _watcher = new FileSystemWatcher(directory, fileName)
+        {
+            NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime | NotifyFilters.Size,
+            EnableRaisingEvents = true
+        };
+
+        _watcher.Changed += OnCatalogFileChanged;
+        _watcher.Created += OnCatalogFileChanged;
+        _watcher.Deleted += OnCatalogFileChanged;
+        _watcher.Renamed += OnCatalogFileChanged;
+
+        _reloadTimer = new Timer(_ => ReloadCatalogAsync(), null, Timeout.Infinite, Timeout.Infinite);
+
+        _logger.LogInformation(
+            "Watching catalog file '{FilePath}' for changes.", _filePath);
+    }
+
+    private void OnCatalogFileChanged(object sender, FileSystemEventArgs e)
+    {
+        _logger.LogInformation(
+            "Catalog file change detected ({ChangeType}). Scheduling reload.", e.ChangeType);
+
+        // Debounce: reset the timer on every change event. The file may fire
+        // multiple events (Created + Changed, etc.) for a single save operation.
+        _reloadTimer?.Change(500, Timeout.Infinite);
+    }
+
+    private async void ReloadCatalogAsync()
+    {
+        await _loadGate.WaitAsync();
+        try
+        {
+            _cachedCatalog = await LoadCatalogAsync(CancellationToken.None);
+            _logger.LogInformation("Catalog reloaded successfully from disk.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to reload catalog from disk.");
+        }
+        finally
+        {
+            _loadGate.Release();
+        }
+    }
+
+    public void Dispose()
+    {
+        _reloadTimer?.Dispose();
+        if (_watcher is not null)
+        {
+            _watcher.Changed -= OnCatalogFileChanged;
+            _watcher.Created -= OnCatalogFileChanged;
+            _watcher.Deleted -= OnCatalogFileChanged;
+            _watcher.Renamed -= OnCatalogFileChanged;
+            _watcher.Dispose();
+        }
+        _loadGate.Dispose();
     }
 }
