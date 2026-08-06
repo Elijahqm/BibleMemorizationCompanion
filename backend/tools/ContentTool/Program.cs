@@ -89,7 +89,7 @@ namespace ContentTool
             new("cb-daniel-1-6",  "CB Daniel 1-6",  "Dan", "REINA-VALERA 1960", "DANIEL", "1.0.0", "book", "es") { BackendRoot = backendRoot },
             new("cb-daniel-7-12", "CB Daniel 7-12", "Dan", "REINA-VALERA 1960", null,     "1.0.0", "book", "es") { BackendRoot = backendRoot },
             new("cb-hechos-1-9",  "CB Hechos 1-9",  "Hch", "REINA-VALERA 1960", "HECHOS", "1.0.0", "book", "es") { BackendRoot = backendRoot },
-            new("bq-acts-1-9",    "BQ Acts 1-9",    "Acts", "KING JAMES VERSION", null,   "1.0.0", "book", "en") { BackendRoot = backendRoot },
+            new("bq-acts-1-9",    "BQ Acts 1-9",    "Acts", "KING JAMES VERSION", null,   "1.1.0", "book", "en") { BackendRoot = backendRoot },
         ];
     }
 
@@ -133,6 +133,9 @@ namespace ContentTool
             var chaptersDir = Path.Combine(cfg.ContentDir, "chapters");
             Directory.CreateDirectory(chaptersDir);
 
+            // Load existing analysis data from chapter files (if any) to preserve it
+            var existingAnalysis = LoadExistingAnalysis(chaptersDir, cfg.Abbrev);
+
             var counts = new Dictionary<int, int>();
             var problems = new List<string>();
             foreach (var ch in chapterOrder)
@@ -145,12 +148,23 @@ namespace ContentTool
 
                 var arr = new JsonArray();
                 foreach (var v in cv)
-                    arr.Add(new JsonObject
+                {
+                    var verseObj = new JsonObject
                     {
                         ["verseRef"] = $"{cfg.Abbrev} {ch}:{v.Number}",
                         ["verseNumber"] = v.Number,
                         ["text"] = v.Text,   // section titles, when present, are embedded here as markers
-                    });
+                    };
+
+                    // Preserve existing analysis data if present
+                    var verseKey = $"{cfg.Abbrev} {ch}:{v.Number}";
+                    if (existingAnalysis.TryGetValue(verseKey, out var analysis))
+                    {
+                        verseObj["analysis"] = analysis;
+                    }
+
+                    arr.Add(verseObj);
+                }
                 JsonFile.Write(Path.Combine(chaptersDir, $"{ch:D3}.json"),
                     new JsonObject { ["chapterNumber"] = ch, ["verses"] = arr });
             }
@@ -219,6 +233,10 @@ namespace ContentTool
             foreach (var ch in chapterOrder) chapterOrderArr.Add(ch);
             var countsObj = new JsonObject();
             foreach (var ch in chapterOrder) countsObj[ch.ToString()] = counts[ch];
+
+            // Check if any verse has analysis data
+            var hasAnalysis = existingAnalysis.Count > 0;
+
             JsonFile.Write(Path.Combine(cfg.ContentDir, "index.json"), new JsonObject
             {
                 ["packageId"] = cfg.PackageId,
@@ -227,6 +245,7 @@ namespace ContentTool
                 ["chapterOrder"] = chapterOrderArr,
                 ["chapterVerseCounts"] = countsObj,
                 ["availableSections"] = sections.Count > 0,
+                ["availableAnalysis"] = hasAnalysis,
                 ["availableAudio"] = false,
             });
 
@@ -327,6 +346,48 @@ namespace ContentTool
             var s = sb.ToString().ToLowerInvariant();
             s = Regex.Replace(s, "[^a-z0-9]+", "-").Trim('-');
             return s;
+        }
+
+        /// <summary>
+        /// Loads existing analysis data from chapter JSON files to preserve them during re-parse.
+        /// Returns a map of verseRef -> analysis JsonNode.
+        /// </summary>
+        static Dictionary<string, JsonNode> LoadExistingAnalysis(string chaptersDir, string abbrev)
+        {
+            var result = new Dictionary<string, JsonNode>();
+
+            if (!Directory.Exists(chaptersDir))
+                return result;
+
+            foreach (var file in Directory.GetFiles(chaptersDir, "*.json"))
+            {
+                try
+                {
+                    var content = File.ReadAllText(file);
+                    var node = JsonNode.Parse(content);
+                    var verses = node?["verses"]?.AsArray();
+
+                    if (verses is null)
+                        continue;
+
+                    foreach (var verse in verses)
+                    {
+                        var verseRef = verse?["verseRef"]?.GetValue<string>();
+                        var analysis = verse?["analysis"];
+
+                        if (verseRef is not null && analysis is not null)
+                        {
+                            result[verseRef] = analysis.DeepClone();
+                        }
+                    }
+                }
+                catch
+                {
+                    // Skip files that can't be parsed (might be corrupt or new format)
+                }
+            }
+
+            return result;
         }
     }
 

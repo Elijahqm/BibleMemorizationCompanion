@@ -20,12 +20,13 @@ public sealed class ArtifactUrlResolutionTests
         foreach (var package in await GetPackagesAsync(client))
         {
             var id = package.GetProperty("id").GetString();
+            var version = package.GetProperty("version").GetString();
 
             Assert.Equal(
-                $"{BaseUrl}/packages/{id}/1.0.0/package.zip",
+                $"{BaseUrl}/packages/{id}/{version}/package.zip",
                 package.GetProperty("artifactUrl").GetString());
             Assert.Equal(
-                $"{BaseUrl}/packages/{id}/1.0.0/manifest.json",
+                $"{BaseUrl}/packages/{id}/{version}/manifest.json",
                 package.GetProperty("manifestUrl").GetString());
         }
     }

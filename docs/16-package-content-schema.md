@@ -14,8 +14,9 @@ Each package zip should contain:
 2. content/index.json
 3. content/chapters/*.json
 4. optional content/sections.json
-5. optional audio/index.json (for audio add-ons)
-6. assets/thumbnail.png (optional)
+5. optional content/chapter_analysis.json
+6. optional audio/index.json (for audio add-ons)
+7. assets/thumbnail.png (optional)
 
 Example:
 
@@ -24,6 +25,7 @@ Example:
 - /content/chapters/001.json
 - /content/chapters/002.json
 - /content/sections.json
+- /content/chapter_analysis.json
 - /audio/index.json
 
 ## manifest.json
@@ -80,7 +82,8 @@ Fields:
 4. chapterOrder array
 5. chapterVerseCounts map
 6. availableSections boolean
-7. availableAudio boolean
+7. availableAnalysis boolean
+8. availableAudio boolean
 
 ### attribution
 
@@ -108,6 +111,7 @@ Verse object:
 2. verseNumber
 3. text (may contain an inline section-title marker — see below)
 4. normalizedText (optional for search/matching)
+5. analysis (optional — see below)
 
 A verse does **not** carry a `sectionId`. Section membership lives entirely in
 `content/sections.json` (see below); the verse only carries an inline marker in `text`
@@ -145,6 +149,66 @@ Example (`Acts 9:19`, whose second half opens a new section):
 }
 ```
 
+### Verse Analysis (optional)
+
+When a package includes study aids, each verse may carry an `analysis` object with
+metadata for interactive study features (highlighting individuals, locations, etc.).
+
+Analysis object fields:
+
+1. `individuals` — array of strings: names of people mentioned in the verse
+2. `deity` — array of strings: references to God, Jesus, Holy Spirit, etc.
+3. `locations` — array of strings: geographical places mentioned
+4. `otReferences` — array of strings: Old Testament scripture quotes/references
+5. `parenthetical` — array of strings: parenthetical statements in the verse
+6. `questions` — array of strings: questions asked in the verse
+7. `exclamations` — array of strings: exclamations in the verse
+
+All fields are arrays for consistency (even when only one item exists). Empty arrays
+indicate no data for that category in this verse.
+
+Example:
+
+```json
+{
+  "verseRef": "Acts 1:13",
+  "verseNumber": 13,
+  "text": "And when they were come in, they went up into an upper room...",
+  "analysis": {
+    "individuals": [
+      "Peter (apostle, Simon)",
+      "James (apostle)",
+      "John (apostle)",
+      "Andrew (apostle)",
+      "Philip (apostle)",
+      "Thomas (apostle)",
+      "Bartholomew (apostle)",
+      "Matthew (apostle)",
+      "James (apostle, son of Alphaeus)",
+      "Alphaeus (father of James)",
+      "Simon (apostle, Zelotes)",
+      "Judas (apostle, brother of James)",
+      "James (brother of Judas)"
+    ],
+    "deity": [],
+    "locations": [],
+    "otReferences": [],
+    "parenthetical": [],
+    "questions": [],
+    "exclamations": []
+  }
+}
+```
+
+Client usage:
+
+- The `analysis` object is **optional**. Packages without it (e.g., `cb-daniel-1-6`)
+  simply omit the field from each verse.
+- Use `index.json` → `availableAnalysis` to detect if the package carries analysis data
+  before attempting to parse it.
+- Analysis data enables features like: highlighting individuals in text, filtering
+  verses by location, showing OT references, etc.
+
 ## content/sections.json (optional)
 
 Section-based study creation source, and the **single source of truth for section
@@ -163,6 +227,68 @@ section object fields:
 `verseRefs` arrays (e.g. `Acts 9:19` is the last verse of "The Conversion of Saul" and the
 first verse of "Saul Preaches at Damascus"). Selecting either section studies the complete
 verse.
+
+## content/chapter_analysis.json (optional)
+
+Chapter-level summary of analysis data. Provides aggregated statistics per chapter
+without requiring the client to iterate all verses.
+
+Fields:
+
+1. packageId
+2. chapters — map of chapter number to chapter summary object
+
+Chapter summary object:
+
+1. chapterNumber
+2. verseCount
+3. summary — object containing:
+   - `individuals`: `{ count, names[] }` — unique individuals in this chapter
+   - `deity`: `{ count, names[] }` — unique deity references
+   - `locations`: `{ count, names[] }` — unique geographical locations
+   - `otReferences`: number — count of OT scripture references
+   - `questions`: number — count of questions
+   - `exclamations`: number — count of exclamations
+   - `parenthetical`: number — count of parenthetical statements
+
+Example:
+
+```json
+{
+  "packageId": "bq-acts-1-9",
+  "chapters": {
+    "1": {
+      "chapterNumber": 1,
+      "verseCount": 26,
+      "summary": {
+        "individuals": {
+          "count": 20,
+          "names": ["Alphaeus (father of James)", "Andrew (apostle)", "..."]
+        },
+        "deity": {
+          "count": 3,
+          "names": ["Father", "Holy Ghost", "Jesus"]
+        },
+        "locations": {
+          "count": 7,
+          "names": ["Aceldama", "Galilee", "Israel", "Jerusalem", "..."]
+        },
+        "otReferences": 2,
+        "questions": 2,
+        "exclamations": 0,
+        "parenthetical": 1
+      }
+    }
+  }
+}
+```
+
+Usage:
+
+- This file is **optional**. Only packages with analysis data include it.
+- Use `index.json` → `availableAnalysis` to detect if this file exists.
+- Useful for chapter-level displays (e.g., "Chapter 1 has 20 individuals and 7 locations")
+  without loading all verse data.
 
 ## audio/index.json (audio add-on only)
 

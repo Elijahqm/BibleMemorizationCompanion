@@ -49,13 +49,13 @@
       "title": "BQ Acts 1-9",
       "packageType": "book",
       "language": "en",
-      "version": "1.0.0",
-      "sizeBytes": 27258,
+      "version": "1.1.0",
+      "sizeBytes": 33324,
       "isFree": true,
       "owned": false,
-      "artifactUrl": "/packages/bq-acts-1-9/1.0.0/package.zip",
-      "manifestUrl": "/packages/bq-acts-1-9/1.0.0/manifest.json",
-      "checksumSha256": "998e2b92fabbcf38b413679f9ae683c37569923747fe738c40ff6849e861ef06",
+      "artifactUrl": "/packages/bq-acts-1-9/1.1.0/package.zip",
+      "manifestUrl": "/packages/bq-acts-1-9/1.1.0/manifest.json",
+      "checksumSha256": "96300755b1e1ce8c8ae0d04eed7bfc023f390a0353b28b822584d979f05c23d9",
       "minAppVersion": "1.0.0"
     }
   ]
