@@ -1,0 +1,439 @@
+{
+  "packageId": "cb-hechos-1-9",
+  "chapters": {
+    "1": {
+      "chapterNumber": 1,
+      "verseCount": 26,
+      "summary": {
+        "individuals": {
+          "count": 20,
+          "names": [
+            "Alfeo (padre de Jacobo)",
+            "Andrés (apóstol)",
+            "Bartolomé (apóstol)",
+            "David",
+            "Felipe (apóstol)",
+            "Jacobo (apóstol)",
+            "Jacobo (apóstol, hijo de Alfeo)",
+            "Jacobo (hermano de Judas)",
+            "José (Barsabás, Justo)",
+            "Juan (apóstol)",
+            "Juan (el Bautista)",
+            "Judas (Iscariote)",
+            "Judas (hermano de Jacobo)",
+            "María (madre de Jesús)",
+            "Mateo (apóstol)",
+            "Matías (apóstol)",
+            "Pedro (apóstol, Simón)",
+            "Simón (apóstol, Zelote)",
+            "Teófilo",
+            "Tomás (apóstol)"
+          ]
+        },
+        "deity": {
+          "count": 4,
+          "names": [
+            "Dios",
+            "Espíritu Santo",
+            "Jesús",
+            "Padre"
+          ]
+        },
+        "locations": {
+          "count": 6,
+          "names": [
+            "Acéldama (Campo de sangre)",
+            "Israel",
+            "Jerusalén",
+            "Judea",
+            "Olivar",
+            "Samaria"
+          ]
+        },
+        "otReferences": 2,
+        "questions": 2,
+        "exclamations": 0,
+        "parenthetical": 1
+      }
+    },
+    "2": {
+      "chapterNumber": 2,
+      "verseCount": 47,
+      "summary": {
+        "individuals": {
+          "count": 3,
+          "names": [
+            "David",
+            "Joel",
+            "Pedro (apóstol, Simón)"
+          ]
+        },
+        "deity": {
+          "count": 8,
+          "names": [
+            "Cristo",
+            "Dios",
+            "Espíritu",
+            "Espíritu Santo",
+            "Jesucristo",
+            "Jesús",
+            "Padre",
+            "Santo"
+          ]
+        },
+        "locations": {
+          "count": 12,
+          "names": [
+            "Asia",
+            "Capadocia",
+            "Cirene",
+            "Egipto",
+            "Frigia",
+            "Israel",
+            "Jerusalén",
+            "Judea",
+            "Mesopotamia",
+            "Panfilia",
+            "Ponto",
+            "África"
+          ]
+        },
+        "otReferences": 3,
+        "questions": 4,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "3": {
+      "chapterNumber": 3,
+      "verseCount": 26,
+      "summary": {
+        "individuals": {
+          "count": 9,
+          "names": [
+            "Abraham",
+            "Isaac",
+            "Jacob",
+            "Juan (apóstol)",
+            "Moisés",
+            "Pedro (apóstol, Simón)",
+            "Pilato",
+            "Salomón",
+            "Samuel"
+          ]
+        },
+        "deity": {
+          "count": 9,
+          "names": [
+            "Autor de la vida",
+            "Cristo",
+            "Dios",
+            "Dios de nuestros padres",
+            "Hijo",
+            "Jesucristo",
+            "Jesús",
+            "Justo",
+            "Santo"
+          ]
+        },
+        "locations": {
+          "count": 2,
+          "names": [
+            "Hermosa (Puerta del templo)",
+            "Nazaret"
+          ]
+        },
+        "otReferences": 2,
+        "questions": 2,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "4": {
+      "chapterNumber": 4,
+      "verseCount": 37,
+      "summary": {
+        "individuals": {
+          "count": 10,
+          "names": [
+            "Alejandro",
+            "Anás",
+            "Caifás",
+            "David",
+            "Herodes",
+            "José (Bernabé)",
+            "Juan (apóstol)",
+            "Juan (familia del sumo sacerdote)",
+            "Pedro (apóstol, Simón)",
+            "Poncio Pilato"
+          ]
+        },
+        "deity": {
+          "count": 9,
+          "names": [
+            "Cabeza del ángulo",
+            "Cristo",
+            "Dios",
+            "Espíritu Santo",
+            "Hijo",
+            "Jesucristo",
+            "Jesús",
+            "Piedra",
+            "Soberano Señor"
+          ]
+        },
+        "locations": {
+          "count": 4,
+          "names": [
+            "Chipre",
+            "Israel",
+            "Jerusalén",
+            "Nazaret"
+          ]
+        },
+        "otReferences": 1,
+        "questions": 3,
+        "exclamations": 0,
+        "parenthetical": 1
+      }
+    },
+    "5": {
+      "chapterNumber": 5,
+      "verseCount": 42,
+      "summary": {
+        "individuals": {
+          "count": 8,
+          "names": [
+            "Ananías",
+            "Gamaliel",
+            "Judas (el galileo)",
+            "Pedro (apóstol, Simón)",
+            "Safira",
+            "Salomón",
+            "Satanás",
+            "Teudas"
+          ]
+        },
+        "deity": {
+          "count": 8,
+          "names": [
+            "Dios",
+            "Dios de nuestros padres",
+            "Espíritu",
+            "Espíritu Santo",
+            "Jesucristo",
+            "Jesús",
+            "Príncipe",
+            "Salvador"
+          ]
+        },
+        "locations": {
+          "count": 2,
+          "names": [
+            "Israel",
+            "Jerusalén"
+          ]
+        },
+        "otReferences": 0,
+        "questions": 7,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "6": {
+      "chapterNumber": 6,
+      "verseCount": 15,
+      "summary": {
+        "individuals": {
+          "count": 8,
+          "names": [
+            "Esteban",
+            "Felipe",
+            "Moisés",
+            "Nicanor",
+            "Nicolás",
+            "Parmenas",
+            "Prócoro",
+            "Timón"
+          ]
+        },
+        "deity": {
+          "count": 4,
+          "names": [
+            "Dios",
+            "Espíritu",
+            "Espíritu Santo",
+            "Jesús"
+          ]
+        },
+        "locations": {
+          "count": 6,
+          "names": [
+            "Alejandría",
+            "Antioquía",
+            "Asia",
+            "Cilicia",
+            "Jerusalén",
+            "Nazaret"
+          ]
+        },
+        "otReferences": 0,
+        "questions": 0,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "7": {
+      "chapterNumber": 7,
+      "verseCount": 60,
+      "summary": {
+        "individuals": {
+          "count": 14,
+          "names": [
+            "Aarón",
+            "Abraham",
+            "David",
+            "Esteban",
+            "Hamor",
+            "Isaac",
+            "Jacob",
+            "Josué",
+            "José",
+            "Moisés",
+            "Moloc",
+            "Renfán",
+            "Salomón",
+            "Saulo"
+          ]
+        },
+        "deity": {
+          "count": 8,
+          "names": [
+            "Altísimo",
+            "Dios",
+            "Dios de la gloria",
+            "Dios de tus padres",
+            "Espíritu Santo",
+            "Hijo del Hombre",
+            "Jesús",
+            "Justo"
+          ]
+        },
+        "locations": {
+          "count": 10,
+          "names": [
+            "Babilonia",
+            "Canaán",
+            "Egipto",
+            "Harán",
+            "Israel",
+            "Madián",
+            "Mar Rojo",
+            "Mesopotamia",
+            "Monte Sinaí",
+            "Siquem"
+          ]
+        },
+        "otReferences": 10,
+        "questions": 10,
+        "exclamations": 1,
+        "parenthetical": 0
+      }
+    },
+    "8": {
+      "chapterNumber": 8,
+      "verseCount": 40,
+      "summary": {
+        "individuals": {
+          "count": 7,
+          "names": [
+            "Esteban",
+            "Felipe",
+            "Isaías",
+            "Juan (apóstol)",
+            "Pedro (apóstol, Simón)",
+            "Saulo",
+            "Simón (el mago)"
+          ]
+        },
+        "deity": {
+          "count": 7,
+          "names": [
+            "Cristo",
+            "Dios",
+            "Espíritu",
+            "Espíritu Santo",
+            "Hijo de Dios",
+            "Jesucristo",
+            "Jesús"
+          ]
+        },
+        "locations": {
+          "count": 6,
+          "names": [
+            "Azoto",
+            "Cesarea",
+            "Gaza",
+            "Jerusalén",
+            "Judea",
+            "Samaria"
+          ]
+        },
+        "otReferences": 1,
+        "questions": 5,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "9": {
+      "chapterNumber": 9,
+      "verseCount": 43,
+      "summary": {
+        "individuals": {
+          "count": 8,
+          "names": [
+            "Ananías (discípulo)",
+            "Bernabé (José)",
+            "Eneas",
+            "Judas (de la calle Derecha)",
+            "Pedro (apóstol, Simón)",
+            "Saulo",
+            "Simón (un curtidor)",
+            "Tabita (Dorcas)"
+          ]
+        },
+        "deity": {
+          "count": 5,
+          "names": [
+            "Cristo",
+            "Espíritu Santo",
+            "Hijo de Dios",
+            "Jesucristo",
+            "Jesús"
+          ]
+        },
+        "locations": {
+          "count": 12,
+          "names": [
+            "Cesarea",
+            "Damasco",
+            "Derecha (calle)",
+            "Galilea",
+            "Israel",
+            "Jerusalén",
+            "Jope",
+            "Judea",
+            "Lida",
+            "Samaria",
+            "Sarón",
+            "Tarso"
+          ]
+        },
+        "otReferences": 0,
+        "questions": 4,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    }
+  }
+}

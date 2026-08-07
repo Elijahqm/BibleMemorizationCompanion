@@ -35,13 +35,13 @@
       "title": "CB Hechos 1-9",
       "packageType": "book",
       "language": "es",
-      "version": "1.0.0",
-      "sizeBytes": 27679,
+      "version": "1.1.0",
+      "sizeBytes": 33787,
       "isFree": true,
       "owned": false,
-      "artifactUrl": "/packages/cb-hechos-1-9/1.0.0/package.zip",
-      "manifestUrl": "/packages/cb-hechos-1-9/1.0.0/manifest.json",
-      "checksumSha256": "03a956618b641a48ed5011cd20f474960017b28c9115e67bd462d2668269a5a2",
+      "artifactUrl": "/packages/cb-hechos-1-9/1.1.0/package.zip",
+      "manifestUrl": "/packages/cb-hechos-1-9/1.1.0/manifest.json",
+      "checksumSha256": "8c512308f279ea02c0b8ecacde200efd61837410407b256588a611b885847a11",
       "minAppVersion": "1.0.0"
     },
     {

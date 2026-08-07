@@ -88,7 +88,7 @@ namespace ContentTool
         [
             new("cb-daniel-1-6",  "CB Daniel 1-6",  "Dan", "REINA-VALERA 1960", "DANIEL", "1.0.0", "book", "es") { BackendRoot = backendRoot },
             new("cb-daniel-7-12", "CB Daniel 7-12", "Dan", "REINA-VALERA 1960", null,     "1.0.0", "book", "es") { BackendRoot = backendRoot },
-            new("cb-hechos-1-9",  "CB Hechos 1-9",  "Hch", "REINA-VALERA 1960", "HECHOS", "1.0.0", "book", "es") { BackendRoot = backendRoot },
+            new("cb-hechos-1-9",  "CB Hechos 1-9",  "Hch", "REINA-VALERA 1960", "HECHOS", "1.1.0", "book", "es") { BackendRoot = backendRoot },
             new("bq-acts-1-9",    "BQ Acts 1-9",    "Acts", "KING JAMES VERSION", null,   "1.1.0", "book", "en") { BackendRoot = backendRoot },
         ];
     }
