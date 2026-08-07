@@ -66,14 +66,14 @@ Every content card should show:
 - Last update date
 
 ## 8. Main App Areas to Design
-1. Home
+1. My Studies
 2. Store
 3. Library
 4. Study
 5. Progress
 6. Settings
 
-Home is the main starting point and should guide people to their next action.
+My Studies is the main starting point and should guide people to their next action.
 
 ## 9. Study Mode (First Release)
 Verse-by-verse mode is the heart of the app.
@@ -85,10 +85,17 @@ Expected behavior:
 - Swipe to move to next or previous verse
 - Show where the learner is in the current section
 
-## 10. First Mockup Package (MVP)
+## 10. First Mockup Package (MVP) — completed, kept for reference
+
+**Status: done.** This brief has been executed — the mockups exist
+(`docs/MVP-Round-4.html`, the claude.ai/design mockup) and are now the
+source of truth for these screens, not this list. Kept here only as a
+record of what was originally asked for; if the two disagree, the mockups
+win.
+
 The first design package should include clickable mockups for:
-1. Welcome/Home entry (guest-friendly)
-2. Home with Continue Studying as the main action
+1. Welcome/My Studies entry (guest-friendly)
+2. My Studies with Continue Studying as the main action
 3. Store list (free Scripture content)
 4. Content detail screen
 5. Content status states (free, owned, locked, downloaded)
@@ -158,5 +165,5 @@ These points are already agreed:
 5. Paid items are sold as one-time purchases per package
 6. Quiz products are sold by question type
 7. Purchase recovery starts from the Store header
-8. Home is the main hub for navigation
+8. My Studies is the main hub for navigation
 9. Target date for first mockups: July 20, 2026
