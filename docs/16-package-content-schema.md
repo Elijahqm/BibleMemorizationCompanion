@@ -139,13 +139,13 @@ Client rendering rules:
    `{sectionId}` to link it to the matching entry in `sections.json`.
 3. Render the surrounding text as normal verse text.
 
-Example (`Acts 9:19`, whose second half opens a new section):
+Example (`Acts 9:19`, which opens a new section at its start):
 
 ```json
 {
   "verseRef": "Acts 9:19",
   "verseNumber": 19,
-  "text": "And when he had received meat, he was strengthened. [[section:saul-preaches-at-damascus|Saul Preaches at Damascus]] Then was Saul certain days with the disciples which were at Damascus."
+  "text": "[[section:saul-preaches-at-damascus|Saul Preaches at Damascus]] And when he had received meat, he was strengthened. Then was Saul certain days with the disciples which were at Damascus."
 }
 ```
 

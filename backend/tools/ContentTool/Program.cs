@@ -381,9 +381,10 @@ namespace ContentTool
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Skip files that can't be parsed (might be corrupt or new format)
+                    Console.Error.WriteLine(
+                        $"[parse] WARNING: skipping unreadable chapter file '{Path.GetFileName(file)}': {ex.Message}");
                 }
             }
 

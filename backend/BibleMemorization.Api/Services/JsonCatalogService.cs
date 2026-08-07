@@ -18,7 +18,7 @@ public sealed class JsonCatalogService : ICatalogService, IDisposable
     private readonly ILogger<JsonCatalogService> _logger;
     private readonly SemaphoreSlim _loadGate = new(1, 1);
 
-    private CatalogResponse? _cachedCatalog;
+    private volatile CatalogResponse? _cachedCatalog;
     private FileSystemWatcher? _watcher;
     private Timer? _reloadTimer;
 
@@ -150,16 +150,16 @@ public sealed class JsonCatalogService : ICatalogService, IDisposable
 
         _watcher = new FileSystemWatcher(directory, fileName)
         {
-            NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime | NotifyFilters.Size,
-            EnableRaisingEvents = true
+            NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime | NotifyFilters.Size | NotifyFilters.FileName
         };
 
         _watcher.Changed += OnCatalogFileChanged;
         _watcher.Created += OnCatalogFileChanged;
         _watcher.Deleted += OnCatalogFileChanged;
         _watcher.Renamed += OnCatalogFileChanged;
+        _watcher.EnableRaisingEvents = true;
 
-        _reloadTimer = new Timer(_ => ReloadCatalogAsync(), null, Timeout.Infinite, Timeout.Infinite);
+        _reloadTimer = new Timer(_ => _ = ReloadCatalogAsync(), null, Timeout.Infinite, Timeout.Infinite);
 
         _logger.LogInformation(
             "Watching catalog file '{FilePath}' for changes.", _filePath);
@@ -175,11 +175,13 @@ public sealed class JsonCatalogService : ICatalogService, IDisposable
         _reloadTimer?.Change(500, Timeout.Infinite);
     }
 
-    private async void ReloadCatalogAsync()
+    private async Task ReloadCatalogAsync()
     {
-        await _loadGate.WaitAsync();
+        var acquired = false;
         try
         {
+            await _loadGate.WaitAsync();
+            acquired = true;
             _cachedCatalog = await LoadCatalogAsync(CancellationToken.None);
             _logger.LogInformation("Catalog reloaded successfully from disk.");
         }
@@ -189,21 +191,25 @@ public sealed class JsonCatalogService : ICatalogService, IDisposable
         }
         finally
         {
-            _loadGate.Release();
+            if (acquired)
+            {
+                _loadGate.Release();
+            }
         }
     }
 
     public void Dispose()
     {
-        _reloadTimer?.Dispose();
         if (_watcher is not null)
         {
+            _watcher.EnableRaisingEvents = false;
             _watcher.Changed -= OnCatalogFileChanged;
             _watcher.Created -= OnCatalogFileChanged;
             _watcher.Deleted -= OnCatalogFileChanged;
             _watcher.Renamed -= OnCatalogFileChanged;
             _watcher.Dispose();
         }
+        Interlocked.Exchange(ref _reloadTimer, null)?.Dispose();
         _loadGate.Dispose();
     }
 }

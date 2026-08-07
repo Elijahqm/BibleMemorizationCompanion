@@ -518,7 +518,8 @@ def main():
         "chapterOrder": list(scripture_data.keys()),
         "chapterVerseCounts": {str(k): v for k, v in verse_counts.items()},
         "availableSections": True,
-        "availableAudio": False
+        "availableAudio": False,
+        "availableAnalysis": True
     }
 
     with open(OUTPUT_DIR / "index.json", 'w', encoding='utf-8') as f:
