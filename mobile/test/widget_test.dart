@@ -23,6 +23,7 @@ import 'package:bible_memorization_companion_mobile/features/study/data/verse_st
 import 'package:bible_memorization_companion_mobile/features/study/study_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
@@ -212,6 +213,10 @@ Widget _wrap(
 }
 
 void main() {
+  setUpAll(() {
+    GoogleFonts.config.allowRuntimeFetching = false;
+  });
+
   testWidgets('app shell renders primary navigation', (tester) async {
     await tester.pumpWidget(
       _wrap(_controllerReturning(() => http.Response(catalogJson, 200))),
