@@ -4,302 +4,1038 @@
     {
       "verseRef": "Hch 7:1",
       "verseNumber": 1,
-      "text": "[[section:defensa-y-muerte-de-esteban|Defensa y muerte de Esteban]] El sumo sacerdote dijo entonces: ¿Es esto así?"
+      "text": "[[section:defensa-y-muerte-de-esteban|Defensa y muerte de Esteban]] El sumo sacerdote dijo entonces: ¿Es esto así?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿Es esto así?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:2",
       "verseNumber": 2,
-      "text": "Y él dijo: Varones hermanos y padres, oíd: El Dios de la gloria apareció a nuestro padre Abraham, estando en Mesopotamia, antes que morase en Harán,"
+      "text": "Y él dijo: Varones hermanos y padres, oíd: El Dios de la gloria apareció a nuestro padre Abraham, estando en Mesopotamia, antes que morase en Harán,",
+      "analysis": {
+        "individuals": [
+          "Abraham"
+        ],
+        "deity": [
+          "Dios de la gloria"
+        ],
+        "locations": [
+          "Mesopotamia",
+          "Harán"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:3",
       "verseNumber": 3,
-      "text": "y le dijo: Sal de tu tierra y de tu parentela, y ven a la tierra que yo te mostraré."
+      "text": "y le dijo: Sal de tu tierra y de tu parentela, y ven a la tierra que yo te mostraré.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [
+          "Sal de tu tierra y de tu parentela, y ven a la tierra que yo te mostraré."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:4",
       "verseNumber": 4,
-      "text": "Entonces salió de la tierra de los caldeos y habitó en Harán; y de allí, muerto su padre, Dios le trasladó a esta tierra, en la cual vosotros habitáis ahora."
+      "text": "Entonces salió de la tierra de los caldeos y habitó en Harán; y de allí, muerto su padre, Dios le trasladó a esta tierra, en la cual vosotros habitáis ahora.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [
+          "Harán"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:5",
       "verseNumber": 5,
-      "text": "Y no le dio herencia en ella, ni aun para asentar un pie; pero le prometió que se la daría en posesión, y a su descendencia después de él, cuando él aún no tenía hijo."
+      "text": "Y no le dio herencia en ella, ni aun para asentar un pie; pero le prometió que se la daría en posesión, y a su descendencia después de él, cuando él aún no tenía hijo.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:6",
       "verseNumber": 6,
-      "text": "Y le dijo Dios así: Que su descendencia sería extranjera en tierra ajena, y que los reducirían a servidumbre y los maltratarían, por cuatrocientos años."
+      "text": "Y le dijo Dios así: Que su descendencia sería extranjera en tierra ajena, y que los reducirían a servidumbre y los maltratarían, por cuatrocientos años.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [
+          "Que su descendencia sería extranjera en tierra ajena, y que los reducirían a servidumbre y los maltratarían, por cuatrocientos años. Mas yo juzgaré, … a la nación de la cual serán siervos; y después de esto saldrán y me servirán en este lugar."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:7",
       "verseNumber": 7,
-      "text": "Mas yo juzgaré, dijo Dios, a la nación de la cual serán siervos; y después de esto saldrán y me servirán en este lugar."
+      "text": "Mas yo juzgaré, dijo Dios, a la nación de la cual serán siervos; y después de esto saldrán y me servirán en este lugar.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:8",
       "verseNumber": 8,
-      "text": "Y le dio el pacto de la circuncisión; y así Abraham engendró a Isaac, y le circuncidó al octavo día; e Isaac a Jacob, y Jacob a los doce patriarcas."
+      "text": "Y le dio el pacto de la circuncisión; y así Abraham engendró a Isaac, y le circuncidó al octavo día; e Isaac a Jacob, y Jacob a los doce patriarcas.",
+      "analysis": {
+        "individuals": [
+          "Abraham",
+          "Isaac",
+          "Jacob"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:9",
       "verseNumber": 9,
-      "text": "Los patriarcas, movidos por envidia, vendieron a José para Egipto; pero Dios estaba con él,"
+      "text": "Los patriarcas, movidos por envidia, vendieron a José para Egipto; pero Dios estaba con él,",
+      "analysis": {
+        "individuals": [
+          "José"
+        ],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:10",
       "verseNumber": 10,
-      "text": "y le libró de todas sus tribulaciones, y le dio gracia y sabiduría delante de Faraón rey de Egipto, el cual lo puso por gobernador sobre Egipto y sobre toda su casa."
+      "text": "y le libró de todas sus tribulaciones, y le dio gracia y sabiduría delante de Faraón rey de Egipto, el cual lo puso por gobernador sobre Egipto y sobre toda su casa.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:11",
       "verseNumber": 11,
-      "text": "Vino entonces hambre en toda la tierra de Egipto y de Canaán, y grande tribulación; y nuestros padres no hallaban alimentos."
+      "text": "Vino entonces hambre en toda la tierra de Egipto y de Canaán, y grande tribulación; y nuestros padres no hallaban alimentos.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Egipto",
+          "Canaán"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:12",
       "verseNumber": 12,
-      "text": "Cuando oyó Jacob que había trigo en Egipto, envió a nuestros padres la primera vez."
+      "text": "Cuando oyó Jacob que había trigo en Egipto, envió a nuestros padres la primera vez.",
+      "analysis": {
+        "individuals": [
+          "Jacob"
+        ],
+        "deity": [],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:13",
       "verseNumber": 13,
-      "text": "Y en la segunda, José se dio a conocer a sus hermanos, y fue manifestado a Faraón el linaje de José."
+      "text": "Y en la segunda, José se dio a conocer a sus hermanos, y fue manifestado a Faraón el linaje de José.",
+      "analysis": {
+        "individuals": [
+          "José"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:14",
       "verseNumber": 14,
-      "text": "Y enviando José, hizo venir a su padre Jacob, y a toda su parentela, en número de setenta y cinco personas."
+      "text": "Y enviando José, hizo venir a su padre Jacob, y a toda su parentela, en número de setenta y cinco personas.",
+      "analysis": {
+        "individuals": [
+          "Jacob",
+          "José"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:15",
       "verseNumber": 15,
-      "text": "Así descendió Jacob a Egipto, donde murió él, y también nuestros padres;"
+      "text": "Así descendió Jacob a Egipto, donde murió él, y también nuestros padres;",
+      "analysis": {
+        "individuals": [
+          "Jacob"
+        ],
+        "deity": [],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:16",
       "verseNumber": 16,
-      "text": "los cuales fueron trasladados a Siquem, y puestos en el sepulcro que a precio de dinero compró Abraham de los hijos de Hamor en Siquem."
+      "text": "los cuales fueron trasladados a Siquem, y puestos en el sepulcro que a precio de dinero compró Abraham de los hijos de Hamor en Siquem.",
+      "analysis": {
+        "individuals": [
+          "Abraham",
+          "Hamor"
+        ],
+        "deity": [],
+        "locations": [
+          "Siquem"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:17",
       "verseNumber": 17,
-      "text": "Pero cuando se acercaba el tiempo de la promesa, que Dios había jurado a Abraham, el pueblo creció y se multiplicó en Egipto,"
+      "text": "Pero cuando se acercaba el tiempo de la promesa, que Dios había jurado a Abraham, el pueblo creció y se multiplicó en Egipto,",
+      "analysis": {
+        "individuals": [
+          "Abraham"
+        ],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:18",
       "verseNumber": 18,
-      "text": "hasta que se levantó en Egipto otro rey que no conocía a José."
+      "text": "hasta que se levantó en Egipto otro rey que no conocía a José.",
+      "analysis": {
+        "individuals": [
+          "José"
+        ],
+        "deity": [],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:19",
       "verseNumber": 19,
-      "text": "Este rey, usando de astucia con nuestro pueblo, maltrató a nuestros padres, a fin de que expusiesen a la muerte a sus niños, para que no se propagasen."
+      "text": "Este rey, usando de astucia con nuestro pueblo, maltrató a nuestros padres, a fin de que expusiesen a la muerte a sus niños, para que no se propagasen.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:20",
       "verseNumber": 20,
-      "text": "En aquel mismo tiempo nació Moisés, y fue agradable a Dios; y fue criado tres meses en casa de su padre."
+      "text": "En aquel mismo tiempo nació Moisés, y fue agradable a Dios; y fue criado tres meses en casa de su padre.",
+      "analysis": {
+        "individuals": [
+          "Moisés"
+        ],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:21",
       "verseNumber": 21,
-      "text": "Pero siendo expuesto a la muerte, la hija de Faraón le recogió y le crió como a hijo suyo."
+      "text": "Pero siendo expuesto a la muerte, la hija de Faraón le recogió y le crió como a hijo suyo.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:22",
       "verseNumber": 22,
-      "text": "Y fue enseñado Moisés en toda la sabiduría de los egipcios; y era poderoso en sus palabras y obras."
+      "text": "Y fue enseñado Moisés en toda la sabiduría de los egipcios; y era poderoso en sus palabras y obras.",
+      "analysis": {
+        "individuals": [
+          "Moisés"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:23",
       "verseNumber": 23,
-      "text": "Cuando hubo cumplido la edad de cuarenta años, le vino al corazón el visitar a sus hermanos, los hijos de Israel."
+      "text": "Cuando hubo cumplido la edad de cuarenta años, le vino al corazón el visitar a sus hermanos, los hijos de Israel.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Israel"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:24",
       "verseNumber": 24,
-      "text": "Y al ver a uno que era maltratado, lo defendió, e hiriendo al egipcio, vengó al oprimido."
+      "text": "Y al ver a uno que era maltratado, lo defendió, e hiriendo al egipcio, vengó al oprimido.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:25",
       "verseNumber": 25,
-      "text": "Pero él pensaba que sus hermanos comprendían que Dios les daría libertad por mano suya; mas ellos no lo habían entendido así."
+      "text": "Pero él pensaba que sus hermanos comprendían que Dios les daría libertad por mano suya; mas ellos no lo habían entendido así.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:26",
       "verseNumber": 26,
-      "text": "Y al día siguiente, se presentó a unos de ellos que reñían, y los ponía en paz, diciendo: Varones, hermanos sois, ¿por qué os maltratáis el uno al otro?"
+      "text": "Y al día siguiente, se presentó a unos de ellos que reñían, y los ponía en paz, diciendo: Varones, hermanos sois, ¿por qué os maltratáis el uno al otro?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [
+          "Y al día siguiente, se presentó a unos de ellos que reñían, y los ponía en paz, diciendo: Varones, hermanos sois, ¿por qué os maltratáis el uno al otro? Entonces el que maltrataba a su prójimo le rechazó, diciendo: ¿Quién te ha puesto por gobernante y juez sobre nosotros? ¿Quieres tú matarme, como mataste ayer al egipcio?"
+        ],
+        "parenthetical": [],
+        "questions": [
+          "¿por qué os maltratáis el uno al otro?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:27",
       "verseNumber": 27,
-      "text": "Entonces el que maltrataba a su prójimo le rechazó, diciendo: ¿Quién te ha puesto por gobernante y juez sobre nosotros?"
+      "text": "Entonces el que maltrataba a su prójimo le rechazó, diciendo: ¿Quién te ha puesto por gobernante y juez sobre nosotros?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿Quién te ha puesto por gobernante y juez sobre nosotros?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:28",
       "verseNumber": 28,
-      "text": "¿Quieres tú matarme, como mataste ayer al egipcio?"
+      "text": "¿Quieres tú matarme, como mataste ayer al egipcio?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿Quieres tú matarme, como mataste ayer al egipcio?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:29",
       "verseNumber": 29,
-      "text": "Al oír esta palabra, Moisés huyó, y vivió como extranjero en tierra de Madián, donde engendró dos hijos."
+      "text": "Al oír esta palabra, Moisés huyó, y vivió como extranjero en tierra de Madián, donde engendró dos hijos.",
+      "analysis": {
+        "individuals": [
+          "Moisés"
+        ],
+        "deity": [],
+        "locations": [
+          "Madián"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:30",
       "verseNumber": 30,
-      "text": "Pasados cuarenta años, un ángel se le apareció en el desierto del monte Sinaí, en la llama de fuego de una zarza."
+      "text": "Pasados cuarenta años, un ángel se le apareció en el desierto del monte Sinaí, en la llama de fuego de una zarza.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Monte Sinaí"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:31",
       "verseNumber": 31,
-      "text": "Entonces Moisés, mirando, se maravilló de la visión; y acercándose para observar, vino a él la voz del Señor:"
+      "text": "Entonces Moisés, mirando, se maravilló de la visión; y acercándose para observar, vino a él la voz del Señor:",
+      "analysis": {
+        "individuals": [
+          "Moisés"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:32",
       "verseNumber": 32,
-      "text": "Yo soy el Dios de tus padres, el Dios de Abraham, el Dios de Isaac, y el Dios de Jacob. Y Moisés, temblando, no se atrevía a mirar."
+      "text": "Yo soy el Dios de tus padres, el Dios de Abraham, el Dios de Isaac, y el Dios de Jacob. Y Moisés, temblando, no se atrevía a mirar.",
+      "analysis": {
+        "individuals": [
+          "Abraham",
+          "Isaac",
+          "Jacob",
+          "Moisés"
+        ],
+        "deity": [
+          "Dios",
+          "Dios de tus padres"
+        ],
+        "locations": [],
+        "otReferences": [
+          "Yo soy el Dios de tus padres, el Dios de Abraham, el Dios de Isaac, y el Dios de Jacob."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:33",
       "verseNumber": 33,
-      "text": "Y le dijo el Señor: Quita el calzado de tus pies, porque el lugar en que estás es tierra santa."
+      "text": "Y le dijo el Señor: Quita el calzado de tus pies, porque el lugar en que estás es tierra santa.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [
+          "Quita el calzado de tus pies, porque el lugar en que estás es tierra santa. Ciertamente he visto la aflicción de mi pueblo que está en Egipto, y he oído su gemido, y he descendido para librarlos. Ahora, pues, ven, te enviaré a Egipto."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:34",
       "verseNumber": 34,
-      "text": "Ciertamente he visto la aflicción de mi pueblo que está en Egipto, y he oído su gemido, y he descendido para librarlos. Ahora, pues, ven, te enviaré a Egipto."
+      "text": "Ciertamente he visto la aflicción de mi pueblo que está en Egipto, y he oído su gemido, y he descendido para librarlos. Ahora, pues, ven, te enviaré a Egipto.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:35",
       "verseNumber": 35,
-      "text": "A este Moisés, a quien habían rechazado, diciendo: ¿Quién te ha puesto por gobernante y juez?, a éste lo envió Dios como gobernante y libertador por mano del ángel que se le apareció en la zarza."
+      "text": "A este Moisés, a quien habían rechazado, diciendo: ¿Quién te ha puesto por gobernante y juez?, a éste lo envió Dios como gobernante y libertador por mano del ángel que se le apareció en la zarza.",
+      "analysis": {
+        "individuals": [
+          "Moisés"
+        ],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [
+          "¿Quién te ha puesto por gobernante y juez?"
+        ],
+        "parenthetical": [],
+        "questions": [
+          "¿Quién te ha puesto por gobernante y juez?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:36",
       "verseNumber": 36,
-      "text": "Este los sacó, habiendo hecho prodigios y señales en tierra de Egipto, y en el Mar Rojo, y en el desierto por cuarenta años."
+      "text": "Este los sacó, habiendo hecho prodigios y señales en tierra de Egipto, y en el Mar Rojo, y en el desierto por cuarenta años.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Egipto",
+          "Mar Rojo"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:37",
       "verseNumber": 37,
-      "text": "Este Moisés es el que dijo a los hijos de Israel: Profeta os levantará el Señor vuestro Dios de entre vuestros hermanos, como a mí; a él oiréis."
+      "text": "Este Moisés es el que dijo a los hijos de Israel: Profeta os levantará el Señor vuestro Dios de entre vuestros hermanos, como a mí; a él oiréis.",
+      "analysis": {
+        "individuals": [
+          "Moisés"
+        ],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [
+          "Israel"
+        ],
+        "otReferences": [
+          "Profeta os levantará el Señor vuestro Dios de entre vuestros hermanos, como a mí; a él oiréis."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:38",
       "verseNumber": 38,
-      "text": "Este es aquel Moisés que estuvo en la congregación en el desierto con el ángel que le hablaba en el monte Sinaí, y con nuestros padres, y que recibió palabras de vida que darnos;"
+      "text": "Este es aquel Moisés que estuvo en la congregación en el desierto con el ángel que le hablaba en el monte Sinaí, y con nuestros padres, y que recibió palabras de vida que darnos;",
+      "analysis": {
+        "individuals": [
+          "Moisés"
+        ],
+        "deity": [],
+        "locations": [
+          "Monte Sinaí"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:39",
       "verseNumber": 39,
-      "text": "al cual nuestros padres no quisieron obedecer, sino que le desecharon, y en sus corazones se volvieron a Egipto,"
+      "text": "al cual nuestros padres no quisieron obedecer, sino que le desecharon, y en sus corazones se volvieron a Egipto,",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:40",
       "verseNumber": 40,
-      "text": "cuando dijeron a Aarón: Haznos dioses que vayan delante de nosotros; porque a este Moisés, que nos sacó de la tierra de Egipto, no sabemos qué le haya acontecido."
+      "text": "cuando dijeron a Aarón: Haznos dioses que vayan delante de nosotros; porque a este Moisés, que nos sacó de la tierra de Egipto, no sabemos qué le haya acontecido.",
+      "analysis": {
+        "individuals": [
+          "Moisés",
+          "Aarón"
+        ],
+        "deity": [],
+        "locations": [
+          "Egipto"
+        ],
+        "otReferences": [
+          "Haznos dioses que vayan delante de nosotros; porque a este Moisés, que nos sacó de la tierra de Egipto, no sabemos qué le haya acontecido."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:41",
       "verseNumber": 41,
-      "text": "Entonces hicieron un becerro, y ofrecieron sacrificio al ídolo, y en las obras de sus manos se regocijaron."
+      "text": "Entonces hicieron un becerro, y ofrecieron sacrificio al ídolo, y en las obras de sus manos se regocijaron.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:42",
       "verseNumber": 42,
-      "text": "Y Dios se apartó, y los entregó a que rindiesen culto al ejército del cielo; como está escrito en el libro de los profetas: ¿Acaso me ofrecisteis víctimas y sacrificios En el desierto por cuarenta años, casa de Israel?"
+      "text": "Y Dios se apartó, y los entregó a que rindiesen culto al ejército del cielo; como está escrito en el libro de los profetas: ¿Acaso me ofrecisteis víctimas y sacrificios En el desierto por cuarenta años, casa de Israel?",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [
+          "Israel"
+        ],
+        "otReferences": [
+          "¿Acaso me ofrecisteis víctimas y sacrificios En el desierto por cuarenta años, casa de Israel? Antes bien llevasteis el tabernáculo de Moloc, Y la estrella de vuestro dios Renfán, Figuras que os hicisteis para adorarlas. Os transportaré, pues, más allá de Babilonia."
+        ],
+        "parenthetical": [],
+        "questions": [
+          "¿Acaso me offeredis víctimas y sacrificios En el desierto por cuarenta años, casa de Israel?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:43",
       "verseNumber": 43,
-      "text": "Antes bien llevasteis el tabernáculo de Moloc, Y la estrella de vuestro dios Renfán, Figuras que os hicisteis para adorarlas. Os transportaré, pues, más allá de Babilonia."
+      "text": "Antes bien llevasteis el tabernáculo de Moloc, Y la estrella de vuestro dios Renfán, Figuras que os hicisteis para adorarlas. Os transportaré, pues, más allá de Babilonia.",
+      "analysis": {
+        "individuals": [
+          "Moloc",
+          "Renfán"
+        ],
+        "deity": [],
+        "locations": [
+          "Babilonia"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:44",
       "verseNumber": 44,
-      "text": "Tuvieron nuestros padres el tabernáculo del testimonio en el desierto, como había ordenado Dios cuando dijo a Moisés que lo hiciese conforme al modelo que había visto."
+      "text": "Tuvieron nuestros padres el tabernáculo del testimonio en el desierto, como había ordenado Dios cuando dijo a Moisés que lo hiciese conforme al modelo que había visto.",
+      "analysis": {
+        "individuals": [
+          "Moisés"
+        ],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:45",
       "verseNumber": 45,
-      "text": "El cual, recibido a su vez por nuestros padres, lo introdujeron con Josué al tomar posesión de la tierra de los gentiles, a los cuales Dios arrojó de la presencia de nuestros padres, hasta los días de David."
+      "text": "El cual, recibido a su vez por nuestros padres, lo introdujeron con Josué al tomar posesión de la tierra de los gentiles, a los cuales Dios arrojó de la presencia de nuestros padres, hasta los días de David.",
+      "analysis": {
+        "individuals": [
+          "Josué",
+          "David"
+        ],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:46",
       "verseNumber": 46,
-      "text": "Este halló gracia delante de Dios, y pidió proveer tabernáculo para el Dios de Jacob."
+      "text": "Este halló gracia delante de Dios, y pidió proveer tabernáculo para el Dios de Jacob.",
+      "analysis": {
+        "individuals": [
+          "Jacob"
+        ],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:47",
       "verseNumber": 47,
-      "text": "Mas Salomón le edificó casa;"
+      "text": "Mas Salomón le edificó casa;",
+      "analysis": {
+        "individuals": [
+          "Salomón"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:48",
       "verseNumber": 48,
-      "text": "si bien el Altísimo no habita en templos hechos de mano, como dice el profeta:"
+      "text": "si bien el Altísimo no habita en templos hechos de mano, como dice el profeta:",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Altísimo"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:49",
       "verseNumber": 49,
-      "text": "El cielo es mi trono, Y la tierra el estrado de mis pies. ¿Qué casa me edificaréis? dice el Señor; ¿O cuál es el lugar de mi reposo?"
+      "text": "El cielo es mi trono, Y la tierra el estrado de mis pies. ¿Qué casa me edificaréis? dice el Señor; ¿O cuál es el lugar de mi reposo?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [
+          "El cielo es mi trono,Y la tierra el estrado de mis pies. ¿Qué casa me edificaréis? dice el Señor; ¿O cuál es el lugar de mi reposo? ¿No hizo mi mano todas estas cosas?"
+        ],
+        "parenthetical": [],
+        "questions": [
+          "¿Qué casa me edificaréis?",
+          "¿O cuál es el lugar de mi reposo?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:50",
       "verseNumber": 50,
-      "text": "¿No hizo mi mano todas estas cosas?"
+      "text": "¿No hizo mi mano todas estas cosas?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿No hizo mi mano todas estas cosas?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:51",
       "verseNumber": 51,
-      "text": "¡Duros de cerviz, e incircuncisos de corazón y de oídos! Vosotros resistís siempre al Espíritu Santo; como vuestros padres, así también vosotros."
+      "text": "¡Duros de cerviz, e incircuncisos de corazón y de oídos! Vosotros resistís siempre al Espíritu Santo; como vuestros padres, así también vosotros.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Espíritu Santo"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": [
+          "¡Duros de cerviz, e incircuncisos de corazón y de oídos!"
+        ]
+      }
     },
     {
       "verseRef": "Hch 7:52",
       "verseNumber": 52,
-      "text": "¿A cuál de los profetas no persiguieron vuestros padres? Y mataron a los que anunciaron de antemano la venida del Justo, de quien vosotros ahora habéis sido entregadores y matadores;"
+      "text": "¿A cuál de los profetas no persiguieron vuestros padres? Y mataron a los que anunciaron de antemano la venida del Justo, de quien vosotros ahora habéis sido entregadores y matadores;",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Justo"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿A cuál de los profetas no persiguieron vuestros padres?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:53",
       "verseNumber": 53,
-      "text": "vosotros que recibisteis la ley por disposición de ángeles, y no la guardasteis."
+      "text": "vosotros que recibisteis la ley por disposición de ángeles, y no la guardasteis.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:54",
       "verseNumber": 54,
-      "text": "Oyendo estas cosas, se enfurecían en sus corazones, y crujían los dientes contra él."
+      "text": "Oyendo estas cosas, se enfurecían en sus corazones, y crujían los dientes contra él.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:55",
       "verseNumber": 55,
-      "text": "Pero Esteban, lleno del Espíritu Santo, puestos los ojos en el cielo, vio la gloria de Dios, y a Jesús que estaba a la diestra de Dios,"
+      "text": "Pero Esteban, lleno del Espíritu Santo, puestos los ojos en el cielo, vio la gloria de Dios, y a Jesús que estaba a la diestra de Dios,",
+      "analysis": {
+        "individuals": [
+          "Esteban"
+        ],
+        "deity": [
+          "Dios",
+          "Espíritu Santo",
+          "Jesús"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:56",
       "verseNumber": 56,
-      "text": "y dijo: He aquí, veo los cielos abiertos, y al Hijo del Hombre que está a la diestra de Dios."
+      "text": "y dijo: He aquí, veo los cielos abiertos, y al Hijo del Hombre que está a la diestra de Dios.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios",
+          "Hijo del Hombre"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:57",
       "verseNumber": 57,
-      "text": "Entonces ellos, dando grandes voces, se taparon los oídos, y arremetieron a una contra él."
+      "text": "Entonces ellos, dando grandes voces, se taparon los oídos, y arremetieron a una contra él.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:58",
       "verseNumber": 58,
-      "text": "Y echándole fuera de la ciudad, le apedrearon; y los testigos pusieron sus ropas a los pies de un joven que se llamaba Saulo."
+      "text": "Y echándole fuera de la ciudad, le apedrearon; y los testigos pusieron sus ropas a los pies de un joven que se llamaba Saulo.",
+      "analysis": {
+        "individuals": [
+          "Saulo"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:59",
       "verseNumber": 59,
-      "text": "Y apedreaban a Esteban, mientras él invocaba y decía: Señor Jesús, recibe mi espíritu."
+      "text": "Y apedreaban a Esteban, mientras él invocaba y decía: Señor Jesús, recibe mi espíritu.",
+      "analysis": {
+        "individuals": [
+          "Esteban"
+        ],
+        "deity": [
+          "Jesús"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 7:60",
       "verseNumber": 60,
-      "text": "Y puesto de rodillas, clamó a gran voz: Señor, no les tomes en cuenta este pecado. Y habiendo dicho esto, durmió."
+      "text": "Y puesto de rodillas, clamó a gran voz: Señor, no les tomes en cuenta este pecado. Y habiendo dicho esto, durmió.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     }
   ]
 }

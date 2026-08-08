@@ -1,0 +1,87 @@
+{
+  "packageId": "bq-acts-1-9",
+  "title": "BQ Acts 1-9",
+  "packageType": "book",
+  "language": "en",
+  "version": "1.1.0",
+  "schemaVersion": 1,
+  "minAppVersion": "1.0.0",
+  "attribution": "KING JAMES VERSION",
+  "createdAt": "2026-07-22T00:00:00Z",
+  "verseCount": 336,
+  "chapterCount": 9,
+  "files": [
+    {
+      "path": "content/chapter_analysis.json",
+      "sizeBytes": 9424,
+      "checksumSha256": "dc224f6c0dffff97800017178afc9bfc0e1fa757ed36f48dbe338b3f44eb531f",
+      "required": false
+    },
+    {
+      "path": "content/chapters/001.json",
+      "sizeBytes": 13349,
+      "checksumSha256": "5fdb196ac5b9a00dd134ecf5c994a7dd6f374ba02fb15e4f8fd96830d55e267d",
+      "required": true
+    },
+    {
+      "path": "content/chapters/002.json",
+      "sizeBytes": 22360,
+      "checksumSha256": "038ddd433051c1e8b54492608f7a6caed2c8727fd896b5870bb923c5edafd3a0",
+      "required": true
+    },
+    {
+      "path": "content/chapters/003.json",
+      "sizeBytes": 12997,
+      "checksumSha256": "dac9c6b2b192594be69d2367521a97395bfa023ff378dc420f3ba0f3a02542e8",
+      "required": true
+    },
+    {
+      "path": "content/chapters/004.json",
+      "sizeBytes": 17380,
+      "checksumSha256": "9bc220882980a1909100392d5413e915a6adc48caae20efb9e23311783272b27",
+      "required": true
+    },
+    {
+      "path": "content/chapters/005.json",
+      "sizeBytes": 19718,
+      "checksumSha256": "13d811783c6f7e378aad40092bcaf38b586edc2b866d514fb273dfe858582a56",
+      "required": true
+    },
+    {
+      "path": "content/chapters/006.json",
+      "sizeBytes": 7185,
+      "checksumSha256": "02ec13c10ebd6f080e9519eb4f64f739f7b3a249df23db975c34def925ceb464",
+      "required": true
+    },
+    {
+      "path": "content/chapters/007.json",
+      "sizeBytes": 30043,
+      "checksumSha256": "5ae1b5d3b03f5ba7beaf16bc7852e012ea8c40bdb1a78437a619e6438c2d4230",
+      "required": true
+    },
+    {
+      "path": "content/chapters/008.json",
+      "sizeBytes": 19350,
+      "checksumSha256": "de9c1e5d99d86fe748566cfc5fc9bd36904ef0dbcb236cbeceee1dc990d9e771",
+      "required": true
+    },
+    {
+      "path": "content/chapters/009.json",
+      "sizeBytes": 20842,
+      "checksumSha256": "ca4aac2ee075d1459d0d26d2b2d73e02653813aa988c473d65e5cacd4b820aea",
+      "required": true
+    },
+    {
+      "path": "content/index.json",
+      "sizeBytes": 417,
+      "checksumSha256": "1d1516ce49a4ab3cb67b71e5b4c80be236595e67d66dcb8498bcb1582e24810c",
+      "required": true
+    },
+    {
+      "path": "content/sections.json",
+      "sizeBytes": 12511,
+      "checksumSha256": "fb2f7fe5784ed8f9a18dba501d615569c57e7e2aa6f5233b56a9d4ce2cf58659",
+      "required": false
+    }
+  ]
+}

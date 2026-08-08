@@ -1,0 +1,87 @@
+{
+  "packageId": "cb-hechos-1-9",
+  "title": "CB Hechos 1-9",
+  "packageType": "book",
+  "language": "es",
+  "version": "1.1.0",
+  "schemaVersion": 1,
+  "minAppVersion": "1.0.0",
+  "attribution": "REINA-VALERA 1960",
+  "createdAt": "2026-07-22T00:00:00Z",
+  "verseCount": 336,
+  "chapterCount": 9,
+  "files": [
+    {
+      "path": "content/chapter_analysis.json",
+      "sizeBytes": 9684,
+      "checksumSha256": "3225c7dd0eed6af7236d28d5c6e9090633c51199731a6d79cb7c30a9cc3a91ed",
+      "required": false
+    },
+    {
+      "path": "content/chapters/001.json",
+      "sizeBytes": 13226,
+      "checksumSha256": "03c8140e10fd6f7d272ae8121fb161ff1642d681e89b492ccea54d9aba4ebcc5",
+      "required": true
+    },
+    {
+      "path": "content/chapters/002.json",
+      "sizeBytes": 22054,
+      "checksumSha256": "2f71bb35ccd1152803f823f183c42a44fc1d870c4292481660b1348512d56219",
+      "required": true
+    },
+    {
+      "path": "content/chapters/003.json",
+      "sizeBytes": 12781,
+      "checksumSha256": "75bd293997fe00761c1754a191e46df42f44388a19ca376e91b3d9019fe7abcb",
+      "required": true
+    },
+    {
+      "path": "content/chapters/004.json",
+      "sizeBytes": 17417,
+      "checksumSha256": "e899299af0b6dbee3bf6a4c4b9f858e8ed8b8d54dae538d3ad861255b2c83fa4",
+      "required": true
+    },
+    {
+      "path": "content/chapters/005.json",
+      "sizeBytes": 19374,
+      "checksumSha256": "93102e74df2027697e20896eaf6b72eb4bafadc5c5c7ec02e5c129007d3578a2",
+      "required": true
+    },
+    {
+      "path": "content/chapters/006.json",
+      "sizeBytes": 7158,
+      "checksumSha256": "18dd341eb11c5364223305ca5e7f6f3f6e59110e9594d627fdd86af0c3060691",
+      "required": true
+    },
+    {
+      "path": "content/chapters/007.json",
+      "sizeBytes": 30247,
+      "checksumSha256": "8b8d175d958e919e6e3c48f95bd3cc5ad9a6b5ddc9c0df8aa89f18888ead8d9c",
+      "required": true
+    },
+    {
+      "path": "content/chapters/008.json",
+      "sizeBytes": 18868,
+      "checksumSha256": "05688ef03a846c6b6095e7ba1b73f5570fa81ad2fd87da442a230f742bb8b896",
+      "required": true
+    },
+    {
+      "path": "content/chapters/009.json",
+      "sizeBytes": 20599,
+      "checksumSha256": "6a2b6ebf9b730caa531cdd4772b9dc76ca27f21ac0642c1b1ce5ea93009d2840",
+      "required": true
+    },
+    {
+      "path": "content/index.json",
+      "sizeBytes": 417,
+      "checksumSha256": "89f4fb5739e12ccaa4fc3af67d50e644e58e299c482987c1e1efec2d02dea2ff",
+      "required": true
+    },
+    {
+      "path": "content/sections.json",
+      "sizeBytes": 11931,
+      "checksumSha256": "79a75a707927cfb9b3faa7bbe9c78570171fe932f6d0ea300666fe345cd79603",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,433 @@
+{
+  "packageId": "bq-acts-1-9",
+  "chapters": {
+    "1": {
+      "chapterNumber": 1,
+      "verseCount": 26,
+      "summary": {
+        "individuals": {
+          "count": 20,
+          "names": [
+            "Alphaeus (father of James)",
+            "Andrew (apostle)",
+            "Bartholomew (apostle)",
+            "David",
+            "James (apostle)",
+            "James (apostle, son of Alphaeus)",
+            "James (brother of Judas)",
+            "John (apostle)",
+            "John (the Baptist)",
+            "Joseph (Barsabas, Justus)",
+            "Judas (Iscariot)",
+            "Judas (apostle, brother of James)",
+            "Mary (mother of Jesus)",
+            "Matthew (apostle)",
+            "Matthias (apostle)",
+            "Peter (apostle, Simon)",
+            "Philip (apostle)",
+            "Simon (apostle, Zelotes)",
+            "Theophilus",
+            "Thomas (apostle)"
+          ]
+        },
+        "deity": {
+          "count": 3,
+          "names": [
+            "Father",
+            "Holy Ghost",
+            "Jesus"
+          ]
+        },
+        "locations": {
+          "count": 7,
+          "names": [
+            "Aceldama (The field of blood)",
+            "Galilee",
+            "Israel",
+            "Jerusalem",
+            "Judaea",
+            "Olivet (the mount)",
+            "Samaria"
+          ]
+        },
+        "otReferences": 2,
+        "questions": 2,
+        "exclamations": 0,
+        "parenthetical": 1
+      }
+    },
+    "2": {
+      "chapterNumber": 2,
+      "verseCount": 47,
+      "summary": {
+        "individuals": {
+          "count": 3,
+          "names": [
+            "David",
+            "Joel",
+            "Peter (apostle, Simon)"
+          ]
+        },
+        "deity": {
+          "count": 7,
+          "names": [
+            "Christ",
+            "Father",
+            "Holy Ghost",
+            "Holy One",
+            "Jesus",
+            "Lord",
+            "Spirit"
+          ]
+        },
+        "locations": {
+          "count": 14,
+          "names": [
+            "Asia",
+            "Cappadocia",
+            "Cyrene",
+            "Egypt",
+            "Israel",
+            "Jerusalem",
+            "Judaea",
+            "Libya",
+            "Mesopotamia",
+            "Nazareth",
+            "Pamphylia",
+            "Phrygia",
+            "Pontus",
+            "Rome"
+          ]
+        },
+        "otReferences": 3,
+        "questions": 4,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "3": {
+      "chapterNumber": 3,
+      "verseCount": 26,
+      "summary": {
+        "individuals": {
+          "count": 9,
+          "names": [
+            "Abraham",
+            "Isaac",
+            "Jacob",
+            "John (apostle)",
+            "Moses",
+            "Peter (apostle, Simon)",
+            "Pilate",
+            "Samuel",
+            "Solomon"
+          ]
+        },
+        "deity": {
+          "count": 7,
+          "names": [
+            "Christ",
+            "God",
+            "God of our fathers",
+            "Holy One",
+            "Jesus",
+            "Just",
+            "Prince of life"
+          ]
+        },
+        "locations": {
+          "count": 3,
+          "names": [
+            "Beautiful (gate of the temple)",
+            "Israel",
+            "Nazareth"
+          ]
+        },
+        "otReferences": 2,
+        "questions": 2,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "4": {
+      "chapterNumber": 4,
+      "verseCount": 37,
+      "summary": {
+        "individuals": {
+          "count": 10,
+          "names": [
+            "Alexander",
+            "Annas",
+            "Caiaphas",
+            "David",
+            "Herod",
+            "John (apostle)",
+            "John (kindred of the high priest)",
+            "Joses (Barnabas)",
+            "Peter (apostle, Simon)",
+            "Pontius Pilate"
+          ]
+        },
+        "deity": {
+          "count": 6,
+          "names": [
+            "Christ",
+            "God",
+            "Head of the corner",
+            "Holy Ghost",
+            "Jesus",
+            "Stone"
+          ]
+        },
+        "locations": {
+          "count": 4,
+          "names": [
+            "Cyprus",
+            "Israel",
+            "Jerusalem",
+            "Nazareth"
+          ]
+        },
+        "otReferences": 1,
+        "questions": 3,
+        "exclamations": 0,
+        "parenthetical": 1
+      }
+    },
+    "5": {
+      "chapterNumber": 5,
+      "verseCount": 42,
+      "summary": {
+        "individuals": {
+          "count": 8,
+          "names": [
+            "Ananias",
+            "Gamaliel",
+            "Judas (of Galilee)",
+            "Peter (apostle, Simon)",
+            "Sapphira",
+            "Satan",
+            "Solomon",
+            "Theudas"
+          ]
+        },
+        "deity": {
+          "count": 7,
+          "names": [
+            "Christ",
+            "God of our fathers",
+            "Holy Ghost",
+            "Jesus",
+            "Prince",
+            "Saviour",
+            "Spirit"
+          ]
+        },
+        "locations": {
+          "count": 3,
+          "names": [
+            "Galilee",
+            "Israel",
+            "Jerusalem"
+          ]
+        },
+        "otReferences": 0,
+        "questions": 7,
+        "exclamations": 0,
+        "parenthetical": 1
+      }
+    },
+    "6": {
+      "chapterNumber": 6,
+      "verseCount": 15,
+      "summary": {
+        "individuals": {
+          "count": 8,
+          "names": [
+            "Moses",
+            "Nicanor",
+            "Nicolas",
+            "Parmenas",
+            "Philip",
+            "Prochorus",
+            "Stephen",
+            "Timon"
+          ]
+        },
+        "deity": {
+          "count": 4,
+          "names": [
+            "God",
+            "Holy Ghost",
+            "Jesus",
+            "Spirit"
+          ]
+        },
+        "locations": {
+          "count": 5,
+          "names": [
+            "Antioch",
+            "Asia",
+            "Cilicia",
+            "Jerusalem",
+            "Nazareth"
+          ]
+        },
+        "otReferences": 0,
+        "questions": 0,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "7": {
+      "chapterNumber": 7,
+      "verseCount": 60,
+      "summary": {
+        "individuals": {
+          "count": 13,
+          "names": [
+            "Aaron",
+            "Abraham",
+            "David",
+            "Emmor",
+            "Isaac",
+            "Jacob",
+            "Joseph",
+            "Moloch",
+            "Moses",
+            "Remphan",
+            "Saul",
+            "Solomon",
+            "Stephen"
+          ]
+        },
+        "deity": {
+          "count": 8,
+          "names": [
+            "God",
+            "God of glory",
+            "God of thy fathers",
+            "Holy Ghost",
+            "Jesus",
+            "Just One",
+            "Most High",
+            "Son of man"
+          ]
+        },
+        "locations": {
+          "count": 10,
+          "names": [
+            "Babylon",
+            "Chanaan",
+            "Charran",
+            "Egypt",
+            "Israel",
+            "Madian",
+            "Mesopotamia",
+            "Mount Sina",
+            "Red sea",
+            "Sychem"
+          ]
+        },
+        "otReferences": 10,
+        "questions": 10,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    },
+    "8": {
+      "chapterNumber": 8,
+      "verseCount": 40,
+      "summary": {
+        "individuals": {
+          "count": 7,
+          "names": [
+            "Esaias",
+            "John (apostle)",
+            "Peter (apostle, Simon)",
+            "Philip",
+            "Saul",
+            "Simon (the sorcerer)",
+            "Stephen"
+          ]
+        },
+        "deity": {
+          "count": 6,
+          "names": [
+            "Christ",
+            "God",
+            "Holy Ghost",
+            "Jesus",
+            "Son of God",
+            "Spirit"
+          ]
+        },
+        "locations": {
+          "count": 7,
+          "names": [
+            "Azotus",
+            "Caesarea",
+            "Ethiopia",
+            "Gaza",
+            "Jerusalem",
+            "Judaea",
+            "Samaria"
+          ]
+        },
+        "otReferences": 1,
+        "questions": 6,
+        "exclamations": 0,
+        "parenthetical": 1
+      }
+    },
+    "9": {
+      "chapterNumber": 9,
+      "verseCount": 43,
+      "summary": {
+        "individuals": {
+          "count": 8,
+          "names": [
+            "Aeneas",
+            "Ananias (disciple)",
+            "Barnabas (Joses)",
+            "Judas (on Straight street)",
+            "Peter (apostle, Simon)",
+            "Saul",
+            "Simon (a tanner)",
+            "Tabitha (Dorcas)"
+          ]
+        },
+        "deity": {
+          "count": 4,
+          "names": [
+            "Christ",
+            "Holy Ghost",
+            "Jesus",
+            "Son of God"
+          ]
+        },
+        "locations": {
+          "count": 12,
+          "names": [
+            "Caesarea",
+            "Damascus",
+            "Galilee",
+            "Israel",
+            "Jerusalem",
+            "Joppa",
+            "Judaea",
+            "Lydda",
+            "Samaria",
+            "Saron",
+            "Straight (street)",
+            "Tarsus"
+          ]
+        },
+        "otReferences": 0,
+        "questions": 4,
+        "exclamations": 0,
+        "parenthetical": 0
+      }
+    }
+  }
+}

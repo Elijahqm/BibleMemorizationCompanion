@@ -4,237 +4,748 @@
     {
       "verseRef": "Hch 2:1",
       "verseNumber": 1,
-      "text": "[[section:la-venida-del-espiritu-santo|La venida del Espíritu Santo]] Cuando llegó el día de Pentecostés, estaban todos unánimes juntos."
+      "text": "[[section:la-venida-del-espiritu-santo|La venida del Espíritu Santo]] Cuando llegó el día de Pentecostés, estaban todos unánimes juntos.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:2",
       "verseNumber": 2,
-      "text": "Y de repente vino del cielo un estruendo como de un viento recio que soplaba, el cual llenó toda la casa donde estaban sentados;"
+      "text": "Y de repente vino del cielo un estruendo como de un viento recio que soplaba, el cual llenó toda la casa donde estaban sentados;",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:3",
       "verseNumber": 3,
-      "text": "y se les aparecieron lenguas repartidas, como de fuego, asentándose sobre cada uno de ellos."
+      "text": "y se les aparecieron lenguas repartidas, como de fuego, asentándose sobre cada uno de ellos.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:4",
       "verseNumber": 4,
-      "text": "Y fueron todos llenos del Espíritu Santo, y comenzaron a hablar en otras lenguas, según el Espíritu les daba que hablasen."
+      "text": "Y fueron todos llenos del Espíritu Santo, y comenzaron a hablar en otras lenguas, según el Espíritu les daba que hablasen.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Espíritu Santo",
+          "Espíritu"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:5",
       "verseNumber": 5,
-      "text": "Moraban entonces en Jerusalén judíos, varones piadosos, de todas las naciones bajo el cielo."
+      "text": "Moraban entonces en Jerusalén judíos, varones piadosos, de todas las naciones bajo el cielo.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Jerusalén"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:6",
       "verseNumber": 6,
-      "text": "Y hecho este estruendo, se juntó la multitud; y estaban confusos, porque cada uno les oía hablar en su propia lengua."
+      "text": "Y hecho este estruendo, se juntó la multitud; y estaban confusos, porque cada uno les oía hablar en su propia lengua.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:7",
       "verseNumber": 7,
-      "text": "Y estaban atónitos y maravillados, diciendo: Mirad, ¿no son galileos todos estos que hablan?"
+      "text": "Y estaban atónitos y maravillados, diciendo: Mirad, ¿no son galileos todos estos que hablan?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿no son galileos todos estos que hablan?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:8",
       "verseNumber": 8,
-      "text": "¿Cómo, pues, les oímos nosotros hablar cada uno en nuestra lengua en la que hemos nacido?"
+      "text": "¿Cómo, pues, les oímos nosotros hablar cada uno en nuestra lengua en la que hemos nacido?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿Cómo, pues, les oímos nosotros hablar cada uno en nuestra lengua en la que hemos nacido?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:9",
       "verseNumber": 9,
-      "text": "Partos, medos, elamitas, y los que habitamos en Mesopotamia, en Judea, en Capadocia, en el Ponto y en Asia,"
+      "text": "Partos, medos, elamitas, y los que habitamos en Mesopotamia, en Judea, en Capadocia, en el Ponto y en Asia,",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Mesopotamia",
+          "Judea",
+          "Capadocia",
+          "Ponto",
+          "Asia"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:10",
       "verseNumber": 10,
-      "text": "en Frigia y Panfilia, en Egipto y en las regiones de Africa más allá de Cirene, y romanos aquí residentes, tanto judíos como prosélitos,"
+      "text": "en Frigia y Panfilia, en Egipto y en las regiones de Africa más allá de Cirene, y romanos aquí residentes, tanto judíos como prosélitos,",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [
+          "Frigia",
+          "Panfilia",
+          "Egipto",
+          "África",
+          "Cirene"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:11",
       "verseNumber": 11,
-      "text": "cretenses y árabes, les oímos hablar en nuestras lenguas las maravillas de Dios."
+      "text": "cretenses y árabes, les oímos hablar en nuestras lenguas las maravillas de Dios.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:12",
       "verseNumber": 12,
-      "text": "Y estaban todos atónitos y perplejos, diciéndose unos a otros: ¿Qué quiere decir esto?"
+      "text": "Y estaban todos atónitos y perplejos, diciéndose unos a otros: ¿Qué quiere decir esto?",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿Qué quiere decir esto?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:13",
       "verseNumber": 13,
-      "text": "Mas otros, burlándose, decían: Están llenos de mosto."
+      "text": "Mas otros, burlándose, decían: Están llenos de mosto.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:14",
       "verseNumber": 14,
-      "text": "[[section:primer-discurso-de-pedro|Primer discurso de Pedro]] Entonces Pedro, poniéndose en pie con los once, alzó la voz y les habló diciendo: Varones judíos, y todos los que habitáis en Jerusalén, esto os sea notorio, y oíd mis palabras."
+      "text": "[[section:primer-discurso-de-pedro|Primer discurso de Pedro]] Entonces Pedro, poniéndose en pie con los once, alzó la voz y les habló diciendo: Varones judíos, y todos los que habitáis en Jerusalén, esto os sea notorio, y oíd mis palabras.",
+      "analysis": {
+        "individuals": [
+          "Pedro (apóstol, Simón)"
+        ],
+        "deity": [],
+        "locations": [
+          "Jerusalén"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:15",
       "verseNumber": 15,
-      "text": "Porque éstos no están ebrios, como vosotros suponéis, puesto que es la hora tercera del día."
+      "text": "Porque éstos no están ebrios, como vosotros suponéis, puesto que es la hora tercera del día.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:16",
       "verseNumber": 16,
-      "text": "Mas esto es lo dicho por el profeta Joel:"
+      "text": "Mas esto es lo dicho por el profeta Joel:",
+      "analysis": {
+        "individuals": [
+          "Joel"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:17",
       "verseNumber": 17,
-      "text": "Y en los postreros días, dice Dios, Derramaré de mi Espíritu sobre toda carne, Y vuestros hijos y vuestras hijas profetizarán; Vuestros jóvenes verán visiones, Y vuestros ancianos soñarán sueños;"
+      "text": "Y en los postreros días, dice Dios, Derramaré de mi Espíritu sobre toda carne, Y vuestros hijos y vuestras hijas profetizarán; Vuestros jóvenes verán visiones, Y vuestros ancianos soñarán sueños;",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Espíritu",
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [
+          "Y en los postreros días … Derramaré de mi Espíritu sobre toda carne, Y vuestros hijos y vuestras hijas profetizarán; Vuestros jóvenes verán visiones, Y vuestros ancianos soñarán sueños; Y de cierto sobre mis siervos y sobre mis siervas en aquellos días Derramaré de mi Espíritu, y profetizarán. Y daré prodigios arriba en el cielo, Y señales abajo en la tierra, Sangre y fuego y vapor de humo; El sol se convertirá en tinieblas, Y la luna en sangre, Antes que venga el día del Señor, Grande y manifiesto; Y todo aquel que invocare el nombre del Señor, será salvo."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:18",
       "verseNumber": 18,
-      "text": "Y de cierto sobre mis siervos y sobre mis siervas en aquellos días Derramaré de mi Espíritu, y profetizarán."
+      "text": "Y de cierto sobre mis siervos y sobre mis siervas en aquellos días Derramaré de mi Espíritu, y profetizarán.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Espíritu"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:19",
       "verseNumber": 19,
-      "text": "Y daré prodigios arriba en el cielo, Y señales abajo en la tierra, Sangre y fuego y vapor de humo;"
+      "text": "Y daré prodigios arriba en el cielo, Y señales abajo en la tierra, Sangre y fuego y vapor de humo;",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:20",
       "verseNumber": 20,
-      "text": "El sol se convertirá en tinieblas, Y la luna en sangre, Antes que venga el día del Señor, Grande y manifiesto;"
+      "text": "El sol se convertirá en tinieblas, Y la luna en sangre, Antes que venga el día del Señor, Grande y manifiesto;",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:21",
       "verseNumber": 21,
-      "text": "Y todo aquel que invocare el nombre del Señor, será salvo."
+      "text": "Y todo aquel que invocare el nombre del Señor, será salvo.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:22",
       "verseNumber": 22,
-      "text": "Varones israelitas, oíd estas palabras: Jesús nazareno, varón aprobado por Dios entre vosotros con las maravillas, prodigios y señales que Dios hizo entre vosotros por medio de él, como vosotros mismos sabéis;"
+      "text": "Varones israelitas, oíd estas palabras: Jesús nazareno, varón aprobado por Dios entre vosotros con las maravillas, prodigios y señales que Dios hizo entre vosotros por medio de él, como vosotros mismos sabéis;",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios",
+          "Jesús"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:23",
       "verseNumber": 23,
-      "text": "a éste, entregado por el determinado consejo y anticipado conocimiento de Dios, prendisteis y matasteis por manos de inicuos, crucificándole;"
+      "text": "a éste, entregado por el determinado consejo y anticipado conocimiento de Dios, prendisteis y matasteis por manos de inicuos, crucificándole;",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:24",
       "verseNumber": 24,
-      "text": "al cual Dios levantó, sueltos los dolores de la muerte, por cuanto era imposible que fuese retenido por ella."
+      "text": "al cual Dios levantó, sueltos los dolores de la muerte, por cuanto era imposible que fuese retenido por ella.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:25",
       "verseNumber": 25,
-      "text": "Porque David dice de él: Veía al Señor siempre delante de mí; Porque está a mi diestra, no seré conmovido."
+      "text": "Porque David dice de él: Veía al Señor siempre delante de mí; Porque está a mi diestra, no seré conmovido.",
+      "analysis": {
+        "individuals": [
+          "David"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [
+          "Veía al Señor siempre delante de mí; Porque está a mi diestra, no seré conmovido. Por lo cual mi corazón se alegró, y se gozó mi lengua, Y aun mi carne descansará en esperanza; Porque no dejarás mi alma en el Hades, Ni permitirás que tu Santo vea corrupción. Me hiciste conocer los caminos de la vida; Me llenarás de gozo con tu presencia."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:26",
       "verseNumber": 26,
-      "text": "Por lo cual mi corazón se alegró, y se gozó mi lengua, Y aun mi carne descansará en esperanza;"
+      "text": "Por lo cual mi corazón se alegró, y se gozó mi lengua, Y aun mi carne descansará en esperanza;",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:27",
       "verseNumber": 27,
-      "text": "Porque no dejarás mi alma en el Hades, Ni permitirás que tu Santo vea corrupción."
+      "text": "Porque no dejarás mi alma en el Hades, Ni permitirás que tu Santo vea corrupción.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Santo"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:28",
       "verseNumber": 28,
-      "text": "Me hiciste conocer los caminos de la vida; Me llenarás de gozo con tu presencia."
+      "text": "Me hiciste conocer los caminos de la vida; Me llenarás de gozo con tu presencia.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:29",
       "verseNumber": 29,
-      "text": "Varones hermanos, se os puede decir libremente del patriarca David, que murió y fue sepultado, y su sepulcro está con nosotros hasta el día de hoy."
+      "text": "Varones hermanos, se os puede decir libremente del patriarca David, que murió y fue sepultado, y su sepulcro está con nosotros hasta el día de hoy.",
+      "analysis": {
+        "individuals": [
+          "David"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:30",
       "verseNumber": 30,
-      "text": "Pero siendo profeta, y sabiendo que con juramento Dios le había jurado que de su descendencia, en cuanto a la carne, levantaría al Cristo para que se sentase en su trono,"
+      "text": "Pero siendo profeta, y sabiendo que con juramento Dios le había jurado que de su descendencia, en cuanto a la carne, levantaría al Cristo para que se sentase en su trono,",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios",
+          "Cristo"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:31",
       "verseNumber": 31,
-      "text": "viéndolo antes, habló de la resurrección de Cristo, que su alma no fue dejada en el Hades, ni su carne vio corrupción."
+      "text": "viéndolo antes, habló de la resurrección de Cristo, que su alma no fue dejada en el Hades, ni su carne vio corrupción.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Cristo"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:32",
       "verseNumber": 32,
-      "text": "A este Jesús resucitó Dios, de lo cual todos nosotros somos testigos."
+      "text": "A este Jesús resucitó Dios, de lo cual todos nosotros somos testigos.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios",
+          "Jesús"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:33",
       "verseNumber": 33,
-      "text": "Así que, exaltado por la diestra de Dios, y habiendo recibido del Padre la promesa del Espíritu Santo, ha derramado esto que vosotros veis y oís."
+      "text": "Así que, exaltado por la diestra de Dios, y habiendo recibido del Padre la promesa del Espíritu Santo, ha derramado esto que vosotros veis y oís.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Espíritu Santo",
+          "Dios",
+          "Padre"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:34",
       "verseNumber": 34,
-      "text": "Porque David no subió a los cielos; pero él mismo dice: Dijo el Señor a mi Señor: Siéntate a mi diestra,"
+      "text": "Porque David no subió a los cielos; pero él mismo dice: Dijo el Señor a mi Señor: Siéntate a mi diestra,",
+      "analysis": {
+        "individuals": [
+          "David"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [
+          "Dijo el Señor a mi Señor: Siéntate a mi diestra, Hasta que ponga a tus enemigos por estrado de tus pies."
+        ],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:35",
       "verseNumber": 35,
-      "text": "Hasta que ponga a tus enemigos por estrado de tus pies."
+      "text": "Hasta que ponga a tus enemigos por estrado de tus pies.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:36",
       "verseNumber": 36,
-      "text": "Sepa, pues, ciertísimamente toda la casa de Israel, que a este Jesús a quien vosotros crucificasteis, Dios le ha hecho Señor y Cristo."
+      "text": "Sepa, pues, ciertísimamente toda la casa de Israel, que a este Jesús a quien vosotros crucificasteis, Dios le ha hecho Señor y Cristo.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios",
+          "Jesús",
+          "Cristo"
+        ],
+        "locations": [
+          "Israel"
+        ],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:37",
       "verseNumber": 37,
-      "text": "Al oír esto, se compungieron de corazón, y dijeron a Pedro y a los otros apóstoles: Varones hermanos, ¿qué haremos?"
+      "text": "Al oír esto, se compungieron de corazón, y dijeron a Pedro y a los otros apóstoles: Varones hermanos, ¿qué haremos?",
+      "analysis": {
+        "individuals": [
+          "Pedro (apóstol, Simón)"
+        ],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [
+          "¿qué haremos?"
+        ],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:38",
       "verseNumber": 38,
-      "text": "Pedro les dijo: Arrepentíos, y bautícese cada uno de vosotros en el nombre de Jesucristo para perdón de los pecados; y recibiréis el don del Espíritu Santo."
+      "text": "Pedro les dijo: Arrepentíos, y bautícese cada uno de vosotros en el nombre de Jesucristo para perdón de los pecados; y recibiréis el don del Espíritu Santo.",
+      "analysis": {
+        "individuals": [
+          "Pedro (apóstol, Simón)"
+        ],
+        "deity": [
+          "Espíritu Santo",
+          "Jesucristo"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:39",
       "verseNumber": 39,
-      "text": "Porque para vosotros es la promesa, y para vuestros hijos, y para todos los que están lejos; para cuantos el Señor nuestro Dios llamare."
+      "text": "Porque para vosotros es la promesa, y para vuestros hijos, y para todos los que están lejos; para cuantos el Señor nuestro Dios llamare.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:40",
       "verseNumber": 40,
-      "text": "Y con otras muchas palabras testificaba y les exhortaba, diciendo: Sed salvos de esta perversa generación."
+      "text": "Y con otras muchas palabras testificaba y les exhortaba, diciendo: Sed salvos de esta perversa generación.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:41",
       "verseNumber": 41,
-      "text": "Así que, los que recibieron su palabra fueron bautizados; y se añadieron aquel día como tres mil personas."
+      "text": "Así que, los que recibieron su palabra fueron bautizados; y se añadieron aquel día como tres mil personas.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:42",
       "verseNumber": 42,
-      "text": "Y perseveraban en la doctrina de los apóstoles, en la comunión unos con otros, en el partimiento del pan y en las oraciones."
+      "text": "Y perseveraban en la doctrina de los apóstoles, en la comunión unos con otros, en el partimiento del pan y en las oraciones.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:43",
       "verseNumber": 43,
-      "text": "[[section:la-vida-de-los-primeros-cristianos|La vida de los primeros cristianos]] Y sobrevino temor a toda persona; y muchas maravillas y señales eran hechas por los apóstoles."
+      "text": "[[section:la-vida-de-los-primeros-cristianos|La vida de los primeros cristianos]] Y sobrevino temor a toda persona; y muchas maravillas y señales eran hechas por los apóstoles.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:44",
       "verseNumber": 44,
-      "text": "Todos los que habían creído estaban juntos, y tenían en común todas las cosas;"
+      "text": "Todos los que habían creído estaban juntos, y tenían en común todas las cosas;",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:45",
       "verseNumber": 45,
-      "text": "y vendían sus propiedades y sus bienes, y lo repartían a todos según la necesidad de cada uno."
+      "text": "y vendían sus propiedades y sus bienes, y lo repartían a todos según la necesidad de cada uno.",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:46",
       "verseNumber": 46,
-      "text": "Y perseverando unánimes cada día en el templo, y partiendo el pan en las casas, comían juntos con alegría y sencillez de corazón,"
+      "text": "Y perseverando unánimes cada día en el templo, y partiendo el pan en las casas, comían juntos con alegría y sencillez de corazón,",
+      "analysis": {
+        "individuals": [],
+        "deity": [],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     },
     {
       "verseRef": "Hch 2:47",
       "verseNumber": 47,
-      "text": "alabando a Dios, y teniendo favor con todo el pueblo. Y el Señor añadía cada día a la iglesia los que habían de ser salvos."
+      "text": "alabando a Dios, y teniendo favor con todo el pueblo. Y el Señor añadía cada día a la iglesia los que habían de ser salvos.",
+      "analysis": {
+        "individuals": [],
+        "deity": [
+          "Dios"
+        ],
+        "locations": [],
+        "otReferences": [],
+        "parenthetical": [],
+        "questions": [],
+        "exclamations": []
+      }
     }
   ]
 }

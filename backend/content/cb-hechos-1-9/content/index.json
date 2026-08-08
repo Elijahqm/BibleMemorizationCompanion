@@ -25,5 +25,6 @@
     "9": 43
   },
   "availableSections": true,
+  "availableAnalysis": true,
   "availableAudio": false
 }
