@@ -74,7 +74,7 @@
 ## Settings
 
 - theme
-- textScale
+- textSize (small/medium/large)
 - fontFamily
 - autoplayAudio
 - loopAudio
@@ -88,8 +88,16 @@ Option A:
 Option B:
 - NoSQL local store plus file system
 
-Recommendation:
-- SQLite + file storage for strong querying and migrations.
+Actual approach (established by `StudyStore`, `VerseStateStore`,
+`InstalledPackageStore`, `CatalogCacheStore`, and `ActivePackageStore` —
+the not-yet-built `SettingsStore` from issue #9 should follow the same
+pattern): plain JSON files under the app's local storage
+directory, written atomically (temp file then rename). No SQLite dependency
+exists in the app — this superseded the SQLite recommendation below once
+the local-store pattern was established.
+
+~~Recommendation: SQLite + file storage for strong querying and
+migrations.~~
 
 ## Data Migration Strategy
 
