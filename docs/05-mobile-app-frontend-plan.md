@@ -24,21 +24,24 @@ Suggested app structure:
 1. Splash
 2. First-run empty state
 3. My Studies (empty and populated)
-4. Library: Downloads tab
-5. Library: Store tab
+4. Library (downloaded packages)
+5. Store (browse, download free packages, buy add-ons)
 6. Create study (chapter, section, custom)
-7. Verse study (front and revealed)
+7. Verse study (front and revealed; revealed face renders `analysis` tags —
+   individuals, locations, etc. — when the package's `availableAnalysis` is true)
 8. Menu drawer
 9. Sign-in bottom sheet
 10. Settings
-11. Progress summary
-12. Progress detail
+11. Appearance / reading settings (theme, font, text size)
+12. Progress summary
+13. Progress detail
 
 ## Navigation Structure
 
 1. Top-level routes:
 - My Studies
 - Library
+- Store
 - Progress
 - Settings
 
@@ -53,7 +56,7 @@ Suggested app structure:
 
 Use feature-scoped state modules:
 
-1. LibraryStoreState
+1. StoreState
 2. DownloadsState
 3. PackageContextState
 4. StudyCreationState
@@ -77,7 +80,7 @@ Reusable components:
 4. StatusButton (Download, Buy, Open)
 5. EmptyStatePanel
 6. ConfirmationDialog
-7. VerseCard
+7. VerseCard (front/back flip, learned/difficult toggles, revealed-face analysis tags)
 8. ProgressBarRow
 9. ChapterVerseGrid
 
