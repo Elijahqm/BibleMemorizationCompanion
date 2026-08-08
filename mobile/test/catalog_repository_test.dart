@@ -1,3 +1,4 @@
+import 'package:bible_memorization_companion_mobile/core/errors/app_error.dart';
 import 'package:bible_memorization_companion_mobile/core/network/api_client.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/data/catalog_repository.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/data/models/catalog_package.dart';
@@ -72,7 +73,7 @@ void main() {
     expect(package.packageType, CatalogPackageType.book);
     expect(package.isFree, isTrue);
     expect(package.isDownloadable, isTrue);
-    expect(package.sizeLabel, '27 KB');
+    expect(package.sizeBytes, 27679);
 
     await repository.fetchCatalog();
     expect(calls, 1, reason: 'second read should hit the in-memory cache');

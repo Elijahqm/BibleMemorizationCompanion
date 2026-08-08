@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:bible_memorization_companion_mobile/core/network/api_client.dart';
+import 'package:bible_memorization_companion_mobile/core/errors/app_error.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/data/models/catalog_package.dart';
 import 'package:bible_memorization_companion_mobile/features/downloads/data/package_downloader.dart';
 import 'package:crypto/crypto.dart';
@@ -88,9 +88,9 @@ void main() {
       downloader.download(packageWith(checksum: 'deadbeef')),
       throwsA(
         isA<ApiException>().having(
-          (e) => e.message,
-          'message',
-          contains('corrupted'),
+          (e) => e.kind,
+          'kind',
+          AppErrorKind.checksumMismatch,
         ),
       ),
     );

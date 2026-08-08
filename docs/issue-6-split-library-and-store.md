@@ -45,12 +45,13 @@ The mockup has no side drawer. Required removals:
 
 Since this stage rewrites all the app chrome (nav bar, AppBar, titles, labels), wire in localization at the same time so no string has to be hard-coded twice.
 
-- Detect the device/OS language at startup (Flutter: `WidgetsBinding.instance.platformDispatcher.locale` / `MediaQuery`) and resolve it against the set of supported locales.
-- Fall back to a default locale (e.g. `en`) when the device language is not supported; the app must never render untranslated or empty strings.
-- Use `flutter_localizations` + `flutter gen-l10n` (`l10n.yaml`, `.arb` resources for each `Locale`) so Material components (back-tooltips, date pickers, etc.) are localized as well, not just our own labels.
-- All user-facing strings in the rewritten chrome (nav destinations: Studies/Library/Store/Progress/Settings, Store catalog actions, empty/error states, retry, freshness banner) go through the generated `AppLocalizations` lookups instead of literals.
-- Wire `MaterialApp` with `locale`, `supportedLocales`, `localizationsDelegates`, and `localeResolutionCallback`.
-- Nav labels are translated in the selected language; the pill width/geometry must accommodate the longest label per locale (no overflow).
+**Decisiones:** solo `es` y `en` (`en` como fallback). **Todo** lo visible al usuario —widgets, tooltips, diálogos y mensajes de error generados por la app— se localiza. **Estado: ✅ implementado** (ver commits de esta rama):
+
+- Detecta el idioma del dispositivo en arranque y lo resuelve contra las lenguas soportadas (`MaterialApp.supportedLocales` + delegates de `flutter_localizations` + `flutter gen-l10n` con `lib/core/l10n/arb/app_{en,es}.arb`).
+- `en` como fallback cuando el idioma del dispositivo no está soportado; nunca se muestran strings vacíos o sin traducir.
+- Los `Text`/tooltips/diálogos del shell y los widgets de catalogación pasan por `context.l10n` (generado `AppLocalizations`), incluidas los mensajes de error de `ApiClient`/`DownloadController`/`CatalogController`/repos (errores tipados: `lib/core/errors/app_error.dart`, kind + params, mapeados a mensajes localizados).
+- Los getters de presentación que vivían en el modelo (`statusLabel`, `primaryActionLabel`, `sizeLabel`, `packageType.label`, `subtitle`) se movieron a `lib/core/l10n/presentation.dart` (el modelo ya no traduce).
+- Nota: la píldora del nav debe acomodar la etiqueta más larga por locale cuando se construya la barra flotante (Fase 2 del issue).
 
 ---
 
@@ -63,8 +64,9 @@ Since this stage rewrites all the app chrome (nav bar, AppBar, titles, labels), 
 - [ ] `LibraryPane` enum and segmented-control switching logic removed; Library shows only installed/downloaded packages (no pane switcher)
 - [ ] Store becomes its own top-level screen showing the full catalog list (the content previously in the "Store" pane), preserving existing behavior: pull-to-refresh, retry, catalog freshness banner, package cards with download/buy actions
 - [ ] `_buildPage()` switch and `_titleForIndex()` updated for the new 5-index mapping
-- [ ] Device language detected at startup; app shows all chrome text (nav labels, AppBar, catalog actions, empty/error states, retry, freshness banner) in that language via `AppLocalizations`, with fallback to a default locale when unsupported
-- [ ] Material components (e.g. back-tooltips) localized too; no hard-coded user-facing strings remain in the rewritten chrome
+- [x] Device language detected at startup; app shows all chrome text (nav labels, AppBar, catalog actions, empty/error states, retry, freshness banner) in that language via `AppLocalizations`, with fallback to a default locale when unsupported
+- [x] Material components (e.g. back-tooltips) localized too; no hard-coded user-facing strings remain in the rewritten chrome
+- [x] Errores generados por la app (API/descargas/instalación/contenido) localizados vía códigos tipados (`AppErrorKind`), no strings en inglés pre-formateados en la capa de datos
 - [ ] Existing widget test asserting nav labels updated to expect all 5 destinations, including "Store" as distinct from "Library"
 - [ ] Manual check: Store → package detail → back returns to the Store tab (not Library); Library → installed package → Open still routes to the Studies tab as before
 - [ ] `flutter test` passes

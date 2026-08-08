@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:bible_memorization_companion_mobile/core/l10n/app_locale.dart';
 import 'package:bible_memorization_companion_mobile/core/network/api_client.dart';
 import 'package:bible_memorization_companion_mobile/core/theme/app_theme.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/catalog_controller.dart';
@@ -203,6 +204,8 @@ Widget _wrap(
 }) {
   return MaterialApp(
     theme: AppTheme.light(),
+    localizationsDelegates: AppLocale.localizationsDelegates,
+    supportedLocales: AppLocale.supportedLocales,
     home: AppShell(
       catalogController: controller,
       downloadController: downloads,

@@ -1,0 +1,420 @@
+{
+  "@@locale": "en",
+
+  "appName": "Bible Memorization Companion",
+
+  "navStudies": "Studies",
+  "navLibrary": "Library",
+  "navStore": "Store",
+  "navProgress": "Progress",
+  "navSettings": "Settings",
+
+  "shellMyStudies": "My Studies",
+  "account": "Account",
+  "signInTitle": "Sign in only when it helps",
+  "signInBody": "Free scripture downloads stay guest-friendly without an account. An account is reserved for future paid audio, purchase recovery, and cross-device sync.",
+  "continueAsGuest": "Continue as guest",
+  "previewSignInLater": "Preview sign-in later",
+  "updateRequiredForPackage": "Update the app to at least version {version} to get this package.",
+  "@updateRequiredForPackage": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+
+  "studiesGetStartedTitle": "Select a package to get started",
+  "studiesGetStartedBody": "Open a downloaded package from the Library to create your first study.",
+  "goToLibrary": "Go to Library",
+  "createStudy": "Create study",
+  "studiesNoStudiesTitle": "No studies yet",
+  "studiesNoStudiesBody": "No studies yet for this package. Create your first one.",
+  "deleteStudyTitle": "Delete this study?",
+  "deleteStudyMessage": "\"{title}\" and its progress will be permanently removed.",
+  "@deleteStudyMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteStudyTooltip": "Delete study",
+  "notStarted": "Not started",
+  "resume": "Resume",
+  "start": "Start",
+
+  "progressOf": "{learned} of {total} learned",
+  "@progressOf": {
+    "placeholders": {
+      "learned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "libraryPaneDownloads": "Downloads",
+  "libraryNoDownloadsTitle": "No downloads yet",
+  "libraryNoDownloadsBody": "Packages you download from the Store will be listed here and stay available offline.",
+  "libraryErrorTitle": "Could not load the catalog",
+  "tryAgain": "Please try again.",
+  "retry": "Retry",
+  "libraryEmptyTitle": "The catalog is empty",
+  "libraryEmptyBody": "No packages have been published yet.",
+  "catalogFresh": "Showing cached results.",
+  "catalogLastUpdated": "Last updated {time}.",
+  "@catalogLastUpdated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "catalogStaleSuffix": "Could not refresh — showing the last known list.",
+  "statusFree": "Free",
+  "statusOwned": "Owned",
+  "statusPaid": "Paid",
+  "actionDownload": "Download",
+  "actionUnlock": "Unlock",
+  "packageTypeBook": "Book",
+  "packageTypeSeason": "Season",
+  "packageTypeAudio": "Audio add-on",
+  "packageTypePackage": "Package",
+  "unknownSize": "Unknown size",
+  "sizeKilobytes": "{size} KB",
+  "@sizeKilobytes": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "sizeMegabytes": "{size} MB",
+  "@sizeMegabytes": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+
+  "storeBannerDownloadsTitle": "Offline-ready downloads",
+  "storeBannerDownloadsBody": "Downloaded packages stay available without a network connection, ready for verse-by-verse review.",
+  "storeBannerCatalogTitle": "Guest-first scripture catalog",
+  "storeBannerCatalogBody": "Free scripture content can be browsed and downloaded without signing in. Locked cards preview future paid audio add-ons.",
+
+  "downloadingPercent": "Downloading {percent}%",
+  "@downloadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadingStarting": "Starting…",
+  "downloadingVerifying": "Verifying checksum…",
+  "downloadingInstalling": "Installing…",
+  "cancel": "Cancel",
+  "downloadInstalled": "Installed",
+  "updateAvailable": "Update available (v{version})",
+  "@updateAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "update": "Update",
+  "open": "Open",
+  "downloadFailedFallback": "The download failed.",
+  "retryDownload": "Retry download",
+  "requiresAppVersion": "Requires app version {version} or newer.",
+  "@requiresAppVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+
+  "packageContents": "Package contents",
+  "manifestErrorTitle": "Could not load the package contents",
+  "creditAttribution": "Credit: {attribution}",
+  "@creditAttribution": {
+    "placeholders": {
+      "attribution": {
+        "type": "String"
+      }
+    }
+  },
+  "removeDownloadTitle": "Remove this download?",
+  "removeDownloadMessage": "\"{title}\" and its studies will be permanently removed from this device.",
+  "@removeDownloadMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "remove": "Remove",
+  "removeDownloadTooltip": "Remove download",
+
+  "progressPackagesInstalled": "Packages installed",
+  "progressVersesLearned": "Verses learned",
+  "progressEmptyTitle": "Nothing installed yet",
+  "progressEmptyBody": "Install a package and create a study to see progress here.",
+  "progressByPackage": "By package",
+  "progressVersesOf": "{learned} of {total} verses learned",
+  "@progressVersesOf": {
+    "placeholders": {
+      "learned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "chapterWithNumber": "Chapter {chapter}",
+  "@chapterWithNumber": {
+    "placeholders": {
+      "chapter": {
+        "type": "int"
+      }
+    }
+  },
+  "learnedOf": "{learned} of {total}",
+  "@learnedOf": {
+    "placeholders": {
+      "learned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "settingsTextSize": "Text size",
+  "settingsTextSizeSubtitle": "Comfortable reading with larger verse cards",
+  "settingsThemeTone": "Theme tone",
+  "settingsThemeToneSubtitle": "Calm parchment with strong scripture contrast",
+  "settingsAppLanguage": "App language",
+  "settingsAppLanguageSubtitle": "Follow device language with English fallback",
+  "settingsAudioTeaser": "Audio teaser",
+  "settingsAudioTeaserSubtitle": "Preview-only in the first release shell",
+  "settingStandard": "Standard",
+  "settingLight": "Light",
+  "settingAuto": "Auto",
+  "settingOff": "Off",
+
+  "studyByChapter": "By chapter",
+  "studyBySection": "By section",
+  "studyCustom": "Custom",
+  "studyOpenErrorTitle": "Could not open {title}",
+  "@studyOpenErrorTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "contentReadError": "The package contents could not be read.",
+  "noChaptersTitle": "No chapters found",
+  "noChaptersBody": "This package has no chapter data.",
+  "byChapterHint": "Tap a chapter to create & start a study with all its verses.",
+  "noSectionsTitle": "No sections in this package",
+  "noSectionsBody": "This package ships without a sections file.",
+  "bySectionHint": "Tap a titled section to create & start.",
+  "sectionSubtitle": "{range} · {count} verses",
+  "@sectionSubtitle": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterHint": "Filters what you see below — your checked verses stay checked either way.",
+  "filterAll": "All",
+  "filterDifficult": "Difficult",
+  "filterLearned": "Learned",
+  "studyNameField": "Study name",
+  "versesSelected": "{count} verses selected",
+  "@versesSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "go": "Go",
+  "studyEmptyBody": "This study has no verses.",
+  "verseProgress": "Verse {current} of {total}",
+  "@verseProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "revealHint": "Tap to reveal the verse text, then tap again to hide it and test recall.",
+  "previous": "Previous",
+  "next": "Next",
+  "defaultStudyName": "My study {number}",
+  "@defaultStudyName": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+
+  "versesCount": "{count, plural, =1{1 verse} other{{count} verses}}",
+  "@versesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chaptersCount": "{count, plural, =1{1 chapter} other{{count} chapters}}",
+  "@chaptersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filesCount": "{count, plural, =1{1 file} other{{count} files}}",
+  "@filesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "timeJustNow": "just now",
+  "timeMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+  "timeHoursAgo": "{count, plural, =1{1 hour ago} other{{count} hours ago}}",
+  "timeDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "commonDelete": "Delete",
+
+  "drawerTagline": "Clear, calm scripture practice with offline-ready packages.",
+  "catalogPackages": "Catalog packages",
+  "installedPackages": "Installed packages",
+  "guestModeNote": "Guest mode stays fully supported for free scripture downloads.",
+
+  "errorGeneric": "Something went wrong.",
+  "errorRequestTimeout": "The server took too long to respond.",
+  "errorNoInternet": "No internet connection.",
+  "errorNetwork": "Network error.",
+  "errorRequestFailed": "Unable to reach the server.",
+  "errorUnexpectedResponse": "Unexpected response format.",
+  "errorInvalidJson": "The server returned invalid data.",
+  "errorMissingArtifactUrl": "This package has no download link.",
+  "errorDownloadTimeout": "The download took too long to start.",
+  "errorDownloadFailedTitle": "Could not download {title}.",
+  "@errorDownloadFailedTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "errorDownloadInterrupted": "The download was interrupted.",
+  "errorChecksumMismatch": "The downloaded file could not be verified.",
+  "errorInstallGeneric": "The package could not be installed.",
+  "errorArchiveOpen": "The package file could not be opened.",
+  "errorMissingManifest": "The package has no manifest.json.",
+  "errorInvalidManifest": "The package manifest is invalid.",
+  "errorUnsafePath": "The package contains an unsafe path.",
+  "errorMissingFile": "The package is missing {file}.",
+  "@errorMissingFile": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorFileSize": "{file} has an unexpected size.",
+  "@errorFileSize": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorFileChecksum": "{file} failed its checksum.",
+  "@errorFileChecksum": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCatalogLoad": "Could not load the catalog.",
+  "errorContentMissing": "{title} is no longer on this device.",
+  "@errorContentMissing": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "errorContentFileMissing": "Missing {file}.",
+  "@errorContentFileMissing": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorContentMalformed": "{file} is malformed.",
+  "@errorContentMalformed": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorContentInvalidJson": "{file} is not valid JSON.",
+  "@errorContentInvalidJson": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  }
+}

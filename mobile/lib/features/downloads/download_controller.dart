@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-import '../../core/network/api_client.dart';
+import '../../core/errors/app_error.dart';
 import '../catalog/data/models/catalog_package.dart';
 import 'data/installed_package.dart';
 import 'data/installed_package_store.dart';
@@ -23,14 +23,14 @@ class PackageDownload {
   const PackageDownload({
     required this.state,
     this.progress,
-    this.errorMessage,
+    this.error,
   });
 
   const PackageDownload.idle() : this(state: DownloadState.idle);
 
   final DownloadState state;
   final DownloadProgress? progress;
-  final String? errorMessage;
+  final AppError? error;
 
   bool get isActive =>
       state == DownloadState.downloading ||
@@ -135,11 +135,11 @@ class DownloadController extends ChangeNotifier {
       _downloads.remove(package.id);
       _notify();
     } on ApiException catch (error) {
-      _fail(package.id, error.message);
+      _fail(package.id, asAppError(error));
     } on InstallException catch (error) {
-      _fail(package.id, error.message);
+      _fail(package.id, asAppError(error));
     } catch (_) {
-      _fail(package.id, 'The package could not be installed.');
+      _fail(package.id, const AppError(AppErrorKind.installFailed));
     } finally {
       _cancelTokens.remove(package.id);
       // The zip is only needed while installing.
@@ -181,10 +181,10 @@ class DownloadController extends ChangeNotifier {
     }
   }
 
-  void _fail(String packageId, String message) {
+  void _fail(String packageId, AppError error) {
     _update(
       packageId,
-      PackageDownload(state: DownloadState.failed, errorMessage: message),
+      PackageDownload(state: DownloadState.failed, error: error),
     );
   }
 

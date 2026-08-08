@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bible_memorization_companion_mobile/core/errors/app_error.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/data/models/catalog_package.dart';
 import 'package:bible_memorization_companion_mobile/features/downloads/data/installed_package.dart';
 import 'package:bible_memorization_companion_mobile/features/study/data/package_content_repository.dart';

@@ -4,20 +4,11 @@ import 'dart:io';
 import 'package:archive/archive.dart';
 import 'package:crypto/crypto.dart';
 
+import '../../../core/errors/app_error.dart';
 import '../../../core/storage/app_directories.dart';
 import '../../catalog/data/models/catalog_package.dart';
 import '../../catalog/data/models/package_manifest.dart';
 import 'installed_package.dart';
-
-/// Raised when a verified artifact cannot be unpacked into a usable package.
-class InstallException implements Exception {
-  const InstallException(this.message);
-
-  final String message;
-
-  @override
-  String toString() => 'InstallException: $message';
-}
 
 /// Unzips a downloaded artifact into the app's private storage.
 ///
@@ -87,14 +78,14 @@ class PackageInstaller {
     try {
       return ZipDecoder().decodeBytes(artifact.readAsBytesSync());
     } catch (_) {
-      throw const InstallException('The package archive could not be opened.');
+      throw const InstallException(AppErrorKind.archiveOpenFailed);
     }
   }
 
   PackageManifest _readManifest(Archive archive) {
     final entry = archive.files.where((file) => file.name == manifestEntry);
     if (entry.isEmpty) {
-      throw const InstallException('The package has no manifest.json.');
+      throw const InstallException(AppErrorKind.missingManifest);
     }
     try {
       final decoded = jsonDecode(
@@ -102,7 +93,7 @@ class PackageInstaller {
       );
       return PackageManifest.fromJson(decoded as Map<String, dynamic>);
     } catch (_) {
-      throw const InstallException('The package manifest is invalid.');
+      throw const InstallException(AppErrorKind.invalidManifest);
     }
   }
 
@@ -123,7 +114,7 @@ class PackageInstaller {
     final normalized = name.replaceAll('\\', '/');
     final segments = normalized.split('/');
     if (normalized.startsWith('/') || segments.contains('..')) {
-      throw InstallException('The package contains an unsafe path: $name');
+      throw const InstallException(AppErrorKind.unsafePath);
     }
     return normalized;
   }
@@ -134,17 +125,26 @@ class PackageInstaller {
 
       if (!await file.exists()) {
         if (!entry.required) continue;
-        throw InstallException('The package is missing ${entry.path}.');
+        throw InstallException(
+          AppErrorKind.missingFile,
+          params: [entry.path],
+        );
       }
 
       final bytes = await file.readAsBytes();
       if (entry.sizeBytes > 0 && bytes.length != entry.sizeBytes) {
-        throw InstallException('${entry.path} has an unexpected size.');
+        throw InstallException(
+          AppErrorKind.fileSizeMismatch,
+          params: [entry.path],
+        );
       }
       if (entry.checksumSha256.isNotEmpty &&
           sha256.convert(bytes).toString() !=
               entry.checksumSha256.toLowerCase()) {
-        throw InstallException('${entry.path} failed its checksum check.');
+        throw InstallException(
+          AppErrorKind.fileChecksumMismatch,
+          params: [entry.path],
+        );
       }
     }
   }

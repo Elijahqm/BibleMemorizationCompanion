@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:bible_memorization_companion_mobile/core/errors/app_error.dart';
 import 'package:bible_memorization_companion_mobile/features/catalog/data/models/catalog_package.dart';
 import 'package:bible_memorization_companion_mobile/features/downloads/data/installed_package.dart';
 import 'package:bible_memorization_companion_mobile/features/downloads/data/installed_package_store.dart';
@@ -141,9 +142,9 @@ void main() {
       installer.install(packageFor(zip), artifactFile(zip)),
       throwsA(
         isA<InstallException>().having(
-          (e) => e.message,
-          'message',
-          contains('unsafe path'),
+          (e) => e.kind,
+          'kind',
+          AppErrorKind.unsafePath,
         ),
       ),
     );

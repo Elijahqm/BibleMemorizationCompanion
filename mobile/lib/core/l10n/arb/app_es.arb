@@ -1,0 +1,420 @@
+{
+  "@@locale": "es",
+
+  "appName": "Compañero de Memorización Bíblica",
+
+  "navStudies": "Estudios",
+  "navLibrary": "Biblioteca",
+  "navStore": "Tienda",
+  "navProgress": "Progreso",
+  "navSettings": "Ajustes",
+
+  "shellMyStudies": "Mis estudios",
+  "account": "Cuenta",
+  "signInTitle": "Inicia sesión solo cuando te ayude",
+  "signInBody": "Las descargas gratuitas de Escrituras siguen disponibles sin cuenta. La cuenta está reservada para el audio de pago futuro, la recuperación de compras y la sincronización entre dispositivos.",
+  "continueAsGuest": "Continuar como invitado",
+  "previewSignInLater": "Ver inicio de sesión más tarde",
+  "updateRequiredForPackage": "Actualiza la app a la versión {version} o superior para obtener este paquete.",
+  "@updateRequiredForPackage": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+
+  "studiesGetStartedTitle": "Selecciona un paquete para empezar",
+  "studiesGetStartedBody": "Abre un paquete descargado desde la Biblioteca para crear tu primer estudio.",
+  "goToLibrary": "Ir a la Biblioteca",
+  "createStudy": "Crear estudio",
+  "studiesNoStudiesTitle": "Aún no hay estudios",
+  "studiesNoStudiesBody": "Aún no hay estudios para este paquete. Crea el primero.",
+  "deleteStudyTitle": "¿Eliminar este estudio?",
+  "deleteStudyMessage": "\"{title}\" y su progreso se eliminarán de forma permanente.",
+  "@deleteStudyMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteStudyTooltip": "Eliminar estudio",
+  "notStarted": "Sin empezar",
+  "resume": "Continuar",
+  "start": "Empezar",
+
+  "progressOf": "{learned} de {total} aprendidos",
+  "@progressOf": {
+    "placeholders": {
+      "learned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "libraryPaneDownloads": "Descargas",
+  "libraryNoDownloadsTitle": "Aún no hay descargas",
+  "libraryNoDownloadsBody": "Los paquetes que descargues de la Tienda aparecerán aquí y seguirán disponibles sin conexión.",
+  "libraryErrorTitle": "No se pudo cargar el catálogo",
+  "tryAgain": "Inténtalo de nuevo.",
+  "retry": "Reintentar",
+  "libraryEmptyTitle": "El catálogo está vacío",
+  "libraryEmptyBody": "Aún no se ha publicado ningún paquete.",
+  "catalogFresh": "Mostrando resultados en caché.",
+  "catalogLastUpdated": "Actualizado hace {time}.",
+  "@catalogLastUpdated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "catalogStaleSuffix": "No se pudo actualizar; se muestra la última lista conocida.",
+  "statusFree": "Gratis",
+  "statusOwned": "Comprado",
+  "statusPaid": "De pago",
+  "actionDownload": "Descargar",
+  "actionUnlock": "Desbloquear",
+  "packageTypeBook": "Libro",
+  "packageTypeSeason": "Temporada",
+  "packageTypeAudio": "Audio extra",
+  "packageTypePackage": "Paquete",
+  "unknownSize": "Tamaño desconocido",
+  "sizeKilobytes": "{size} KB",
+  "@sizeKilobytes": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "sizeMegabytes": "{size} MB",
+  "@sizeMegabytes": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+
+  "storeBannerDownloadsTitle": "Descargas sin conexión",
+  "storeBannerDownloadsBody": "Los paquetes descargados siguen disponibles sin conexión a internet, listos para repasar versículo por versículo.",
+  "storeBannerCatalogTitle": "Catálogo de Escrituras accesible para invitados",
+  "storeBannerCatalogBody": "El contenido gratuito puede explorarse y descargarse sin iniciar sesión. Las tarjetas bloqueadas anticipan futuros audios de pago.",
+
+  "downloadingPercent": "Descargando {percent}%",
+  "@downloadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadingStarting": "Comenzando…",
+  "downloadingVerifying": "Verificando el checksum…",
+  "downloadingInstalling": "Instalando…",
+  "cancel": "Cancelar",
+  "downloadInstalled": "Instalado",
+  "updateAvailable": "Actualización disponible (v{version})",
+  "@updateAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "update": "Actualizar",
+  "open": "Abrir",
+  "downloadFailedFallback": "La descarga falló.",
+  "retryDownload": "Reintentar descarga",
+  "requiresAppVersion": "Requiere la versión {version} de la app o superior.",
+  "@requiresAppVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+
+  "packageContents": "Contenido del paquete",
+  "manifestErrorTitle": "No se pudo cargar el contenido del paquete",
+  "creditAttribution": "Crédito: {attribution}",
+  "@creditAttribution": {
+    "placeholders": {
+      "attribution": {
+        "type": "String"
+      }
+    }
+  },
+  "removeDownloadTitle": "¿Eliminar esta descarga?",
+  "removeDownloadMessage": "\"{title}\" y sus estudios se eliminarán de forma permanente de este dispositivo.",
+  "@removeDownloadMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "remove": "Eliminar",
+  "removeDownloadTooltip": "Eliminar descarga",
+
+  "progressPackagesInstalled": "Paquetes instalados",
+  "progressVersesLearned": "Versículos aprendidos",
+  "progressEmptyTitle": "Aún no hay nada instalado",
+  "progressEmptyBody": "Instala un paquete y crea un estudio para ver tu progreso aquí.",
+  "progressByPackage": "Por paquete",
+  "progressVersesOf": "{learned} de {total} versículos aprendidos",
+  "@progressVersesOf": {
+    "placeholders": {
+      "learned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "chapterWithNumber": "Capítulo {chapter}",
+  "@chapterWithNumber": {
+    "placeholders": {
+      "chapter": {
+        "type": "int"
+      }
+    }
+  },
+  "learnedOf": "{learned} de {total}",
+  "@learnedOf": {
+    "placeholders": {
+      "learned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "settingsTextSize": "Tamaño del texto",
+  "settingsTextSizeSubtitle": "Lectura cómoda con tarjetas de versículo más grandes",
+  "settingsThemeTone": "Tono del tema",
+  "settingsThemeToneSubtitle": "Pergamino tranquilo con fuerte contraste para las Escrituras",
+  "settingsAppLanguage": "Idioma de la app",
+  "settingsAppLanguageSubtitle": "Sigue el idioma del dispositivo con respaldo en inglés",
+  "settingsAudioTeaser": "Vista previa de audio",
+  "settingsAudioTeaserSubtitle": "Solo vista previa en la primera versión",
+  "settingStandard": "Estándar",
+  "settingLight": "Claro",
+  "settingAuto": "Automático",
+  "settingOff": "Apagado",
+
+  "studyByChapter": "Por capítulo",
+  "studyBySection": "Por sección",
+  "studyCustom": "Personalizado",
+  "studyOpenErrorTitle": "No se pudo abrir {title}",
+  "@studyOpenErrorTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "contentReadError": "No se pudo leer el contenido del paquete.",
+  "noChaptersTitle": "No se encontraron capítulos",
+  "noChaptersBody": "Este paquete no tiene datos de capítulos.",
+  "byChapterHint": "Toca un capítulo para crear y empezar un estudio con todos sus versículos.",
+  "noSectionsTitle": "Este paquete no tiene secciones",
+  "noSectionsBody": "Este paquete no incluye un archivo de secciones.",
+  "bySectionHint": "Toca una sección con título para crear y empezar.",
+  "sectionSubtitle": "{range} · {count} versículos",
+  "@sectionSubtitle": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterHint": "Filtra lo que ves abajo; tus versículos marcados se mantienen marcados de cualquier forma.",
+  "filterAll": "Todos",
+  "filterDifficult": "Difíciles",
+  "filterLearned": "Aprendidos",
+  "studyNameField": "Nombre del estudio",
+  "versesSelected": "{count} versículos seleccionados",
+  "@versesSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "go": "Ir",
+  "studyEmptyBody": "Este estudio no tiene versículos.",
+  "verseProgress": "Versículo {current} de {total}",
+  "@verseProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "revealHint": "Toca para revelar el texto del versículo y toca de nuevo para ocultarlo y poner a prueba tu memoria.",
+  "previous": "Anterior",
+  "next": "Siguiente",
+  "defaultStudyName": "Mi estudio {number}",
+  "@defaultStudyName": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+
+  "versesCount": "{count, plural, =1{1 versículo} other{{count} versículos}}",
+  "@versesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chaptersCount": "{count, plural, =1{1 capítulo} other{{count} capítulos}}",
+  "@chaptersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filesCount": "{count, plural, =1{1 archivo} other{{count} archivos}}",
+  "@filesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "timeJustNow": "ahora mismo",
+  "timeMinutesAgo": "{count, plural, =1{hace 1 minuto} other{hace {count} minutos}}",
+  "timeHoursAgo": "{count, plural, =1{hace 1 hora} other{hace {count} horas}}",
+  "timeDaysAgo": "{count, plural, =1{hace 1 día} other{hace {count} días}}",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "commonDelete": "Eliminar",
+
+  "drawerTagline": "Práctica clara y tranquila de las Escrituras con paquetes sin conexión.",
+  "catalogPackages": "Paquetes del catálogo",
+  "installedPackages": "Paquetes instalados",
+  "guestModeNote": "El modo invitado sigue totalmente soportado para descargas gratuitas de Escrituras.",
+
+  "errorGeneric": "Algo salió mal.",
+  "errorRequestTimeout": "El servidor tardó demasiado en responder.",
+  "errorNoInternet": "No hay conexión a internet.",
+  "errorNetwork": "Error de red.",
+  "errorRequestFailed": "No se pudo contactar con el servidor.",
+  "errorUnexpectedResponse": "Formato de respuesta inesperado.",
+  "errorInvalidJson": "El servidor devolvió datos no válidos.",
+  "errorMissingArtifactUrl": "Este paquete no tiene enlace de descarga.",
+  "errorDownloadTimeout": "La descarga tardó demasiado en comenzar.",
+  "errorDownloadFailedTitle": "No se pudo descargar {title}.",
+  "@errorDownloadFailedTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "errorDownloadInterrupted": "La descarga se interrumpió.",
+  "errorChecksumMismatch": "No se pudo verificar el archivo descargado.",
+  "errorInstallGeneric": "No se pudo instalar el paquete.",
+  "errorArchiveOpen": "No se pudo abrir el archivo del paquete.",
+  "errorMissingManifest": "El paquete no tiene manifest.json.",
+  "errorInvalidManifest": "El manifiesto del paquete no es válido.",
+  "errorUnsafePath": "El paquete contiene una ruta no segura.",
+  "errorMissingFile": "Falta {file} en el paquete.",
+  "@errorMissingFile": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorFileSize": "{file} tiene un tamaño inesperado.",
+  "@errorFileSize": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorFileChecksum": "{file} no superó su verificación.",
+  "@errorFileChecksum": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCatalogLoad": "No se pudo cargar el catálogo.",
+  "errorContentMissing": "{title} ya no está en este dispositivo.",
+  "@errorContentMissing": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "errorContentFileMissing": "Falta {file}.",
+  "@errorContentFileMissing": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorContentMalformed": "{file} está corrupto.",
+  "@errorContentMalformed": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "errorContentInvalidJson": "{file} no es JSON válido.",
+  "@errorContentInvalidJson": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  }
+}

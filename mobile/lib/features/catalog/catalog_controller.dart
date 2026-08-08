@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../core/network/api_client.dart';
+import '../../core/errors/app_error.dart';
 import 'data/catalog_cache_store.dart';
 import 'data/catalog_repository.dart';
 import 'data/models/catalog_package.dart';
@@ -24,14 +24,14 @@ class CatalogController extends ChangeNotifier {
 
   CatalogStatus _status = CatalogStatus.idle;
   List<CatalogPackage> _packages = const [];
-  String? _errorMessage;
+  AppError? _error;
   DateTime? _lastUpdated;
   bool _isStale = false;
   bool _disposed = false;
 
   CatalogStatus get status => _status;
   List<CatalogPackage> get packages => _packages;
-  String? get errorMessage => _errorMessage;
+  AppError? get error => _error;
   bool get isLoading => _status == CatalogStatus.loading;
   DateTime? get lastUpdated => _lastUpdated;
 
@@ -55,7 +55,7 @@ class CatalogController extends ChangeNotifier {
     }
 
     _status = _packages.isEmpty ? CatalogStatus.loading : CatalogStatus.ready;
-    _errorMessage = null;
+    _error = null;
     _safeNotify();
 
     try {
@@ -66,16 +66,16 @@ class CatalogController extends ChangeNotifier {
       _isStale = false;
       await _cacheStore.save(catalog, _lastUpdated!);
     } on ApiException catch (error) {
-      _fail(error.message);
+      _fail(asAppError(error));
     } catch (_) {
-      _fail('Could not load the catalog.');
+      _fail(const AppError(AppErrorKind.catalogLoadFailed));
     }
 
     _safeNotify();
   }
 
-  void _fail(String message) {
-    _errorMessage = message;
+  void _fail(AppError error) {
+    _error = error;
     if (_packages.isEmpty) {
       _status = CatalogStatus.error;
     } else {

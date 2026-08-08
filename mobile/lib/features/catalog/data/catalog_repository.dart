@@ -1,3 +1,4 @@
+import '../../../core/errors/app_error.dart';
 import '../../../core/network/api_client.dart';
 import 'models/catalog_package.dart';
 import 'models/package_manifest.dart';
@@ -32,7 +33,7 @@ class CatalogRepository {
     if (cached != null) return cached;
 
     if (package.manifestUrl.isEmpty) {
-      throw const ApiException('This package has no manifest URL.');
+      throw const ApiException(AppErrorKind.generic);
     }
 
     final json = await _apiClient.getJson(package.manifestUrl);
