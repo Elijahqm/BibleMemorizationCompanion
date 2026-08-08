@@ -5,17 +5,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../config/app_config.dart';
-
-/// Error surfaced to the UI when a backend call fails.
-class ApiException implements Exception {
-  const ApiException(this.message, {this.statusCode});
-
-  final String message;
-  final int? statusCode;
-
-  @override
-  String toString() => 'ApiException($statusCode): $message';
-}
+import '../errors/app_error.dart';
 
 /// Thin JSON client over the backend. Keeps timeout, decoding and error
 /// mapping in one place so repositories stay small.
@@ -42,16 +32,16 @@ class ApiClient {
           .get(uri, headers: const {'Accept': 'application/json'})
           .timeout(AppConfig.requestTimeout);
     } on TimeoutException {
-      throw const ApiException('The server took too long to respond.');
+      throw const ApiException(AppErrorKind.requestTimeout);
     } on SocketException {
-      throw const ApiException('No internet connection.');
-    } on http.ClientException catch (error) {
-      throw ApiException('Network error: ${error.message}');
+      throw const ApiException(AppErrorKind.noInternet);
+    } on http.ClientException {
+      throw const ApiException(AppErrorKind.network);
     }
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw ApiException(
-        'Request to ${uri.path} failed.',
+        AppErrorKind.requestFailed,
         statusCode: response.statusCode,
       );
     }
@@ -59,11 +49,11 @@ class ApiClient {
     try {
       final decoded = jsonDecode(utf8.decode(response.bodyBytes));
       if (decoded is! Map<String, dynamic>) {
-        throw const ApiException('Unexpected response format.');
+        throw const ApiException(AppErrorKind.unexpectedResponse);
       }
       return decoded;
     } on FormatException {
-      throw const ApiException('The server returned invalid JSON.');
+      throw const ApiException(AppErrorKind.invalidJson);
     }
   }
 

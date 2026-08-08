@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../core/config/app_config.dart';
-import '../../core/network/api_client.dart';
-import '../../core/version_compare.dart';
+import '../../core/errors/app_error.dart';
+import '../../core/l10n/app_localizations.dart';
+import '../../core/l10n/app_locale.dart';
+import '../../core/l10n/presentation.dart';
 import '../../core/widgets/confirmation_dialog.dart';
 import '../../core/widgets/info_panel.dart';
 import '../catalog/catalog_controller.dart';
@@ -19,8 +20,37 @@ import '../study/data/models/verse_state.dart';
 import '../study/data/package_content_repository.dart';
 import '../study/study_controller.dart';
 import '../study/study_screens.dart';
+import 'floating_nav_bar.dart';
 
-enum LibraryPane { downloads, store }
+String _formatSize(int bytes) {
+  if (bytes >= 1024 * 1024) return '${(bytes / (1024 * 1024)).toStringAsFixed(1)}Mb';
+  if (bytes >= 1024) return '${(bytes / 1024).round()}Kb';
+  return '${bytes}b';
+}
+
+String _installedMeta(InstalledPackage p, AppLocalizations l10n) {
+  final size = _formatSize(p.sizeBytes);
+  final parts = [
+    p.packageType.label(l10n),
+    p.language.toUpperCase(),
+    if (p.attribution.isNotEmpty) p.attribution,
+    size,
+    'v${p.version}',
+  ];
+  return parts.join(' · ');
+}
+
+String _storeMeta(CatalogPackage p, AppLocalizations l10n) {
+  final size = _formatSize(p.sizeBytes);
+  return '${p.packageType.label(l10n)} · ${p.language.toUpperCase()} · $size · v${p.version}';
+}
+
+String _progressLabel(AppLocalizations l10n, DownloadProgress? progress) {
+  if (progress == null) return l10n.downloadingStarting;
+  final fraction = progress.fraction;
+  if (fraction == null) return l10n.downloadingStarting;
+  return l10n.downloadingPercent((fraction * 100).round());
+}
 
 class AppShell extends StatefulWidget {
   const AppShell({
@@ -53,7 +83,6 @@ class _AppShellState extends State<AppShell> {
   late final bool _ownsStudies;
 
   int _currentIndex = 0;
-  LibraryPane _libraryPane = LibraryPane.store;
 
   @override
   void initState() {
@@ -80,53 +109,76 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
-        title: Text(_titleForIndex()),
+        title: Text(_titleForIndex(context)),
         actions: [
           IconButton(
             onPressed: () => _showSignInPrompt(context),
             icon: const Icon(PhosphorIconsRegular.user),
-            tooltip: 'Account',
+            tooltip: context.l10n.account,
           ),
         ],
       ),
-      drawer: _AppDrawer(
-        catalogCount: _catalog.packages.length,
-        installedCount: _downloads.installedPackages.length,
-      ),
-      body: SafeArea(
-        child: ListenableBuilder(
-          listenable: Listenable.merge([_catalog, _downloads, _studies]),
-          builder: (context, _) => _buildPage(),
-        ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.bookOpen),
-            selectedIcon: Icon(PhosphorIconsFill.bookOpen),
-            label: 'Studies',
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 104),
+                child: ListenableBuilder(
+                  listenable: Listenable.merge([_catalog, _downloads, _studies]),
+                  builder: (context, _) => _buildPage(),
+                ),
+              ),
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.books),
-            selectedIcon: Icon(PhosphorIconsFill.books),
-            label: 'Library',
-          ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.chartBar),
-            selectedIcon: Icon(PhosphorIconsFill.chartBar),
-            label: 'Progress',
-          ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.fadersHorizontal),
-            selectedIcon: Icon(PhosphorIconsFill.fadersHorizontal),
-            label: 'Settings',
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+                child: FloatingNavBar(
+                  items: [
+                    NavigationItem(
+                      label: context.l10n.navStudies,
+                      icon: PhosphorIconsRegular.bookOpen,
+                      selectedIcon: PhosphorIconsFill.bookOpen,
+                    ),
+                    NavigationItem(
+                      label: context.l10n.navLibrary,
+                      icon: PhosphorIconsRegular.books,
+                      selectedIcon: PhosphorIconsFill.books,
+                    ),
+                    NavigationItem(
+                      label: context.l10n.navStore,
+                      icon: PhosphorIconsRegular.storefront,
+                      selectedIcon: PhosphorIconsFill.storefront,
+                    ),
+                    NavigationItem(
+                      label: context.l10n.navProgress,
+                      icon: PhosphorIconsRegular.chartBar,
+                      selectedIcon: PhosphorIconsFill.chartBar,
+                    ),
+                    NavigationItem(
+                      label: context.l10n.navSettings,
+                      icon: PhosphorIconsRegular.fadersHorizontal,
+                      selectedIcon: PhosphorIconsFill.fadersHorizontal,
+                    ),
+                  ],
+                  selectedIndex: _currentIndex,
+                  onSelected: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -146,18 +198,8 @@ class _AppShellState extends State<AppShell> {
         );
       case 1:
         return LibraryScreen(
-          pane: _libraryPane,
-          catalog: _catalog,
-          onPaneChanged: (pane) {
-            setState(() {
-              _libraryPane = pane;
-            });
-          },
-          onRetry: () => _catalog.load(refresh: true),
           downloads: _downloads,
-          onOpenPackage: (package) => _openPackage(context, package),
-          onPrimaryAction: (package) => _handlePackageAction(context, package),
-          onCancelDownload: _downloads.cancel,
+          onRefresh: () => _downloads.loadInstalled(),
           onOpenInstalled: _openInstalledPackage,
           onDeleteInstalled: (package) async {
             _content.evict(package);
@@ -166,30 +208,41 @@ class _AppShellState extends State<AppShell> {
           },
         );
       case 2:
+        return StoreScreen(
+          catalog: _catalog,
+          downloads: _downloads,
+          onRetry: () => _catalog.load(refresh: true),
+          onOpenPackage: (package) => _openPackage(context, package),
+          onPrimaryAction: (package) => _handlePackageAction(context, package),
+          onCancelDownload: _downloads.cancel,
+        );
+      case 3:
         return ProgressScreen(
           installed: _downloads.installedPackages,
           studies: _studies,
           onOpenPackage: (package) => _openPackageProgress(context, package),
         );
-      case 3:
+      case 4:
         return const SettingsScreen();
       default:
         return const SizedBox.shrink();
     }
   }
 
-  String _titleForIndex() {
+  String _titleForIndex(BuildContext context) {
     switch (_currentIndex) {
       case 0:
-        return _activeInstalledPackage()?.title ?? 'My Studies';
+        return _activeInstalledPackage()?.title ?? context.l10n.shellMyStudies;
       case 1:
-        return 'Library';
+        return context.l10n.navLibrary;
       case 2:
-        return 'Progress';
+        return context.l10n.navStore;
       case 3:
-        return 'Settings';
+        return context.l10n.navProgress;
+      case 4:
+        return context.l10n.navSettings;
       default:
-        return 'Bible Memorization Companion';
+        return context.l10n.appName;
     }
   }
 
@@ -272,9 +325,9 @@ class _AppShellState extends State<AppShell> {
       await _downloads.uninstall(package);
       await _studies.onPackageUninstalled(package.id);
       if (!context.mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(error.message)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(localizedAppError(context.l10n, error))),
+      );
     }
   }
 
@@ -283,8 +336,7 @@ class _AppShellState extends State<AppShell> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Update the app to at least version ${package.minAppVersion} '
-            'to get this package.',
+            context.l10n.updateRequiredForPackage(package.minAppVersion),
           ),
         ),
       );
@@ -320,23 +372,23 @@ class _AppShellState extends State<AppShell> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Sign in only when it helps',
+              context.l10n.signInTitle,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
             Text(
-              'Free scripture downloads stay guest-friendly. Account access is reserved for future paid audio, purchase recovery, and cross-device sync.',
+              context.l10n.signInBody,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 20),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Continue as guest'),
+              child: Text(context.l10n.continueAsGuest),
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Preview sign-in later'),
+              child: Text(context.l10n.previewSignInLater),
             ),
           ],
         ),
@@ -374,13 +426,11 @@ class MyStudiesScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
           InfoPanel(
-            title: 'Select a package to get started',
-            body:
-                'Open a downloaded package from the Library to create your '
-                'first study.',
+            title: context.l10n.studiesGetStartedTitle,
+            body: context.l10n.studiesGetStartedBody,
             action: FilledButton(
               onPressed: onGoToLibrary,
-              child: const Text('Go to Library'),
+              child: Text(context.l10n.goToLibrary),
             ),
           ),
         ],
@@ -395,13 +445,13 @@ class MyStudiesScreen extends StatelessWidget {
         FilledButton.icon(
           onPressed: () => onCreateStudy(package),
           icon: const Icon(PhosphorIconsRegular.plus),
-          label: const Text('Create study'),
+          label: Text(context.l10n.createStudy),
         ),
         const SizedBox(height: 18),
         if (studyList.isEmpty)
-          const InfoPanel(
-            title: 'No studies yet',
-            body: 'No studies yet for this package. Create your first one.',
+          InfoPanel(
+            title: context.l10n.studiesNoStudiesTitle,
+            body: context.l10n.studiesNoStudiesBody,
           )
         else
           for (final (index, study) in studyList.indexed) ...[
@@ -413,10 +463,10 @@ class MyStudiesScreen extends StatelessWidget {
               onDelete: () async {
                 final confirmed = await showConfirmationDialog(
                   context,
-                  title: 'Delete this study?',
-                  message:
-                      '"${study.title}" and its progress will be permanently '
-                      'removed.',
+                  title: context.l10n.deleteStudyTitle,
+                  message: context.l10n.deleteStudyMessage(study.title),
+                  confirmLabel: context.l10n.commonDelete,
+                  cancelLabel: context.l10n.cancel,
                 );
                 if (confirmed) onDeleteStudy(study);
               },
@@ -447,7 +497,9 @@ class _StudyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final (learned, total) = studies.progressFor(study);
     final started = learned > 0 || study.lastVerseIndex > 0;
-    final progressLabel = learned > 0 ? '$learned of $total learned' : 'Not started';
+    final progressLabel = learned > 0
+        ? context.l10n.progressOf(learned, total)
+        : context.l10n.notStarted;
     final scheme = Theme.of(context).colorScheme;
 
     final titleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -479,7 +531,7 @@ class _StudyCard extends StatelessWidget {
                   PhosphorIconsRegular.trash,
                   color: isLastStudied ? Colors.white : null,
                 ),
-                tooltip: 'Delete study',
+                tooltip: context.l10n.deleteStudyTooltip,
               ),
             ],
           ),
@@ -493,11 +545,11 @@ class _StudyCard extends StatelessWidget {
                     foregroundColor: scheme.primary,
                   ),
                   onPressed: onOpen,
-                  child: Text(started ? 'Resume' : 'Start'),
+                  child: Text(started ? context.l10n.resume : context.l10n.start),
                 )
               : FilledButton(
                   onPressed: onOpen,
-                  child: Text(started ? 'Resume' : 'Start'),
+                  child: Text(started ? context.l10n.resume : context.l10n.start),
                 ),
         ],
       ),
@@ -526,31 +578,95 @@ class _StudyCard extends StatelessWidget {
   }
 }
 
+/// The installed/downloaded packages on this device. The Store (catalog)
+/// lives on its own top-level destination ([StoreScreen]).
 class LibraryScreen extends StatelessWidget {
   const LibraryScreen({
     super.key,
-    required this.pane,
-    required this.catalog,
-    required this.onPaneChanged,
-    required this.onRetry,
     required this.downloads,
-    required this.onOpenPackage,
-    required this.onPrimaryAction,
-    required this.onCancelDownload,
+    required this.onRefresh,
     required this.onOpenInstalled,
     required this.onDeleteInstalled,
   });
 
-  final LibraryPane pane;
-  final CatalogController catalog;
-  final ValueChanged<LibraryPane> onPaneChanged;
-  final Future<void> Function() onRetry;
   final DownloadController downloads;
+  final Future<void> Function() onRefresh;
+  final ValueChanged<InstalledPackage> onOpenInstalled;
+  final ValueChanged<InstalledPackage> onDeleteInstalled;
+
+  @override
+  Widget build(BuildContext context) {
+    final installed = downloads.installedPackages;
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+        children: [
+          if (installed.isEmpty)
+            InfoPanel(
+              title: context.l10n.libraryNoDownloadsTitle,
+              body: context.l10n.libraryNoDownloadsBody,
+            )
+          else
+            for (final package in installed) ...[
+              Dismissible(
+                key: ValueKey(package.id),
+                direction: DismissDirection.endToStart,
+                confirmDismiss: (_) async => showConfirmationDialog(
+                  context,
+                  title: context.l10n.removeDownloadTitle,
+                  message: context.l10n.removeDownloadMessage(package.title),
+                  confirmLabel: context.l10n.remove,
+                  cancelLabel: context.l10n.cancel,
+                ),
+                onDismissed: (_) => onDeleteInstalled(package),
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 20),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.error,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(
+                    PhosphorIconsRegular.trash,
+                    color: Theme.of(context).colorScheme.onError,
+                  ),
+                ),
+                child: _PackageCard(
+                  title: package.title,
+                  subtitle: _installedMeta(package, context.l10n),
+                  actionLabel: context.l10n.open,
+                  onAction: () => onOpenInstalled(package),
+                  onTap: () => onOpenInstalled(package),
+                ),
+              ),
+              const SizedBox(height: 14),
+            ],
+        ],
+      ),
+    );
+  }
+}
+
+/// The Store: the full catalog of published packages, with pull-to-refresh,
+/// retry, a freshness banner and per-package download actions.
+class StoreScreen extends StatelessWidget {
+  const StoreScreen({
+    super.key,
+    required this.catalog,
+    required this.downloads,
+    required this.onRetry,
+    required this.onOpenPackage,
+    required this.onPrimaryAction,
+    required this.onCancelDownload,
+  });
+
+  final CatalogController catalog;
+  final DownloadController downloads;
+  final Future<void> Function() onRetry;
   final ValueChanged<CatalogPackage> onOpenPackage;
   final ValueChanged<CatalogPackage> onPrimaryAction;
   final ValueChanged<CatalogPackage> onCancelDownload;
-  final ValueChanged<InstalledPackage> onOpenInstalled;
-  final ValueChanged<InstalledPackage> onDeleteInstalled;
 
   @override
   Widget build(BuildContext context) {
@@ -559,51 +675,15 @@ class LibraryScreen extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
-          SegmentedButton<LibraryPane>(
-            segments: const [
-              ButtonSegment(
-                value: LibraryPane.downloads,
-                label: Text('Downloads'),
-              ),
-              ButtonSegment(value: LibraryPane.store, label: Text('Store')),
-            ],
-            selected: {pane},
-            onSelectionChanged: (selection) => onPaneChanged(selection.first),
-          ),
+          const _StoreStatusBanner(),
           const SizedBox(height: 18),
-          _StoreStatusBanner(pane: pane),
-          const SizedBox(height: 18),
-          ..._buildPaneContent(context),
+          ..._buildCatalog(context),
         ],
       ),
     );
   }
 
-  List<Widget> _buildPaneContent(BuildContext context) {
-    if (pane == LibraryPane.downloads) {
-      final installed = downloads.installedPackages;
-      if (installed.isEmpty) {
-        return [
-          InfoPanel(
-            title: 'No downloads yet',
-            body:
-                'Packages you download from the Store will be listed here and '
-                'stay available offline.',
-          ),
-        ];
-      }
-      return [
-        for (final package in installed) ...[
-          _InstalledPackageCard(
-            package: package,
-            onOpen: () => onOpenInstalled(package),
-            onDelete: () => onDeleteInstalled(package),
-          ),
-          const SizedBox(height: 14),
-        ],
-      ];
-    }
-
+  List<Widget> _buildCatalog(BuildContext context) {
     switch (catalog.status) {
       case CatalogStatus.idle:
       case CatalogStatus.loading:
@@ -616,11 +696,13 @@ class LibraryScreen extends StatelessWidget {
       case CatalogStatus.error:
         return [
           InfoPanel(
-            title: 'Could not load the catalog',
-            body: catalog.errorMessage ?? 'Please try again.',
+            title: context.l10n.libraryErrorTitle,
+            body: catalog.error == null
+                ? context.l10n.tryAgain
+                : localizedAppError(context.l10n, catalog.error!),
             action: FilledButton(
               onPressed: () => onRetry(),
-              child: const Text('Retry'),
+              child: Text(context.l10n.retry),
             ),
           ),
         ];
@@ -628,8 +710,8 @@ class LibraryScreen extends StatelessWidget {
         if (catalog.packages.isEmpty) {
           return [
             InfoPanel(
-              title: 'The catalog is empty',
-              body: 'No packages have been published yet.',
+              title: context.l10n.libraryEmptyTitle,
+              body: context.l10n.libraryEmptyBody,
             ),
           ];
         }
@@ -642,7 +724,7 @@ class LibraryScreen extends StatelessWidget {
             const SizedBox(height: 14),
           ],
           for (final package in catalog.packages) ...[
-            _PackageCard(
+            _StorePackageCard(
               package: package,
               download: downloads.statusFor(package),
               hasUpdate: downloads.hasUpdate(package),
@@ -671,8 +753,10 @@ class _CatalogFreshnessBanner extends StatelessWidget {
 
     final theme = Theme.of(context);
     final label = lastUpdated == null
-        ? 'Showing cached results.'
-        : 'Last updated ${_relativeLabel(lastUpdated!)}.';
+        ? context.l10n.catalogFresh
+        : context.l10n.catalogLastUpdated(
+            _relativeLabel(context.l10n, lastUpdated!),
+          );
 
     return Row(
       children: [
@@ -684,7 +768,7 @@ class _CatalogFreshnessBanner extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           child: Text(
-            isStale ? '$label Could not refresh — showing the last known list.' : label,
+            isStale ? '$label ${context.l10n.catalogStaleSuffix}' : label,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: isStale ? theme.colorScheme.error : theme.colorScheme.outline,
             ),
@@ -694,33 +778,13 @@ class _CatalogFreshnessBanner extends StatelessWidget {
     );
   }
 
-  String _relativeLabel(DateTime time) {
+  String _relativeLabel(AppLocalizations l10n, DateTime time) {
     final diff = DateTime.now().difference(time);
-    if (diff.inMinutes < 1) return 'just now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
+    if (diff.inMinutes < 1) return l10n.timeJustNow;
+    if (diff.inMinutes < 60) return l10n.timeMinutesAgo(diff.inMinutes);
+    if (diff.inHours < 24) return l10n.timeHoursAgo(diff.inHours);
+    return l10n.timeDaysAgo(diff.inDays);
   }
-}
-
-/// Label/action helpers shared by the catalog-driven widgets.
-extension CatalogPackagePresentation on CatalogPackage {
-  String get statusLabel {
-    if (isFree) return 'Free';
-    if (owned) return 'Owned';
-    return price?.label ?? 'Paid';
-  }
-
-  String get primaryActionLabel => isDownloadable ? 'Download' : 'Unlock';
-
-  String get subtitle =>
-      '${packageType.label} · ${language.toUpperCase()} · v$version';
-
-  /// Whether this build of the app meets [minAppVersion]. Unsupported
-  /// packages are flagged rather than hidden — the user still sees they
-  /// exist, with an explanation instead of a working Download button.
-  bool get isSupported =>
-      VersionCompare.isAtLeast(AppConfig.appVersion, minAppVersion);
 }
 
 class ProgressScreen extends StatelessWidget {
@@ -754,14 +818,14 @@ class ProgressScreen extends StatelessWidget {
           children: [
             Expanded(
               child: _MetricTile(
-                label: 'Packages installed',
+                label: context.l10n.progressPackagesInstalled,
                 value: '${installed.length}',
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: _MetricTile(
-                label: 'Verses learned',
+                label: context.l10n.progressVersesLearned,
                 value: '$totalLearned / $totalVerses',
               ),
             ),
@@ -769,12 +833,13 @@ class ProgressScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         if (installed.isEmpty)
-          const InfoPanel(
-            title: 'Nothing installed yet',
-            body: 'Install a package and create a study to see progress here.',
+          InfoPanel(
+            title: context.l10n.progressEmptyTitle,
+            body: context.l10n.progressEmptyBody,
           )
         else ...[
-          Text('By package', style: Theme.of(context).textTheme.titleLarge),
+          Text(context.l10n.progressByPackage,
+              style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 12),
           for (final package in installed) ...[
             _ProgressRow(
@@ -797,33 +862,33 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-      children: const [
+      children: [
         _SettingTile(
           icon: PhosphorIconsRegular.textAa,
-          title: 'Text size',
-          subtitle: 'Comfortable reading with larger verse cards',
-          trailing: 'Standard',
+          title: context.l10n.settingsTextSize,
+          subtitle: context.l10n.settingsTextSizeSubtitle,
+          trailing: context.l10n.settingStandard,
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         _SettingTile(
           icon: PhosphorIconsRegular.palette,
-          title: 'Theme tone',
-          subtitle: 'Calm parchment with strong scripture contrast',
-          trailing: 'Light',
+          title: context.l10n.settingsThemeTone,
+          subtitle: context.l10n.settingsThemeToneSubtitle,
+          trailing: context.l10n.settingLight,
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         _SettingTile(
           icon: PhosphorIconsRegular.globe,
-          title: 'App language',
-          subtitle: 'Follow device language with English fallback',
-          trailing: 'Auto',
+          title: context.l10n.settingsAppLanguage,
+          subtitle: context.l10n.settingsAppLanguageSubtitle,
+          trailing: context.l10n.settingAuto,
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         _SettingTile(
           icon: PhosphorIconsRegular.speakerHigh,
-          title: 'Audio teaser',
-          subtitle: 'Preview-only in the first release shell',
-          trailing: 'Off',
+          title: context.l10n.settingsAudioTeaser,
+          subtitle: context.l10n.settingsAudioTeaserSubtitle,
+          trailing: context.l10n.settingOff,
         ),
       ],
     );
@@ -878,17 +943,17 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      Chip(label: Text(package.packageType.label)),
+                      Chip(label: Text(package.packageType.label(context.l10n))),
                       Chip(label: Text(package.language.toUpperCase())),
-                      Chip(label: Text(package.sizeLabel)),
+                      Chip(label: Text(package.sizeLabel(context.l10n))),
                       Chip(label: Text('v${package.version}')),
-                      Chip(label: Text(package.statusLabel)),
+                      Chip(label: Text(package.statusLabel(context.l10n))),
                     ],
                   ),
                   const SizedBox(height: 16),
                   if (!package.isSupported)
                     Text(
-                      'Requires app version ${package.minAppVersion} or newer.',
+                      context.l10n.requiresAppVersion(package.minAppVersion),
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   const SizedBox(height: 20),
@@ -907,7 +972,8 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          Text('Package contents', style: Theme.of(context).textTheme.titleLarge),
+          Text(context.l10n.packageContents,
+              style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 12),
           FutureBuilder<PackageManifest>(
             future: _manifestFuture,
@@ -921,17 +987,15 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
               if (snapshot.hasError) {
                 final error = snapshot.error;
                 return InfoPanel(
-                  title: 'Could not load the manifest',
-                  body: error is ApiException
-                      ? error.message
-                      : 'Please try again later.',
+                  title: context.l10n.manifestErrorTitle,
+                  body: localizedAppError(context.l10n, error!),
                   action: FilledButton(
                     onPressed: () => setState(() {
                       _manifestFuture = widget.repository.fetchManifest(
                         package,
                       );
                     }),
-                    child: const Text('Retry'),
+                    child: Text(context.l10n.retry),
                   ),
                 );
               }
@@ -947,15 +1011,15 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                         spacing: 10,
                         runSpacing: 10,
                         children: [
-                          Chip(label: Text('${manifest.chapterCount} chapters')),
-                          Chip(label: Text('${manifest.verseCount} verses')),
-                          Chip(label: Text('${manifest.files.length} files')),
+                          Chip(label: Text(context.l10n.chaptersCount(manifest.chapterCount))),
+                          Chip(label: Text(context.l10n.versesCount(manifest.verseCount))),
+                          Chip(label: Text(context.l10n.filesCount(manifest.files.length))),
                         ],
                       ),
                       if (manifest.attribution.isNotEmpty) ...[
                         const SizedBox(height: 16),
                         Text(
-                          'Credit: ${manifest.attribution}',
+                          context.l10n.creditAttribution(manifest.attribution),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
@@ -971,8 +1035,123 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
   }
 }
 
+/// Compact horizontal card matching the mockup spec:
+/// `[icon box] [title + meta] [action pill] [trash?]`.
+///
+/// Used in both Library (installed packages) and Store (catalog packages).
 class _PackageCard extends StatelessWidget {
   const _PackageCard({
+    required this.title,
+    required this.subtitle,
+    required this.actionLabel,
+    this.onAction,
+    this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final String actionLabel;
+  final VoidCallback? onAction;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Material(
+      color: theme.cardTheme.color ?? scheme.surface,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap ?? onAction,
+        child: Padding(
+          padding: const EdgeInsets.all(11),
+          child: Row(
+            children: [
+              // Icon box: 42×52, dark rounded rectangle with book icon
+              Container(
+                width: 42,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2D2D5E),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
+                    bottomLeft: Radius.circular(5),
+                  ),
+                ),
+                child: const Icon(
+                  PhosphorIconsRegular.bookOpen,
+                  color: Color(0xFFE6DBC8),
+                  size: 18,
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Title + meta
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: scheme.onSurface,
+                        fontSize: 14.5,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              // Action pill
+              if (onAction != null)
+                GestureDetector(
+                  onTap: onAction,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: scheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      actionLabel,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: scheme.primary,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Compact horizontal card for catalog packages in the Store, with download
+/// state handling (progress, error, installed status).
+class _StorePackageCard extends StatelessWidget {
+  const _StorePackageCard({
     required this.package,
     required this.download,
     required this.onTap,
@@ -990,130 +1169,186 @@ class _PackageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final meta = _storeMeta(package, context.l10n);
+
+    // Action area depends on download state.
+    Widget? action;
+    switch (download.state) {
+      case DownloadState.downloading:
+      case DownloadState.verifying:
+      case DownloadState.installing:
+        final isDownloading = download.state == DownloadState.downloading;
+        final progress = download.progress;
+        final fraction = progress?.fraction;
+        action = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (isDownloading)
+              SizedBox(
+                width: 48,
+                child: LinearProgressIndicator(
+                  value: fraction,
+                  minHeight: 3,
+                  borderRadius: BorderRadius.circular(999),
+                ),
+              ),
+            if (isDownloading)
+              Text(
+                _progressLabel(context.l10n, progress),
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+            if (isDownloading)
+              GestureDetector(
+                onTap: onCancelDownload,
+                child: Text(
+                  context.l10n.cancel,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+          ],
+        );
+      case DownloadState.installed:
+        action = GestureDetector(
+          onTap: onPrimaryAction,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              hasUpdate ? context.l10n.update : context.l10n.open,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: scheme.primary,
+              ),
+            ),
+          ),
+        );
+      case DownloadState.failed:
+        action = GestureDetector(
+          onTap: onPrimaryAction,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              context.l10n.retry,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: scheme.primary,
+              ),
+            ),
+          ),
+        );
+      case DownloadState.idle:
+        if (!package.isSupported) {
+          action = Text(
+            context.l10n.requiresAppVersion(package.minAppVersion),
+            style: TextStyle(
+              fontSize: 11,
+              color: scheme.error,
+            ),
+          );
+        } else {
+          action = GestureDetector(
+            onTap: onPrimaryAction,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              decoration: BoxDecoration(
+                color: scheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                package.primaryActionLabel(context.l10n),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: scheme.primary,
+                ),
+              ),
+            ),
+          );
+        }
+    }
+
+    return Material(
+      color: theme.cardTheme.color ?? scheme.surface,
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(16),
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(11),
+          child: Row(
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          package.title,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          package.subtitle,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
+              Container(
+                width: 42,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2D2D5E),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
+                    bottomLeft: Radius.circular(5),
                   ),
-                  const SizedBox(width: 12),
-                  Chip(label: Text(package.statusLabel)),
-                ],
+                ),
+                child: const Icon(
+                  PhosphorIconsRegular.bookOpen,
+                  color: Color(0xFFE6DBC8),
+                  size: 18,
+                ),
               ),
-              const SizedBox(height: 14),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  Chip(label: Text(package.language.toUpperCase())),
-                  Chip(label: Text(package.packageType.label)),
-                  Chip(label: Text(package.sizeLabel)),
-                ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      package.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: scheme.onSurface,
+                        fontSize: 14.5,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      meta,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 16),
-              _DownloadAction(
-                package: package,
-                download: download,
-                onPrimaryAction: onPrimaryAction,
-                onCancelDownload: onCancelDownload,
-                hasUpdate: hasUpdate,
-              ),
+              const SizedBox(width: 8),
+              action,
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Card for a package that is installed on the device.
-class _InstalledPackageCard extends StatelessWidget {
-  const _InstalledPackageCard({
-    required this.package,
-    required this.onOpen,
-    required this.onDelete,
-  });
-
-  final InstalledPackage package;
-  final VoidCallback onOpen;
-  final VoidCallback onDelete;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    package.title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () async {
-                    final confirmed = await showConfirmationDialog(
-                      context,
-                      title: 'Remove this download?',
-                      message:
-                          '"${package.title}" and its studies will be '
-                          'permanently removed from this device.',
-                      confirmLabel: 'Remove',
-                    );
-                    if (confirmed) onDelete();
-                  },
-                  icon: const Icon(PhosphorIconsRegular.trash),
-                  tooltip: 'Remove download',
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                Chip(label: Text(package.language.toUpperCase())),
-                Chip(label: Text('v${package.version}')),
-                Chip(label: Text('${package.chapterCount} chapters')),
-                Chip(label: Text('${package.verseCount} verses')),
-              ],
-            ),
-            if (package.attribution.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              Text(
-                'Credit: ${package.attribution}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-            const SizedBox(height: 16),
-            FilledButton(onPressed: onOpen, child: const Text('Open')),
-          ],
         ),
       ),
     );
@@ -1161,9 +1396,11 @@ class _DownloadAction extends StatelessWidget {
                 Expanded(
                   child: Text(
                     switch (download.state) {
-                      DownloadState.verifying => 'Verifying checksum…',
-                      DownloadState.installing => 'Installing…',
-                      _ => _progressLabel(progress),
+                      DownloadState.verifying =>
+                        context.l10n.downloadingVerifying,
+                      DownloadState.installing =>
+                        context.l10n.downloadingInstalling,
+                      _ => _progressLabel(context.l10n, progress),
                     },
                     style: theme.textTheme.bodyMedium,
                   ),
@@ -1171,7 +1408,7 @@ class _DownloadAction extends StatelessWidget {
                 if (isDownloading)
                   TextButton(
                     onPressed: onCancelDownload,
-                    child: const Text('Cancel'),
+                    child: Text(context.l10n.cancel),
                   ),
               ],
             ),
@@ -1190,7 +1427,9 @@ class _DownloadAction extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    hasUpdate ? 'Update available (v${package.version})' : 'Installed',
+                    hasUpdate
+                        ? context.l10n.updateAvailable(package.version)
+                        : context.l10n.downloadInstalled,
                     style: theme.textTheme.bodyMedium,
                   ),
                 ),
@@ -1199,7 +1438,7 @@ class _DownloadAction extends StatelessWidget {
             const SizedBox(height: 10),
             FilledButton(
               onPressed: onPrimaryAction,
-              child: Text(hasUpdate ? 'Update' : 'Open'),
+              child: Text(hasUpdate ? context.l10n.update : context.l10n.open),
             ),
           ],
         );
@@ -1208,7 +1447,9 @@ class _DownloadAction extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              download.errorMessage ?? 'The download failed.',
+              download.error == null
+                  ? context.l10n.downloadFailedFallback
+                  : localizedAppError(context.l10n, download.error!),
               key: const Key('download-error'),
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.error,
@@ -1217,14 +1458,14 @@ class _DownloadAction extends StatelessWidget {
             const SizedBox(height: 10),
             FilledButton(
               onPressed: onPrimaryAction,
-              child: const Text('Retry download'),
+              child: Text(context.l10n.retryDownload),
             ),
           ],
         );
       case DownloadState.idle:
         if (!package.isSupported) {
           return Text(
-            'Requires app version ${package.minAppVersion} or newer.',
+            context.l10n.requiresAppVersion(package.minAppVersion),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.error,
             ),
@@ -1232,32 +1473,19 @@ class _DownloadAction extends StatelessWidget {
         }
         return FilledButton(
           onPressed: onPrimaryAction,
-          child: Text(package.primaryActionLabel),
+          child: Text(package.primaryActionLabel(context.l10n)),
         );
     }
-  }
-
-  String _progressLabel(DownloadProgress? progress) {
-    if (progress == null) return 'Starting…';
-    final fraction = progress.fraction;
-    if (fraction == null) return 'Downloading…';
-    return 'Downloading ${(fraction * 100).round()}%';
   }
 }
 
 class _StoreStatusBanner extends StatelessWidget {
-  const _StoreStatusBanner({required this.pane});
-
-  final LibraryPane pane;
+  const _StoreStatusBanner();
 
   @override
   Widget build(BuildContext context) {
-    final title = pane == LibraryPane.downloads
-        ? 'Offline-ready downloads'
-        : 'Guest-first scripture catalog';
-    final body = pane == LibraryPane.downloads
-        ? 'Downloaded packages stay available without a network connection, ready for verse-by-verse review.'
-        : 'Free scripture content can be browsed and downloaded without signing in. Locked cards preview future paid audio add-ons.';
+    final title = context.l10n.storeBannerCatalogTitle;
+    final body = context.l10n.storeBannerCatalogBody;
 
     return Card(
       child: Padding(
@@ -1331,7 +1559,7 @@ class _ProgressRow extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '$learned of $total verses learned',
+                      context.l10n.progressVersesOf(learned, total),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
@@ -1388,10 +1616,8 @@ class _PackageProgressScreenState extends State<PackageProgressScreen> {
             return Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
               child: InfoPanel(
-                title: 'Could not load this package',
-                body: error is ContentException
-                    ? error.message
-                    : 'Please try again later.',
+                title: context.l10n.manifestErrorTitle,
+                body: localizedAppError(context.l10n, error!),
               ),
             );
           }
@@ -1448,12 +1674,12 @@ class _ChapterHeatmapRow extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Chapter $chapter',
+                  context.l10n.chapterWithNumber(chapter),
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Spacer(),
                 Text(
-                  '$learned of ${verses.length}',
+                  context.l10n.learnedOf(learned, verses.length),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -1533,68 +1759,6 @@ class _SettingTile extends StatelessWidget {
         subtitle: Text(subtitle),
         trailing: Text(trailing),
       ),
-    );
-  }
-}
-
-class _AppDrawer extends StatelessWidget {
-  const _AppDrawer({required this.catalogCount, required this.installedCount});
-
-  final int catalogCount;
-  final int installedCount;
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Bible Memorization Companion',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Clear, calm scripture practice with offline-ready packages.',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 24),
-              _DrawerMetric(label: 'Catalog packages', value: '$catalogCount'),
-              const SizedBox(height: 10),
-              _DrawerMetric(
-                label: 'Installed packages',
-                value: '$installedCount',
-              ),
-              const Spacer(),
-              const Text(
-                'Guest mode stays fully supported for free scripture downloads.',
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DrawerMetric extends StatelessWidget {
-  const _DrawerMetric({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(label, style: Theme.of(context).textTheme.bodyLarge),
-        ),
-        Text(value, style: Theme.of(context).textTheme.titleMedium),
-      ],
     );
   }
 }

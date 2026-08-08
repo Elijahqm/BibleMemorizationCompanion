@@ -74,6 +74,6 @@ void main() {
     expect(offlineController.status, CatalogStatus.ready);
     expect(offlineController.packages, hasLength(1));
     expect(offlineController.isStale, isTrue);
-    expect(offlineController.errorMessage, isNotNull);
+    expect(offlineController.error, isNotNull);
   });
 }

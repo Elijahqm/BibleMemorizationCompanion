@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 /// Shows a destructive-action confirmation dialog and resolves to whether the
-/// user confirmed. Shared by study deletion and package uninstall.
+/// user confirmed. Shared by study deletion and package uninstall. Labels are
+/// passed in already-localized (from the caller's `AppLocalizations`).
 Future<bool> showConfirmationDialog(
   BuildContext context, {
   required String title,
   required String message,
-  String confirmLabel = 'Delete',
-  String cancelLabel = 'Cancel',
+  required String confirmLabel,
+  required String cancelLabel,
 }) async {
   final confirmed = await showDialog<bool>(
     context: context,

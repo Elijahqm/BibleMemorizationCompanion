@@ -1,3 +1,6 @@
+import '../../../../core/config/app_config.dart';
+import '../../../../core/version_compare.dart';
+
 /// Package kinds published by the backend catalog.
 enum CatalogPackageType {
   book,
@@ -15,19 +18,6 @@ enum CatalogPackageType {
         return CatalogPackageType.audio;
       default:
         return CatalogPackageType.unknown;
-    }
-  }
-
-  String get label {
-    switch (this) {
-      case CatalogPackageType.book:
-        return 'Book';
-      case CatalogPackageType.season:
-        return 'Season';
-      case CatalogPackageType.audio:
-        return 'Audio add-on';
-      case CatalogPackageType.unknown:
-        return 'Package';
     }
   }
 }
@@ -108,13 +98,11 @@ class CatalogPackage {
   /// Content is downloadable when it is free or already owned by the user.
   bool get isDownloadable => isFree || owned;
 
-  String get sizeLabel {
-    if (sizeBytes <= 0) return 'Unknown size';
-    if (sizeBytes < 1024 * 1024) {
-      return '${(sizeBytes / 1024).toStringAsFixed(0)} KB';
-    }
-    return '${(sizeBytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-  }
+  /// Whether this build of the app meets [minAppVersion]. Unsupported
+  /// packages are flagged rather than hidden — the user still sees they
+  /// exist, with an explanation instead of a working Download button.
+  bool get isSupported =>
+      VersionCompare.isAtLeast(AppConfig.appVersion, minAppVersion);
 
   Map<String, dynamic> toJson() => {
     'id': id,

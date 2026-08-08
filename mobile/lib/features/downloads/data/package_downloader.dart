@@ -6,7 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/config/app_config.dart';
-import '../../../core/network/api_client.dart';
+import '../../../core/errors/app_error.dart';
 import '../../catalog/data/models/catalog_package.dart';
 
 /// Raised when a download is cancelled by the user.
@@ -84,7 +84,7 @@ class PackageDownloader {
     DownloadCancelToken? cancelToken,
   }) async {
     if (package.artifactUrl.isEmpty) {
-      throw const ApiException('This package has no artifact URL.');
+      throw const ApiException(AppErrorKind.missingArtifactUrl);
     }
 
     final directory = await resolveDirectory();
@@ -101,16 +101,17 @@ class PackageDownloader {
           .send(request)
           .timeout(AppConfig.requestTimeout);
     } on TimeoutException {
-      throw const ApiException('The download took too long to start.');
+      throw const ApiException(AppErrorKind.downloadTimeout);
     } on SocketException {
-      throw const ApiException('No internet connection.');
-    } on http.ClientException catch (error) {
-      throw ApiException('Network error: ${error.message}');
+      throw const ApiException(AppErrorKind.noInternet);
+    } on http.ClientException {
+      throw const ApiException(AppErrorKind.network);
     }
 
     if (response.statusCode != 200) {
       throw ApiException(
-        'Could not download ${package.title}.',
+        AppErrorKind.downloadFailed,
+        params: [package.title],
         statusCode: response.statusCode,
       );
     }
@@ -134,10 +135,10 @@ class PackageDownloader {
         onProgress?.call(DownloadProgress(received: received, total: total));
       }
       await sink.flush();
-    } on http.ClientException catch (error) {
+    } on http.ClientException {
       hasher.close();
       await _discard(sink, partial);
-      throw ApiException('The download was interrupted: ${error.message}');
+      throw const ApiException(AppErrorKind.downloadInterrupted);
     } catch (_) {
       hasher.close();
       await _discard(sink, partial);
@@ -152,9 +153,7 @@ class PackageDownloader {
     final actual = digestSink.events.single.toString();
     if (expected.isNotEmpty && actual != expected) {
       await _deleteQuietly(partial);
-      throw const ApiException(
-        'The downloaded file is corrupted (checksum mismatch).',
-      );
+      throw const ApiException(AppErrorKind.checksumMismatch);
     }
 
     if (await target.exists()) {

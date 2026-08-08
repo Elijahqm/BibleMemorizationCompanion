@@ -3,19 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
+import '../../../core/errors/app_error.dart';
 import '../../../core/storage/app_directories.dart';
 import '../../downloads/data/installed_package.dart';
 import 'models/package_content.dart';
-
-/// Raised when an installed package cannot be read from disk.
-class ContentException implements Exception {
-  const ContentException(this.message);
-
-  final String message;
-
-  @override
-  String toString() => 'ContentException: $message';
-}
 
 /// Reads the study content of an installed package from local storage.
 ///
@@ -35,7 +26,10 @@ class PackageContentRepository {
 
     final root = await _resolveRoot(package);
     if (root == null) {
-      throw ContentException('${package.title} is no longer on this device.');
+      throw ContentException(
+        AppErrorKind.contentNotFound,
+        params: [package.title],
+      );
     }
 
     final index = PackageIndex.fromJson(
@@ -131,16 +125,25 @@ class PackageContentRepository {
   Future<Map<String, dynamic>> _readJsonObject(String path) async {
     final file = File(path);
     if (!await file.exists()) {
-      throw ContentException('Missing ${file.uri.pathSegments.last}.');
+      throw ContentException(
+        AppErrorKind.contentFileMissing,
+        params: [file.uri.pathSegments.last],
+      );
     }
     try {
       final decoded = jsonDecode(await file.readAsString());
       if (decoded is! Map<String, dynamic>) {
-        throw ContentException('${file.uri.pathSegments.last} is malformed.');
+        throw ContentException(
+          AppErrorKind.contentMalformed,
+          params: [file.uri.pathSegments.last],
+        );
       }
       return decoded;
     } on FormatException {
-      throw ContentException('${file.uri.pathSegments.last} is not valid JSON.');
+      throw ContentException(
+        AppErrorKind.contentInvalidJson,
+        params: [file.uri.pathSegments.last],
+      );
     }
   }
 }

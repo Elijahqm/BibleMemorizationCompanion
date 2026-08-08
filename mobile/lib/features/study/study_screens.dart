@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../core/errors/app_error.dart';
+import '../../core/l10n/app_locale.dart';
 import '../../core/widgets/info_panel.dart';
 import '../downloads/data/installed_package.dart';
 import 'data/models/package_content.dart';
@@ -48,13 +50,13 @@ class _CreateStudyScreenState extends State<CreateStudyScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create study'),
+        title: Text(context.l10n.createStudy),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'By chapter'),
-            Tab(text: 'By section'),
-            Tab(text: 'Custom'),
+          tabs: [
+            Tab(text: context.l10n.studyByChapter),
+            Tab(text: context.l10n.studyBySection),
+            Tab(text: context.l10n.studyCustom),
           ],
         ),
       ),
@@ -69,10 +71,8 @@ class _CreateStudyScreenState extends State<CreateStudyScreen>
             return Padding(
               padding: const EdgeInsets.all(20),
               child: InfoPanel(
-                title: 'Could not open ${widget.package.title}',
-                body: error is ContentException
-                    ? error.message
-                    : 'The package content could not be read.',
+                title: context.l10n.studyOpenErrorTitle(widget.package.title),
+                body: localizedAppError(context.l10n, error!),
               ),
             );
           }
@@ -98,9 +98,9 @@ class _CreateStudyScreenState extends State<CreateStudyScreen>
               _CustomTab(
                 content: content,
                 studies: widget.studies,
-                defaultName:
-                    'My study '
-                    '${widget.studies.studiesFor(content.packageId).length + 1}',
+                defaultName: context.l10n.defaultStudyName(
+                  widget.studies.studiesFor(content.packageId).length + 1,
+                ),
                 onCreate: (name, verseRefs) => _createAndOpen(
                   content,
                   () => widget.studies.createCustomStudy(
@@ -145,11 +145,11 @@ class _ByChapterTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final chapters = content.index.chapterOrder;
     if (chapters.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(20),
+      return Padding(
+        padding: const EdgeInsets.all(20),
         child: InfoPanel(
-          title: 'No chapters found',
-          body: 'This package has no chapter data.',
+          title: context.l10n.noChaptersTitle,
+          body: context.l10n.noChaptersBody,
         ),
       );
     }
@@ -158,16 +158,18 @@ class _ByChapterTab extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
       children: [
         Text(
-          'Tap a chapter to create & start a study with all its verses.',
+          context.l10n.byChapterHint,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 16),
         for (final chapter in chapters) ...[
           Card(
             child: ListTile(
-              title: Text('Chapter $chapter'),
+              title: Text(context.l10n.chapterWithNumber(chapter)),
               subtitle: Text(
-                '${content.index.chapterVerseCounts[chapter] ?? 0} verses',
+                context.l10n.versesCount(
+                  content.index.chapterVerseCounts[chapter] ?? 0,
+                ),
               ),
               trailing: const Icon(PhosphorIconsRegular.caretRight),
               onTap: () => onSelected(chapter),
@@ -189,11 +191,11 @@ class _BySectionTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (content.sections.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(20),
+      return Padding(
+        padding: const EdgeInsets.all(20),
         child: InfoPanel(
-          title: 'No sections in this package',
-          body: 'This package ships without a sections file.',
+          title: context.l10n.noSectionsTitle,
+          body: context.l10n.noSectionsBody,
         ),
       );
     }
@@ -202,7 +204,7 @@ class _BySectionTab extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
       children: [
         Text(
-          'Tap a titled section to create & start.',
+          context.l10n.bySectionHint,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 16),
@@ -211,7 +213,10 @@ class _BySectionTab extends StatelessWidget {
             child: ListTile(
               title: Text(section.title),
               subtitle: Text(
-                '${section.rangeLabel} · ${section.verseRefs.length} verses',
+                context.l10n.sectionSubtitle(
+                  section.rangeLabel,
+                  section.verseRefs.length,
+                ),
               ),
               trailing: const Icon(PhosphorIconsRegular.caretRight),
               onTap: () => onSelected(section),
@@ -293,21 +298,23 @@ class _CustomTabState extends State<_CustomTab> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Filters what you see below — your checked verses stay '
-                'checked either way.',
+                context.l10n.filterHint,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 10),
               SegmentedButton<_VerseFilter>(
-                segments: const [
-                  ButtonSegment(value: _VerseFilter.all, label: Text('All')),
+                segments: [
+                  ButtonSegment(
+                    value: _VerseFilter.all,
+                    label: Text(context.l10n.filterAll),
+                  ),
                   ButtonSegment(
                     value: _VerseFilter.difficult,
-                    label: Text('Difficult'),
+                    label: Text(context.l10n.filterDifficult),
                   ),
                   ButtonSegment(
                     value: _VerseFilter.learned,
-                    label: Text('Learned'),
+                    label: Text(context.l10n.filterLearned),
                   ),
                 ],
                 selected: {_filter},
@@ -350,7 +357,7 @@ class _CustomTabState extends State<_CustomTab> {
               value ?? false,
             ),
           ),
-          Text('Chapter $chapter'),
+          Text(context.l10n.chapterWithNumber(chapter)),
         ],
       ),
       children: [
@@ -385,9 +392,9 @@ class _CustomTabState extends State<_CustomTab> {
           children: [
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Study name',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.studyNameField,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 10),
@@ -395,7 +402,7 @@ class _CustomTabState extends State<_CustomTab> {
               children: [
                 Expanded(
                   child: Text(
-                    '${_selected.length} verses selected',
+                    context.l10n.versesSelected(_selected.length),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -409,7 +416,7 @@ class _CustomTabState extends State<_CustomTab> {
                             _orderedSelection(),
                           );
                         },
-                  child: const Text('Go'),
+                  child: Text(context.l10n.go),
                 ),
               ],
             ),
@@ -465,7 +472,7 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
     if (_verses.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: Text(widget.study.title)),
-        body: const Center(child: Text('This study has no verses.')),
+        body: Center(child: Text(context.l10n.studyEmptyBody)),
       );
     }
 
@@ -484,7 +491,7 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
             icon: Icon(
               state.isLearned ? PhosphorIconsFill.checkCircle : PhosphorIconsRegular.checkCircle,
             ),
-            tooltip: 'Learned',
+            tooltip: context.l10n.filterLearned,
             onPressed: () => setState(() {
               widget.studies.toggleLearned(
                 widget.study.packageId,
@@ -496,7 +503,7 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
             icon: Icon(
               state.isDifficult ? PhosphorIconsFill.flag : PhosphorIconsRegular.flag,
             ),
-            tooltip: 'Difficult',
+            tooltip: context.l10n.filterDifficult,
             onPressed: () => setState(() {
               widget.studies.toggleDifficult(
                 widget.study.packageId,
@@ -512,8 +519,8 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${widget.content.title} · verse ${_verseIndex + 1} of '
-              '${_verses.length}',
+              '${widget.content.title} · '
+              '${context.l10n.verseProgress(_verseIndex + 1, _verses.length)}',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 10),
@@ -543,8 +550,7 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
                             child: _revealed
                                 ? _VerseBody(verse: verse)
                                 : Text(
-                                    'Tap to reveal the verse text, then tap '
-                                    'again to hide it and test recall.',
+                                    context.l10n.revealHint,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyLarge
@@ -555,7 +561,9 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
                         const SizedBox(height: 12),
                         if (widget.content.attribution.isNotEmpty)
                           Text(
-                            'Credit: ${widget.content.attribution}',
+                            context.l10n.creditAttribution(
+                              widget.content.attribution,
+                            ),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                       ],
@@ -572,7 +580,7 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
                     onPressed: _verseIndex == 0
                         ? null
                         : () => _goTo(_verseIndex - 1),
-                    child: const Text('Previous'),
+                    child: Text(context.l10n.previous),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -581,7 +589,7 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
                     onPressed: _verseIndex == _verses.length - 1
                         ? null
                         : () => _goTo(_verseIndex + 1),
-                    child: const Text('Next'),
+                    child: Text(context.l10n.next),
                   ),
                 ),
               ],
