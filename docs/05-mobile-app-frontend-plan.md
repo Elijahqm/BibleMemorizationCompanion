@@ -29,12 +29,11 @@ Suggested app structure:
 6. Create study (chapter, section, custom)
 7. Verse study (front and revealed; revealed face renders `analysis` tags —
    individuals, locations, etc. — when the package's `availableAnalysis` is true)
-8. Menu drawer
-9. Sign-in bottom sheet
-10. Settings
-11. Appearance / reading settings (theme, font, text size)
-12. Progress summary
-13. Progress detail
+8. Sign-in bottom sheet
+9. Settings
+10. Appearance / reading settings (theme, font, text size)
+11. Progress summary
+12. Progress detail
 
 ## Navigation Structure
 

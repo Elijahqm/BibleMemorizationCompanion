@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../core/widgets/info_panel.dart';
 import '../downloads/data/installed_package.dart';
@@ -168,7 +169,7 @@ class _ByChapterTab extends StatelessWidget {
               subtitle: Text(
                 '${content.index.chapterVerseCounts[chapter] ?? 0} verses',
               ),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: const Icon(PhosphorIconsRegular.caretRight),
               onTap: () => onSelected(chapter),
             ),
           ),
@@ -212,7 +213,7 @@ class _BySectionTab extends StatelessWidget {
               subtitle: Text(
                 '${section.rangeLabel} · ${section.verseRefs.length} verses',
               ),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: const Icon(PhosphorIconsRegular.caretRight),
               onTap: () => onSelected(section),
             ),
           ),
@@ -481,7 +482,7 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              state.isLearned ? Icons.check_circle : Icons.check_circle_outline,
+              state.isLearned ? PhosphorIconsFill.checkCircle : PhosphorIconsRegular.checkCircle,
             ),
             tooltip: 'Learned',
             onPressed: () => setState(() {
@@ -493,7 +494,7 @@ class _VerseStudyScreenState extends State<VerseStudyScreen> {
           ),
           IconButton(
             icon: Icon(
-              state.isDifficult ? Icons.flag : Icons.flag_outlined,
+              state.isDifficult ? PhosphorIconsFill.flag : PhosphorIconsRegular.flag,
             ),
             tooltip: 'Difficult',
             onPressed: () => setState(() {

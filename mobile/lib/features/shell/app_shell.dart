@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../core/config/app_config.dart';
 import '../../core/network/api_client.dart';
@@ -84,7 +85,7 @@ class _AppShellState extends State<AppShell> {
         actions: [
           IconButton(
             onPressed: () => _showSignInPrompt(context),
-            icon: const Icon(Icons.person_outline),
+            icon: const Icon(PhosphorIconsRegular.user),
             tooltip: 'Account',
           ),
         ],
@@ -108,23 +109,23 @@ class _AppShellState extends State<AppShell> {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.auto_stories_outlined),
-            selectedIcon: Icon(Icons.auto_stories),
+            icon: Icon(PhosphorIconsRegular.bookOpen),
+            selectedIcon: Icon(PhosphorIconsFill.bookOpen),
             label: 'Studies',
           ),
           NavigationDestination(
-            icon: Icon(Icons.library_books_outlined),
-            selectedIcon: Icon(Icons.library_books),
+            icon: Icon(PhosphorIconsRegular.books),
+            selectedIcon: Icon(PhosphorIconsFill.books),
             label: 'Library',
           ),
           NavigationDestination(
-            icon: Icon(Icons.insights_outlined),
-            selectedIcon: Icon(Icons.insights),
+            icon: Icon(PhosphorIconsRegular.chartBar),
+            selectedIcon: Icon(PhosphorIconsFill.chartBar),
             label: 'Progress',
           ),
           NavigationDestination(
-            icon: Icon(Icons.tune_outlined),
-            selectedIcon: Icon(Icons.tune),
+            icon: Icon(PhosphorIconsRegular.fadersHorizontal),
+            selectedIcon: Icon(PhosphorIconsFill.fadersHorizontal),
             label: 'Settings',
           ),
         ],
@@ -393,7 +394,7 @@ class MyStudiesScreen extends StatelessWidget {
       children: [
         FilledButton.icon(
           onPressed: () => onCreateStudy(package),
-          icon: const Icon(Icons.add),
+          icon: const Icon(PhosphorIconsRegular.plus),
           label: const Text('Create study'),
         ),
         const SizedBox(height: 18),
@@ -464,14 +465,18 @@ class _StudyCard extends StatelessWidget {
           Row(
             children: [
               if (isLastStudied) ...[
-                const Icon(Icons.auto_stories, color: Colors.white, size: 18),
+                const Icon(
+                  PhosphorIconsFill.bookOpen,
+                  color: Colors.white,
+                  size: 18,
+                ),
                 const SizedBox(width: 8),
               ],
               Expanded(child: Text(study.title, style: titleStyle)),
               IconButton(
                 onPressed: onDelete,
                 icon: Icon(
-                  Icons.delete_outline,
+                  PhosphorIconsRegular.trash,
                   color: isLastStudied ? Colors.white : null,
                 ),
                 tooltip: 'Delete study',
@@ -672,7 +677,7 @@ class _CatalogFreshnessBanner extends StatelessWidget {
     return Row(
       children: [
         Icon(
-          isStale ? Icons.cloud_off : Icons.cloud_done_outlined,
+          isStale ? PhosphorIconsRegular.cloudSlash : PhosphorIconsRegular.cloudCheck,
           size: 16,
           color: isStale ? theme.colorScheme.error : theme.colorScheme.outline,
         ),
@@ -794,28 +799,28 @@ class SettingsScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
       children: const [
         _SettingTile(
-          icon: Icons.format_size,
+          icon: PhosphorIconsRegular.textAa,
           title: 'Text size',
           subtitle: 'Comfortable reading with larger verse cards',
           trailing: 'Standard',
         ),
         SizedBox(height: 12),
         _SettingTile(
-          icon: Icons.palette_outlined,
+          icon: PhosphorIconsRegular.palette,
           title: 'Theme tone',
           subtitle: 'Calm parchment with strong scripture contrast',
           trailing: 'Light',
         ),
         SizedBox(height: 12),
         _SettingTile(
-          icon: Icons.language_outlined,
+          icon: PhosphorIconsRegular.globe,
           title: 'App language',
           subtitle: 'Follow device language with English fallback',
           trailing: 'Auto',
         ),
         SizedBox(height: 12),
         _SettingTile(
-          icon: Icons.volume_up_outlined,
+          icon: PhosphorIconsRegular.speakerHigh,
           title: 'Audio teaser',
           subtitle: 'Preview-only in the first release shell',
           trailing: 'Off',
@@ -1083,7 +1088,7 @@ class _InstalledPackageCard extends StatelessWidget {
                     );
                     if (confirmed) onDelete();
                   },
-                  icon: const Icon(Icons.delete_outline),
+                  icon: const Icon(PhosphorIconsRegular.trash),
                   tooltip: 'Remove download',
                 ),
               ],
@@ -1179,8 +1184,8 @@ class _DownloadAction extends StatelessWidget {
             Row(
               children: [
                 Icon(
-                  hasUpdate ? Icons.system_update_alt : Icons.check_circle,
-                  color: hasUpdate ? theme.colorScheme.secondary : theme.colorScheme.primary,
+                  hasUpdate ? PhosphorIconsFill.cloudArrowUp : PhosphorIconsFill.checkCircle,
+                  color: theme.colorScheme.primary,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -1332,7 +1337,7 @@ class _ProgressRow extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right),
+              const Icon(PhosphorIconsRegular.caretRight),
             ],
           ),
         ),
