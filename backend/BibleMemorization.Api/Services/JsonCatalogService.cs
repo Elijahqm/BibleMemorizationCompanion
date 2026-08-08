@@ -21,6 +21,7 @@ public sealed class JsonCatalogService : ICatalogService, IDisposable
     private volatile CatalogResponse? _cachedCatalog;
     private FileSystemWatcher? _watcher;
     private Timer? _reloadTimer;
+    private Task? _reloadTask;
 
     public JsonCatalogService(
         IHostEnvironment environment,
@@ -157,9 +158,12 @@ public sealed class JsonCatalogService : ICatalogService, IDisposable
         _watcher.Created += OnCatalogFileChanged;
         _watcher.Deleted += OnCatalogFileChanged;
         _watcher.Renamed += OnCatalogFileChanged;
-        _watcher.EnableRaisingEvents = true;
 
-        _reloadTimer = new Timer(_ => _ = ReloadCatalogAsync(), null, Timeout.Infinite, Timeout.Infinite);
+        // Create the debounce timer before raising events so a file change that fires
+        // during the startup window is not silently dropped (the handler debounces via it).
+        _reloadTimer = new Timer(_ => _reloadTask = ReloadCatalogAsync(), null, Timeout.Infinite, Timeout.Infinite);
+
+        _watcher.EnableRaisingEvents = true;
 
         _logger.LogInformation(
             "Watching catalog file '{FilePath}' for changes.", _filePath);
@@ -210,6 +214,12 @@ public sealed class JsonCatalogService : ICatalogService, IDisposable
             _watcher.Dispose();
         }
         Interlocked.Exchange(ref _reloadTimer, null)?.Dispose();
+
+        // Wait for any in-flight reload to finish before releasing the semaphore, so a
+        // reload that already acquired the gate does not hit a disposed semaphore in its
+        // Release() and fault an unobserved task.
+        _reloadTask?.GetAwaiter().GetResult();
+
         _loadGate.Dispose();
     }
 }

@@ -17,6 +17,7 @@ Uso:
 
 import json
 import re
+import sys
 import unicodedata
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -129,6 +130,11 @@ def parse_source(file_path: Path) -> Tuple[Dict[int, Dict[int, str]], List[Dict]
 
         elif prev_blank and not line.startswith('CHAPTER'):
             # Es un título de sección (línea después de línea en blanco, sin número)
+            if pending_title is not None:
+                print(
+                    f"[WARN] Sección sin versículo previo: se descarta el título anterior "
+                    f"'{pending_title}' al encontrar '{line}' a continuación.",
+                    file=sys.stderr)
             pending_title = line
             prev_blank = False
 
