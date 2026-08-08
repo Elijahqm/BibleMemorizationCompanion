@@ -19,6 +19,8 @@ Two additional gaps from the mockup belong in this same rebuild (both touch the 
 
 The mockup's bottom bar is a **floating capsule**, not a docked full-width `NavigationBar`.
 
+**Estado: ✅ implementado** — `mobile/lib/features/shell/floating_nav_bar.dart` (`FloatingNavBar`), overlay con `Scaffold(extendBody: true)` + `Stack` en `app_shell.dart`.
+
 Spec from `docs/Bible Memorization Companion (standalone).html`:
 
 ```
@@ -35,7 +37,7 @@ box-shadow: 0 12px 28px oklch(0.3 0.02 260 / 0.18);
 
 ### Gap 2 — Remove the hamburger menu / side drawer
 
-The mockup has no side drawer. Required removals:
+The mockup has no side drawer. **Estado: ✅ implementado.** Required removals:
 
 - `_AppDrawer` (leftover MVP chrome: catalog/installed counts + "Guest mode" note).
 - The `AppBar`'s auto-generated hamburger icon.
@@ -51,25 +53,25 @@ Since this stage rewrites all the app chrome (nav bar, AppBar, titles, labels), 
 - `en` como fallback cuando el idioma del dispositivo no está soportado; nunca se muestran strings vacíos o sin traducir.
 - Los `Text`/tooltips/diálogos del shell y los widgets de catalogación pasan por `context.l10n` (generado `AppLocalizations`), incluidas los mensajes de error de `ApiClient`/`DownloadController`/`CatalogController`/repos (errores tipados: `lib/core/errors/app_error.dart`, kind + params, mapeados a mensajes localizados).
 - Los getters de presentación que vivían en el modelo (`statusLabel`, `primaryActionLabel`, `sizeLabel`, `packageType.label`, `subtitle`) se movieron a `lib/core/l10n/presentation.dart` (el modelo ya no traduce).
-- Nota: la píldora del nav debe acomodar la etiqueta más larga por locale cuando se construya la barra flotante (Fase 2 del issue).
+- La etiqueta del nav se ajusta al ancho del slot con `FittedBox(scaleDown)` + `maxLines: 1`, así la etiqueta más larga por locale (p.ej. "Biblioteca") no desborda la píldora en pantallas estrechas.
 
 ---
 
 ## Acceptance criteria
 
-- [ ] Bottom nav is a custom floating capsule bar (not a stock `NavigationBar`) matching the spec above — inset margins, 32px corner radius, blurred translucent background, drop shadow — with 5 destinations in this order: Studies, Library, Store, Progress, Settings
-- [ ] Selected destination renders as a single pill covering both icon and label; unselected destinations have no pill background
-- [ ] Screen content extends behind the floating bar (`extendBody`-style), not letterboxed above it, matching the mockup's overlay behavior
-- [ ] `_AppDrawer` and the `Scaffold`'s `drawer:` are removed; the AppBar no longer shows a hamburger icon
-- [ ] `LibraryPane` enum and segmented-control switching logic removed; Library shows only installed/downloaded packages (no pane switcher)
-- [ ] Store becomes its own top-level screen showing the full catalog list (the content previously in the "Store" pane), preserving existing behavior: pull-to-refresh, retry, catalog freshness banner, package cards with download/buy actions
-- [ ] `_buildPage()` switch and `_titleForIndex()` updated for the new 5-index mapping
+- [x] Bottom nav is a custom floating capsule bar (not a stock `NavigationBar`) matching the spec above — inset margins, 32px corner radius, blurred translucent background, drop shadow — with 5 destinations in this order: Studies, Library, Store, Progress, Settings
+- [x] Selected destination renders as a single pill covering both icon and label; unselected destinations have no pill background
+- [x] Screen content extends behind the floating bar (`extendBody`-style), not letterboxed above it, matching the mockup's overlay behavior
+- [x] `_AppDrawer` and the `Scaffold`'s `drawer:` are removed; the AppBar no longer shows a hamburger icon
+- [x] `LibraryPane` enum and segmented-control switching logic removed; Library shows only installed/downloaded packages (no pane switcher)
+- [x] Store becomes its own top-level screen showing the full catalog list (the content previously in the "Store" pane), preserving existing behavior: pull-to-refresh, retry, catalog freshness banner, package cards with download/buy actions
+- [x] `_buildPage()` switch and `_titleForIndex()` updated for the new 5-index mapping
 - [x] Device language detected at startup; app shows all chrome text (nav labels, AppBar, catalog actions, empty/error states, retry, freshness banner) in that language via `AppLocalizations`, with fallback to a default locale when unsupported
 - [x] Material components (e.g. back-tooltips) localized too; no hard-coded user-facing strings remain in the rewritten chrome
 - [x] Errores generados por la app (API/descargas/instalación/contenido) localizados vía códigos tipados (`AppErrorKind`), no strings en inglés pre-formateados en la capa de datos
-- [ ] Existing widget test asserting nav labels updated to expect all 5 destinations, including "Store" as distinct from "Library"
+- [x] Existing widget test asserting nav labels updated to expect all 5 destinations, including "Store" as distinct from "Library"; asserts stock `NavigationBar` is gone and the custom `FloatingNavBar` is present
 - [ ] Manual check: Store → package detail → back returns to the Store tab (not Library); Library → installed package → Open still routes to the Studies tab as before
-- [ ] `flutter test` passes
+- [x] `flutter test` passes
 
 ---
 

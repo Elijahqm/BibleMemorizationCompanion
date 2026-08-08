@@ -14,6 +14,7 @@ import 'package:bible_memorization_companion_mobile/features/downloads/data/pack
 import 'package:bible_memorization_companion_mobile/features/downloads/data/package_installer.dart';
 import 'package:bible_memorization_companion_mobile/features/downloads/download_controller.dart';
 import 'package:bible_memorization_companion_mobile/features/shell/app_shell.dart';
+import 'package:bible_memorization_companion_mobile/features/shell/floating_nav_bar.dart';
 import 'package:bible_memorization_companion_mobile/features/study/data/active_package_store.dart';
 import 'package:bible_memorization_companion_mobile/features/study/data/models/package_content.dart';
 import 'package:bible_memorization_companion_mobile/features/study/data/models/study.dart';
@@ -228,11 +229,15 @@ void main() {
 
     expect(find.text('My Studies'), findsOneWidget);
     expect(find.text('Library'), findsAtLeastNWidgets(1));
+    expect(find.text('Store'), findsAtLeastNWidgets(1));
     expect(find.text('Progress'), findsAtLeastNWidgets(1));
     expect(find.text('Settings'), findsAtLeastNWidgets(1));
+
+    expect(find.byType(FloatingNavBar), findsOneWidget);
+    expect(find.byType(NavigationBar), findsNothing);
   });
 
-  testWidgets('library store pane lists packages from the catalog API', (
+  testWidgets('store tab lists packages from the catalog API', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -240,7 +245,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Library').last);
+    await tester.tap(find.text('Store'));
     await tester.pumpAndSettle();
 
     expect(find.text('CB Hechos 1-9'), findsOneWidget);
@@ -280,8 +285,6 @@ void main() {
 
     await tester.tap(find.text('Go to Library'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Downloads'));
-    await tester.pumpAndSettle();
     expect(find.text('CB Hechos 1-9'), findsOneWidget);
     expect(find.text('Open'), findsOneWidget);
   });
@@ -313,8 +316,6 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Go to Library'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Downloads'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
@@ -387,8 +388,6 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Go to Library'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Downloads'));
-      await tester.pumpAndSettle();
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
 
@@ -441,7 +440,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Library').last);
+    await tester.tap(find.text('Store'));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Download'));
@@ -455,14 +454,13 @@ void main() {
 
     downloader.complete();
     await tester.pumpAndSettle();
-    expect(find.text('Installed'), findsOneWidget);
+    expect(find.text('Open'), findsOneWidget);
     expect(find.text('Cancel'), findsNothing);
 
-    // The installed package now shows up in the Downloads pane.
-    await tester.tap(find.text('Downloads'));
+    // The installed package now shows up in the Library tab.
+    await tester.tap(find.text('Library'));
     await tester.pumpAndSettle();
     expect(find.text('CB Hechos 1-9'), findsOneWidget);
-    expect(find.text('9 chapters'), findsOneWidget);
   });
 
   testWidgets('library shows an error state with retry when the API fails', (
@@ -473,7 +471,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Library').last);
+    await tester.tap(find.text('Store'));
     await tester.pumpAndSettle();
 
     expect(find.text('Could not load the catalog'), findsOneWidget);

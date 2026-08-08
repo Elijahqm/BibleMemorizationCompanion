@@ -20,8 +20,37 @@ import '../study/data/models/verse_state.dart';
 import '../study/data/package_content_repository.dart';
 import '../study/study_controller.dart';
 import '../study/study_screens.dart';
+import 'floating_nav_bar.dart';
 
-enum LibraryPane { downloads, store }
+String _formatSize(int bytes) {
+  if (bytes >= 1024 * 1024) return '${(bytes / (1024 * 1024)).toStringAsFixed(1)}Mb';
+  if (bytes >= 1024) return '${(bytes / 1024).round()}Kb';
+  return '${bytes}b';
+}
+
+String _installedMeta(InstalledPackage p, AppLocalizations l10n) {
+  final size = _formatSize(p.sizeBytes);
+  final parts = [
+    p.packageType.label(l10n),
+    p.language.toUpperCase(),
+    if (p.attribution.isNotEmpty) p.attribution,
+    size,
+    'v${p.version}',
+  ];
+  return parts.join(' · ');
+}
+
+String _storeMeta(CatalogPackage p, AppLocalizations l10n) {
+  final size = _formatSize(p.sizeBytes);
+  return '${p.packageType.label(l10n)} · ${p.language.toUpperCase()} · $size · v${p.version}';
+}
+
+String _progressLabel(AppLocalizations l10n, DownloadProgress? progress) {
+  if (progress == null) return l10n.downloadingStarting;
+  final fraction = progress.fraction;
+  if (fraction == null) return l10n.downloadingStarting;
+  return l10n.downloadingPercent((fraction * 100).round());
+}
 
 class AppShell extends StatefulWidget {
   const AppShell({
@@ -54,7 +83,6 @@ class _AppShellState extends State<AppShell> {
   late final bool _ownsStudies;
 
   int _currentIndex = 0;
-  LibraryPane _libraryPane = LibraryPane.store;
 
   @override
   void initState() {
@@ -81,6 +109,7 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         title: Text(_titleForIndex(context)),
         actions: [
@@ -91,43 +120,65 @@ class _AppShellState extends State<AppShell> {
           ),
         ],
       ),
-      drawer: _AppDrawer(
-        catalogCount: _catalog.packages.length,
-        installedCount: _downloads.installedPackages.length,
-      ),
-      body: SafeArea(
-        child: ListenableBuilder(
-          listenable: Listenable.merge([_catalog, _downloads, _studies]),
-          builder: (context, _) => _buildPage(),
-        ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        destinations: [
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.bookOpen),
-            selectedIcon: Icon(PhosphorIconsFill.bookOpen),
-            label: context.l10n.navStudies,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 104),
+                child: ListenableBuilder(
+                  listenable: Listenable.merge([_catalog, _downloads, _studies]),
+                  builder: (context, _) => _buildPage(),
+                ),
+              ),
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.books),
-            selectedIcon: Icon(PhosphorIconsFill.books),
-            label: context.l10n.navLibrary,
-          ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.chartBar),
-            selectedIcon: Icon(PhosphorIconsFill.chartBar),
-            label: context.l10n.navProgress,
-          ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.fadersHorizontal),
-            selectedIcon: Icon(PhosphorIconsFill.fadersHorizontal),
-            label: context.l10n.navSettings,
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+                child: FloatingNavBar(
+                  items: [
+                    NavigationItem(
+                      label: context.l10n.navStudies,
+                      icon: PhosphorIconsRegular.bookOpen,
+                      selectedIcon: PhosphorIconsFill.bookOpen,
+                    ),
+                    NavigationItem(
+                      label: context.l10n.navLibrary,
+                      icon: PhosphorIconsRegular.books,
+                      selectedIcon: PhosphorIconsFill.books,
+                    ),
+                    NavigationItem(
+                      label: context.l10n.navStore,
+                      icon: PhosphorIconsRegular.storefront,
+                      selectedIcon: PhosphorIconsFill.storefront,
+                    ),
+                    NavigationItem(
+                      label: context.l10n.navProgress,
+                      icon: PhosphorIconsRegular.chartBar,
+                      selectedIcon: PhosphorIconsFill.chartBar,
+                    ),
+                    NavigationItem(
+                      label: context.l10n.navSettings,
+                      icon: PhosphorIconsRegular.fadersHorizontal,
+                      selectedIcon: PhosphorIconsFill.fadersHorizontal,
+                    ),
+                  ],
+                  selectedIndex: _currentIndex,
+                  onSelected: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -147,18 +198,8 @@ class _AppShellState extends State<AppShell> {
         );
       case 1:
         return LibraryScreen(
-          pane: _libraryPane,
-          catalog: _catalog,
-          onPaneChanged: (pane) {
-            setState(() {
-              _libraryPane = pane;
-            });
-          },
-          onRetry: () => _catalog.load(refresh: true),
           downloads: _downloads,
-          onOpenPackage: (package) => _openPackage(context, package),
-          onPrimaryAction: (package) => _handlePackageAction(context, package),
-          onCancelDownload: _downloads.cancel,
+          onRefresh: () => _downloads.loadInstalled(),
           onOpenInstalled: _openInstalledPackage,
           onDeleteInstalled: (package) async {
             _content.evict(package);
@@ -167,12 +208,21 @@ class _AppShellState extends State<AppShell> {
           },
         );
       case 2:
+        return StoreScreen(
+          catalog: _catalog,
+          downloads: _downloads,
+          onRetry: () => _catalog.load(refresh: true),
+          onOpenPackage: (package) => _openPackage(context, package),
+          onPrimaryAction: (package) => _handlePackageAction(context, package),
+          onCancelDownload: _downloads.cancel,
+        );
+      case 3:
         return ProgressScreen(
           installed: _downloads.installedPackages,
           studies: _studies,
           onOpenPackage: (package) => _openPackageProgress(context, package),
         );
-      case 3:
+      case 4:
         return const SettingsScreen();
       default:
         return const SizedBox.shrink();
@@ -186,8 +236,10 @@ class _AppShellState extends State<AppShell> {
       case 1:
         return context.l10n.navLibrary;
       case 2:
-        return context.l10n.navProgress;
+        return context.l10n.navStore;
       case 3:
+        return context.l10n.navProgress;
+      case 4:
         return context.l10n.navSettings;
       default:
         return context.l10n.appName;
@@ -526,31 +578,95 @@ class _StudyCard extends StatelessWidget {
   }
 }
 
+/// The installed/downloaded packages on this device. The Store (catalog)
+/// lives on its own top-level destination ([StoreScreen]).
 class LibraryScreen extends StatelessWidget {
   const LibraryScreen({
     super.key,
-    required this.pane,
-    required this.catalog,
-    required this.onPaneChanged,
-    required this.onRetry,
     required this.downloads,
-    required this.onOpenPackage,
-    required this.onPrimaryAction,
-    required this.onCancelDownload,
+    required this.onRefresh,
     required this.onOpenInstalled,
     required this.onDeleteInstalled,
   });
 
-  final LibraryPane pane;
-  final CatalogController catalog;
-  final ValueChanged<LibraryPane> onPaneChanged;
-  final Future<void> Function() onRetry;
   final DownloadController downloads;
+  final Future<void> Function() onRefresh;
+  final ValueChanged<InstalledPackage> onOpenInstalled;
+  final ValueChanged<InstalledPackage> onDeleteInstalled;
+
+  @override
+  Widget build(BuildContext context) {
+    final installed = downloads.installedPackages;
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+        children: [
+          if (installed.isEmpty)
+            InfoPanel(
+              title: context.l10n.libraryNoDownloadsTitle,
+              body: context.l10n.libraryNoDownloadsBody,
+            )
+          else
+            for (final package in installed) ...[
+              Dismissible(
+                key: ValueKey(package.id),
+                direction: DismissDirection.endToStart,
+                confirmDismiss: (_) async => showConfirmationDialog(
+                  context,
+                  title: context.l10n.removeDownloadTitle,
+                  message: context.l10n.removeDownloadMessage(package.title),
+                  confirmLabel: context.l10n.remove,
+                  cancelLabel: context.l10n.cancel,
+                ),
+                onDismissed: (_) => onDeleteInstalled(package),
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 20),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.error,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(
+                    PhosphorIconsRegular.trash,
+                    color: Theme.of(context).colorScheme.onError,
+                  ),
+                ),
+                child: _PackageCard(
+                  title: package.title,
+                  subtitle: _installedMeta(package, context.l10n),
+                  actionLabel: context.l10n.open,
+                  onAction: () => onOpenInstalled(package),
+                  onTap: () => onOpenInstalled(package),
+                ),
+              ),
+              const SizedBox(height: 14),
+            ],
+        ],
+      ),
+    );
+  }
+}
+
+/// The Store: the full catalog of published packages, with pull-to-refresh,
+/// retry, a freshness banner and per-package download actions.
+class StoreScreen extends StatelessWidget {
+  const StoreScreen({
+    super.key,
+    required this.catalog,
+    required this.downloads,
+    required this.onRetry,
+    required this.onOpenPackage,
+    required this.onPrimaryAction,
+    required this.onCancelDownload,
+  });
+
+  final CatalogController catalog;
+  final DownloadController downloads;
+  final Future<void> Function() onRetry;
   final ValueChanged<CatalogPackage> onOpenPackage;
   final ValueChanged<CatalogPackage> onPrimaryAction;
   final ValueChanged<CatalogPackage> onCancelDownload;
-  final ValueChanged<InstalledPackage> onOpenInstalled;
-  final ValueChanged<InstalledPackage> onDeleteInstalled;
 
   @override
   Widget build(BuildContext context) {
@@ -559,49 +675,15 @@ class LibraryScreen extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
-          SegmentedButton<LibraryPane>(
-            segments: [
-              ButtonSegment(
-                value: LibraryPane.downloads,
-                label: Text(context.l10n.libraryPaneDownloads),
-              ),
-              ButtonSegment(value: LibraryPane.store, label: Text(context.l10n.navStore)),
-            ],
-            selected: {pane},
-            onSelectionChanged: (selection) => onPaneChanged(selection.first),
-          ),
+          const _StoreStatusBanner(),
           const SizedBox(height: 18),
-          _StoreStatusBanner(pane: pane),
-          const SizedBox(height: 18),
-          ..._buildPaneContent(context),
+          ..._buildCatalog(context),
         ],
       ),
     );
   }
 
-  List<Widget> _buildPaneContent(BuildContext context) {
-    if (pane == LibraryPane.downloads) {
-      final installed = downloads.installedPackages;
-      if (installed.isEmpty) {
-        return [
-          InfoPanel(
-            title: context.l10n.libraryNoDownloadsTitle,
-            body: context.l10n.libraryNoDownloadsBody,
-          ),
-        ];
-      }
-      return [
-        for (final package in installed) ...[
-          _InstalledPackageCard(
-            package: package,
-            onOpen: () => onOpenInstalled(package),
-            onDelete: () => onDeleteInstalled(package),
-          ),
-          const SizedBox(height: 14),
-        ],
-      ];
-    }
-
+  List<Widget> _buildCatalog(BuildContext context) {
     switch (catalog.status) {
       case CatalogStatus.idle:
       case CatalogStatus.loading:
@@ -642,7 +724,7 @@ class LibraryScreen extends StatelessWidget {
             const SizedBox(height: 14),
           ],
           for (final package in catalog.packages) ...[
-            _PackageCard(
+            _StorePackageCard(
               package: package,
               download: downloads.statusFor(package),
               hasUpdate: downloads.hasUpdate(package),
@@ -953,8 +1035,123 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
   }
 }
 
+/// Compact horizontal card matching the mockup spec:
+/// `[icon box] [title + meta] [action pill] [trash?]`.
+///
+/// Used in both Library (installed packages) and Store (catalog packages).
 class _PackageCard extends StatelessWidget {
   const _PackageCard({
+    required this.title,
+    required this.subtitle,
+    required this.actionLabel,
+    this.onAction,
+    this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final String actionLabel;
+  final VoidCallback? onAction;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Material(
+      color: theme.cardTheme.color ?? scheme.surface,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap ?? onAction,
+        child: Padding(
+          padding: const EdgeInsets.all(11),
+          child: Row(
+            children: [
+              // Icon box: 42×52, dark rounded rectangle with book icon
+              Container(
+                width: 42,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2D2D5E),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
+                    bottomLeft: Radius.circular(5),
+                  ),
+                ),
+                child: const Icon(
+                  PhosphorIconsRegular.bookOpen,
+                  color: Color(0xFFE6DBC8),
+                  size: 18,
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Title + meta
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: scheme.onSurface,
+                        fontSize: 14.5,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              // Action pill
+              if (onAction != null)
+                GestureDetector(
+                  onTap: onAction,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: scheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      actionLabel,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: scheme.primary,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Compact horizontal card for catalog packages in the Store, with download
+/// state handling (progress, error, installed status).
+class _StorePackageCard extends StatelessWidget {
+  const _StorePackageCard({
     required this.package,
     required this.download,
     required this.onTap,
@@ -972,132 +1169,186 @@ class _PackageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final meta = _storeMeta(package, context.l10n);
+
+    // Action area depends on download state.
+    Widget? action;
+    switch (download.state) {
+      case DownloadState.downloading:
+      case DownloadState.verifying:
+      case DownloadState.installing:
+        final isDownloading = download.state == DownloadState.downloading;
+        final progress = download.progress;
+        final fraction = progress?.fraction;
+        action = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (isDownloading)
+              SizedBox(
+                width: 48,
+                child: LinearProgressIndicator(
+                  value: fraction,
+                  minHeight: 3,
+                  borderRadius: BorderRadius.circular(999),
+                ),
+              ),
+            if (isDownloading)
+              Text(
+                _progressLabel(context.l10n, progress),
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+            if (isDownloading)
+              GestureDetector(
+                onTap: onCancelDownload,
+                child: Text(
+                  context.l10n.cancel,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+          ],
+        );
+      case DownloadState.installed:
+        action = GestureDetector(
+          onTap: onPrimaryAction,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              hasUpdate ? context.l10n.update : context.l10n.open,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: scheme.primary,
+              ),
+            ),
+          ),
+        );
+      case DownloadState.failed:
+        action = GestureDetector(
+          onTap: onPrimaryAction,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              context.l10n.retry,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: scheme.primary,
+              ),
+            ),
+          ),
+        );
+      case DownloadState.idle:
+        if (!package.isSupported) {
+          action = Text(
+            context.l10n.requiresAppVersion(package.minAppVersion),
+            style: TextStyle(
+              fontSize: 11,
+              color: scheme.error,
+            ),
+          );
+        } else {
+          action = GestureDetector(
+            onTap: onPrimaryAction,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              decoration: BoxDecoration(
+                color: scheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                package.primaryActionLabel(context.l10n),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: scheme.primary,
+                ),
+              ),
+            ),
+          );
+        }
+    }
+
+    return Material(
+      color: theme.cardTheme.color ?? scheme.surface,
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(16),
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(11),
+          child: Row(
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          package.title,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          package.listSubtitle(context.l10n),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
+              Container(
+                width: 42,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2D2D5E),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
+                    bottomLeft: Radius.circular(5),
                   ),
-                  const SizedBox(width: 12),
-                  Chip(label: Text(package.statusLabel(context.l10n))),
-                ],
+                ),
+                child: const Icon(
+                  PhosphorIconsRegular.bookOpen,
+                  color: Color(0xFFE6DBC8),
+                  size: 18,
+                ),
               ),
-              const SizedBox(height: 14),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  Chip(label: Text(package.language.toUpperCase())),
-                  Chip(label: Text(package.packageType.label(context.l10n))),
-                  Chip(label: Text(package.sizeLabel(context.l10n))),
-                ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      package.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: scheme.onSurface,
+                        fontSize: 14.5,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      meta,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 16),
-              _DownloadAction(
-                package: package,
-                download: download,
-                onPrimaryAction: onPrimaryAction,
-                onCancelDownload: onCancelDownload,
-                hasUpdate: hasUpdate,
-              ),
+              const SizedBox(width: 8),
+              action,
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Card for a package that is installed on the device.
-class _InstalledPackageCard extends StatelessWidget {
-  const _InstalledPackageCard({
-    required this.package,
-    required this.onOpen,
-    required this.onDelete,
-  });
-
-  final InstalledPackage package;
-  final VoidCallback onOpen;
-  final VoidCallback onDelete;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    package.title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () async {
-                    final confirmed = await showConfirmationDialog(
-                      context,
-                      title: context.l10n.removeDownloadTitle,
-                      message: context.l10n.removeDownloadMessage(package.title),
-                      confirmLabel: context.l10n.remove,
-                      cancelLabel: context.l10n.cancel,
-                    );
-                    if (confirmed) onDelete();
-                  },
-                  icon: const Icon(PhosphorIconsRegular.trash),
-                  tooltip: context.l10n.removeDownloadTooltip,
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                Chip(label: Text(package.language.toUpperCase())),
-                Chip(label: Text('v${package.version}')),
-                Chip(label: Text(context.l10n.chaptersCount(package.chapterCount))),
-                Chip(label: Text(context.l10n.versesCount(package.verseCount))),
-              ],
-            ),
-            if (package.attribution.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              Text(
-                context.l10n.creditAttribution(package.attribution),
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: onOpen,
-              child: Text(context.l10n.open),
-            ),
-          ],
         ),
       ),
     );
@@ -1226,28 +1477,15 @@ class _DownloadAction extends StatelessWidget {
         );
     }
   }
-
-  String _progressLabel(AppLocalizations l10n, DownloadProgress? progress) {
-    if (progress == null) return l10n.downloadingStarting;
-    final fraction = progress.fraction;
-    if (fraction == null) return l10n.downloadingStarting;
-    return l10n.downloadingPercent((fraction * 100).round());
-  }
 }
 
 class _StoreStatusBanner extends StatelessWidget {
-  const _StoreStatusBanner({required this.pane});
-
-  final LibraryPane pane;
+  const _StoreStatusBanner();
 
   @override
   Widget build(BuildContext context) {
-    final title = pane == LibraryPane.downloads
-        ? context.l10n.storeBannerDownloadsTitle
-        : context.l10n.storeBannerCatalogTitle;
-    final body = pane == LibraryPane.downloads
-        ? context.l10n.storeBannerDownloadsBody
-        : context.l10n.storeBannerCatalogBody;
+    final title = context.l10n.storeBannerCatalogTitle;
+    final body = context.l10n.storeBannerCatalogBody;
 
     return Card(
       child: Padding(
@@ -1521,69 +1759,6 @@ class _SettingTile extends StatelessWidget {
         subtitle: Text(subtitle),
         trailing: Text(trailing),
       ),
-    );
-  }
-}
-
-class _AppDrawer extends StatelessWidget {
-  const _AppDrawer({required this.catalogCount, required this.installedCount});
-
-  final int catalogCount;
-  final int installedCount;
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                context.l10n.appName,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                context.l10n.drawerTagline,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 24),
-              _DrawerMetric(
-                label: context.l10n.catalogPackages,
-                value: '$catalogCount',
-              ),
-              const SizedBox(height: 10),
-              _DrawerMetric(
-                label: context.l10n.installedPackages,
-                value: '$installedCount',
-              ),
-              const Spacer(),
-              Text(context.l10n.guestModeNote),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DrawerMetric extends StatelessWidget {
-  const _DrawerMetric({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(label, style: Theme.of(context).textTheme.bodyLarge),
-        ),
-        Text(value, style: Theme.of(context).textTheme.titleMedium),
-      ],
     );
   }
 }
